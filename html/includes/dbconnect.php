@@ -1,7 +1,7 @@
 <html>
 <body>
 <?php
-$server = "46.101.9.221"; // IP Address of the MySQL server
+$server = "46.101.9.220"; // IP Address of the MySQL server
 $username = "phpaccess"; // Username to log into MySQL server
 $password = "xteUPG8wqQZ8yKzm"; // Password for phpaccess MySQL account (randomly generated
 $dbname = "project"; // Database to be used (currently the 'project' DB)
