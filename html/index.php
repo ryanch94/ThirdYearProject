@@ -1,5 +1,5 @@
 <?php
-include 'includes/dbconnect.php'; // Adds the database connection script to this page
+//include 'includes/dbconnect.php'; // Adds the database connection script to this page
 ?>
 <!DOCTYPE html>
 <html lang="en">
