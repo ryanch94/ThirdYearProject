@@ -1,3 +1,6 @@
+<?php
+include 'includes/vars.php'; // Include vars.php in this file
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="assets/ico/favicon.png">
 
-    <title>Sign Me In - Coming Soon</title>
+    <title><?php echo $title ?> - Coming Soon</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
