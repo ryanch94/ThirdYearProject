@@ -20,7 +20,11 @@
   <body>
     <h1>Hello, world!</h1>
     <select id="facilitydd">
-    <option>Choose a facility</option>
+<?php
+    while ($row = mysql_fetch_array($result)) {
+    echo "<option value='" . $row['Id'] . "'>" . $row['Description'] . "</option>";
+}
+?>
     </select>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
