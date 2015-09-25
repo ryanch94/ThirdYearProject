@@ -8,7 +8,7 @@ define("MYSQL_PASS", "xteUPG8wqQZ8yKzm"); // Password for phpaccess MySQL accoun
 define("MYSQL_DB", "project") // Database to be used (currently the 'project' DB)
 
 //Initialise DB connection using above variables
-$conn = mysqli_connect(MYSQL_ADDRESS, MYSQL_USERNAME, MYSQL_PASS, MYSQL_DB);
+global $conn = mysqli_connect(MYSQL_ADDRESS, MYSQL_USERNAME, MYSQL_PASS, MYSQL_DB);
 
 // Check if DB connection was successful, if not kill the rest of the page load and display error
 if (!$conn) {
