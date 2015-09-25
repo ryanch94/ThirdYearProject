@@ -19,6 +19,9 @@
   </head>
   <body>
     <h1>Hello, world!</h1>
+    <select id="facilitydd">
+    <option>Choose a facility</option>
+    </select>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
