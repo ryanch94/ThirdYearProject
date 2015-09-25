@@ -1,7 +1,7 @@
 <?php
 include 'includes/dbconnect.php';
 
-$sql = "SELECT Description FROM `Programs`";
+$sql = "SELECT * FROM `Programs`";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
