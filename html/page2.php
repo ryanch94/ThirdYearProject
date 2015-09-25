@@ -19,13 +19,16 @@
   </head>
   <body>
     <h1>Hello, world!</h1>
-    <select name="facilitydd">
+    
 <?php
 include 'includes/dbconnect.php';
 
 $sql = "SELECT * FROM `Programs`";
 $result = mysqli_query($conn, $sql);
 echo mysqli_num_rows($result);
+?>
+      <select name="facilitydd">
+<?php
     while ($row = mysql_fetch_assoc($result)) {
         echo "<option>" . $row['Description'] . "</option>";
 }
