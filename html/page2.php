@@ -30,7 +30,7 @@ echo mysqli_num_rows($result);
       <select name="facilitydd">
 <?php
     while ($row = mysql_fetch_assoc($result)) {
-        echo "<option>" . $row['Description'] . "</option>";
+        echo "<option value='" . $row['Description'] . "'></option>";
 }
 ?>
     </select>
