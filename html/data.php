@@ -1,6 +1,6 @@
 <?php
 include 'includes/dbconnect.php';
-
+echo $conn;
 $sql = "SELECT * FROM `Programs`";
 $result = mysqli_query($conn, $sql);
 
