@@ -14,6 +14,10 @@ global $conn = mysqli_connect(MYSQL_ADDRESS, MYSQL_USERNAME, MYSQL_PASS, MYSQL_D
 if (!$conn) {
     die("MySQL Connection failed: " . mysqli_connect_error());
 }
+else
+{
+    echo 'success';
+}
 ?>
 
 </body>
