@@ -27,6 +27,7 @@ $result = mysqli_query($conn, $sql);
     <h1>Hello, world!</h1>
       <?php
       echo $result;
+?>
     <select id="facilitydd">
 
     while ($row = mysql_fetch_array($result)) {

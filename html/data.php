@@ -16,11 +16,7 @@ if (mysqli_num_rows($result) > 0) {
 ?>
 <br><br>
 <?php
-echo "<select name='PcID'>";
-while ($row = mysql_fetch_array($result)) {
-    echo "<option value='" . $row['PcID'] . "'>" . $row['PcID'] . "</option>";
-}
-echo "</select>";
+
 
 mysqli_close($conn);
 ?>
