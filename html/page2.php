@@ -27,8 +27,8 @@ $result = mysqli_query($conn, $sql);
     <h1>Hello, world!</h1>
     <select name="facilitydd">
 <?php
-    while ($row = mysql_fetch_array($result)) {
-    echo "<option>" . $row['Description'] . "</option>";
+    while ($row = mysql_fetch_assoc($result)) {
+        echo "<option>" . $row['Description'] . "</option>";
 }
 ?>
     </select>
