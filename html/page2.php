@@ -1,7 +1,7 @@
 <?php
 include 'includes/dbconnect.php';
 
-$sql = "SELECT * FROM `Programs`";
+$sql = "SELECT Description FROM `Programs`";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
@@ -25,13 +25,10 @@ $result = mysqli_query($conn, $sql);
   </head>
   <body>
     <h1>Hello, world!</h1>
-      <?php
-      echo $result;
-?>
-    <select id="facilitydd">
+    <select name="facilitydd">
 <?php
     while ($row = mysql_fetch_array($result)) {
-    echo "<option value='" . $row['Id'] . "'>" . $row['Description'] . "</option>";
+    echo "<option>" . $row['Description'] . "</option>";
 }
 ?>
     </select>
