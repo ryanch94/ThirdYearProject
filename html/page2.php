@@ -1,3 +1,9 @@
+<?php
+include 'includes/dbconnect.php';
+
+$sql = "SELECT * FROM `Programs`";
+$result = mysqli_query($conn, $sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
