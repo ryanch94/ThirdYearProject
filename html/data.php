@@ -1,7 +1,7 @@
 <?php
 include 'includes/dbconnect.php';
 
-$sql = "CALL sp_test";
+$sql = "SELECT * FROM `Programs`";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
