@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sign Me In, an application to aid attendance taking and to make it easier to find spaces to work in.">
+    <meta name="author" content="Grace Stevens">
+
+    <title>Sign Me In Frontpage</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="css/business-frontpage.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Sign Me In</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a data-toggle="modal" data-target="#register" href="#"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+                    <li><a data-toggle="modal" data-target="#login" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- #region registerModal -->
+    <!-- Modal Register -->
+    <div id="register" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Register for Sign Me In</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Please fill in the following information about yourself. Be sure to use your institute's email and password.</p>
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="fName">First name:</label>
+                            <input type="text" class="form-control" id="fName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lName">Last name:</label>
+                            <input type="text" class="form-control" id="lName">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address:</label>
+                            <input type="email" class="form-control" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" id="pwd">
+                        </div>
+                        <div class="form-group">
+                            <label for="selInstitute">Select your Institute:</label>
+                            <select class="form-control" id="selInstitute">
+                                <option>Institute of Technology Sligo</option>
+                            </select>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" data-target="#login">Already a member?</button>
+                    <button type="button" class="btn btn-default btn-group" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success btn-group" data-dismiss="modal">Register</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- #endregion -->
+    <!-- #region loginModal -->
+    <!-- Modal Login -->
+    <div id="login" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Please enter your college email and password.</p>
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="email">Email address:</label>
+                            <input type="email" class="form-control" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" id="pwd">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" data-target="#register">Not a member?</button>
+                    <button type="button" class="btn btn-default btn-group" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success btn-group" data-dismiss="modal">Login</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- #endregion -->
+    <!-- Image Background Page Header -->
+    <!-- Note: The background image is set within the business-casual.css file. -->
+    <header class="business-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="tagline taglineBig">Sign Me In</h1>
+                    <h2 class="tagline">Introducing the new way to move from class to class and manage where and when you work.</h2>
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#register">Register Now</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Page Content -->
+
+    <div class="container">
+       
+
+        <div class="row">
+            <div class="col-sm-4">
+                <img class="img-circle img-responsive img-center" src="images/bar.jpg" alt="barcode">
+                <h2 class="service-heading">Scan it</h2>
+                <p class="lead">No more sign-in sheets or wasting time taking attendnce.</p>
+                <p class="lead">Simply scan your Institute issued card as you enter the room and scan again on your way out.</p>
+            </div>
+            <div class="col-sm-4">
+                <img class="img-circle img-responsive img-center" src="images/pc.jpg" alt="pc and monitor">
+                <h2 class="service-heading">Find a lab</h2>
+                <p class="lead">Sick of peeking around a door or trawling through timetables?</p>
+                <p class="lead">Sign Me In manages all the rooms or labs you would like to work in easily and effectively.</p>
+            </div>
+            <div class="col-sm-4">
+                <img class="img-circle img-responsive img-center" src="images/stats.jpg" alt="bar chart">
+                <h2 class="service-heading">Stats</h2>
+                <p class="lead">Want to see how your class' attendance is doing?</p>
+                <p class="lead">Sign Me In provides numerous visual statistical breakdowns to help you digest important data.</p>
+            </div>
+        </div>
+        <!-- / about row -->
+        <!--services row-->
+        <hr class="service-divider"/>
+        <!-- First Service -->
+        <div class="service" id="about">
+            <img class="service-image img-circle img-responsive pull-right" src="http://placehold.it/500x500">
+            <h2 class="service-heading">
+                Student Portal
+                <span class="text-muted">Makes College That Much Easier.</span>
+            </h2>
+            <p class="lead">An all-in-one solution to everyday college issues. Offers a mobile-friendly timetable, a way to find free rooms and an option to view your attendance history.</p>
+        </div>
+        <hr class="service-divider">
+        <!-- Second Service -->
+        <div class="service" id="services">
+            <img class="service-image img-circle img-responsive pull-left" src="http://placehold.it/500x500">
+            <h2 class="service-heading">
+                Staff Portal
+                <span class="text-muted">Manages Your Students And Your Classes.</span>
+            </h2>
+            <p class="lead">Takes care of all attendance records for your classes and gives you the option to modify where and when your classes will be on, with the ability to notify your students of any changes.</p>
+        </div>
+        <hr class="service-divider">
+        <!-- Third Service -->
+        <div class="service" id="contact">
+            <img class="service-image img-circle img-responsive pull-right" src="http://placehold.it/500x500">
+            <h2 class="service-heading">
+                Admin Portal
+                <span class="text-muted">Fully Adaptable To Any Institute.</span>
+            </h2>
+            <p class="lead">With this add-on Sign Me In can be edited easily and efficiently to suit individual institutes needs and preferences. Ability to load in massive amounts of data effortlessy and customize each part of the application from the front-end.</p>
+        </div>
+
+        <!-- / about row -->
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Sign Me In Team 2015</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+    </div>
+    <!-- /.container -->
+    <!-- jQuery -->
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="Scripts/bootstrap.min.js"></script>
+</body>
+
+</html>
