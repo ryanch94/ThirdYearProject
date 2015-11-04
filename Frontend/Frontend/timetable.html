@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sign Me In, an application to aid attendance taking and to make it easier to find spaces to work in.">
+    <meta name="author" content="Grace Stevens">
+
+    <title>Timetable</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <ul class="nav nav-tabs">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Day <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a data-toggle="tab" href="#dayView">Monday</a></li>
+                <li><a data-toggle="tab" href="#dayView">Tuesday</a></li>
+                <li><a data-toggle="tab" href="#dayView">Wednesday</a></li>
+                <li><a data-toggle="tab" href="#dayView">Thursday</a></li>
+                <li><a data-toggle="tab" href="#dayView">Friday</a></li>
+            </ul>
+        </li>
+        <li role="presentation"><a data-toggle="tab" href="#weekView">Week</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#customView">Custom</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="dayView" class="tab-pane fade in active">
+            <h3>Day</h3>
+            <p>Some content.</p>
+        </div>
+        <div id="weekView" class="tab-pane fade">
+            <h3>Week</h3>
+            <p>Some content in menu 1.</p>
+        </div>
+        <div id="customView" class="tab-pane fade">
+            <h3>Custom</h3>
+            <p>Some content in menu 2.</p>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="Scripts/bootstrap.min.js"></script>
+
+</body>
+</html>
