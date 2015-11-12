@@ -10,6 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Year" Type="tinyint" Nullable="false" />
           <Property Name="CourseName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="CourseModule">
@@ -93,7 +94,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
-          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="DayofWeek" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -418,6 +420,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CourseName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Modules" Relationship="Self.CourseModule" FromRole="Course" ToRole="Module" />
+          <Property Name="Year" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -494,6 +497,8 @@
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Module" Relationship="Self.FK_TimeTable_Module" FromRole="TimeTable" ToRole="Module" />
           <NavigationProperty Name="Room" Relationship="Self.FK_TimeTable_Room" FromRole="TimeTable" ToRole="Room" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DayofWeek" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -749,6 +754,7 @@
           <EntitySetMapping Name="Courses">
             <EntityTypeMapping TypeName="Model.Course">
               <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CourseName" ColumnName="CourseName" />
               </MappingFragment>
@@ -813,10 +819,11 @@
           <EntitySetMapping Name="TimeTables">
             <EntityTypeMapping TypeName="Model.TimeTable">
               <MappingFragment StoreEntitySet="TimeTable">
+                <ScalarProperty Name="DayofWeek" ColumnName="DayofWeek" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
