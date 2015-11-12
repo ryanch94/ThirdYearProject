@@ -87,5 +87,14 @@ namespace WebApp.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertUser", typeParameter, numberParameter, fnameParameter, lnameParameter, emailParameter, prilvlParameter);
         }
+    
+        public virtual int Loginsproc(string email, ObjectParameter userid, ObjectParameter fname)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Loginsproc", emailParameter, userid, fname);
+        }
     }
 }
