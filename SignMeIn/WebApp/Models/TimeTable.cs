@@ -17,7 +17,6 @@ namespace WebApp.Models
         public int Id { get; set; }
         public int ModuleId { get; set; }
         public int RoomId { get; set; }
-        public System.DateTime Time { get; set; }
         public System.DateTime StartTime { get; set; }
         public byte DayofWeek { get; set; }
     

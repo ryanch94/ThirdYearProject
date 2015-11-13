@@ -15,10 +15,10 @@ namespace WebApp.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class Sign_Me_In_DataEntities1 : DbContext
+    public partial class projectdbEntities : DbContext
     {
-        public Sign_Me_In_DataEntities1()
-            : base("name=Sign_Me_In_DataEntities1")
+        public projectdbEntities()
+            : base("name=projectdbEntities")
         {
         }
     

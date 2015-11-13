@@ -4,30 +4,30 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b90f445d47444648aba80ec5f77dcecc" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="Model.Course" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Log" Width="1.5" PointX="9.75" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Module" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Privacy" Width="1.5" PointX="5.5" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Program" Width="1.5" PointX="10" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Room" Width="1.5" PointX="12.5" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.RoomType" Width="1.5" PointX="11.625" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.TimeTable" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.User" Width="1.5" PointX="7.75" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.WatchRoom" Width="1.5" PointX="14.625" PointY="4.375" IsExpanded="true" />
-        <AssociationConnector Association="Model.FK_Log_Room" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Log_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Module_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_TimeTable_Module" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_User_Privacy" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Room_RoomType" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Room_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_TimeTable_Room" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_WatchRoom_Room" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_WatchRoom_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.CourseModule" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.ModuleStudent" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.RoomProgram" ManuallyRouted="false" />
+      <Diagram DiagramId="23c42fdfe92547c1b9436b5580c10063" Name="Diagram1">
+        <EntityTypeShape EntityType="projectdbModel.Course" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.Log" Width="1.5" PointX="10.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.Module" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.Privacy" Width="1.5" PointX="6" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.Program" Width="1.5" PointX="11.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.Room" Width="1.5" PointX="13.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.RoomType" Width="1.5" PointX="11.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.TimeTable" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.User" Width="1.5" PointX="8.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectdbModel.WatchRoom" Width="1.5" PointX="15.75" PointY="5.125" IsExpanded="true" />
+        <AssociationConnector Association="projectdbModel.FK_Log_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_Log_User" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_Module_User" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_TimeTable_Module" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_User_Privacy" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_Room_RoomType" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_Room_User" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_TimeTable_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_WatchRoom_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_WatchRoom_User" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.CourseModule" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.ModuleStudent" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.RoomProgram" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
