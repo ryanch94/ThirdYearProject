@@ -91,10 +91,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Sign Me In Data.mdf" />
-    <Content Include="App_Data\Sign Me In Data_log.ldf">
-      <DependentUpon>Sign Me In Data.mdf</DependentUpon>
-    </Content>
     <Content Include="Global.asax" />
     <Content Include="Models\SignMeInModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -112,6 +108,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\TimeTablesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,6 +177,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>

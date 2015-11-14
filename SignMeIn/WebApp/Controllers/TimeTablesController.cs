@@ -15,7 +15,7 @@ namespace WebApp.Controllers
 {
     public class TimeTablesController : ApiController
     {
-        private Sign_Me_In_DataEntities1 db = new Sign_Me_In_DataEntities1();
+        private projectdbEntities db = new projectdbEntities();
 
         // GET: api/TimeTables
         public IQueryable<TimeTable> GetTimeTables()
