@@ -13,44 +13,44 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
-    public class CourseController : ApiController
+    public class UsersController : ApiController
     {
         private projectdbEntities db = new projectdbEntities();
 
-        // GET: api/Course
-        public IQueryable<Course> GetCourses()
+        // GET: api/Users
+        public IQueryable<User> GetUsers()
         {
-            return db.Courses;
+            return db.Users;
         }
 
-        // GET: api/Course/5
-        [ResponseType(typeof(Course))]
-        public async Task<IHttpActionResult> GetCourse(int id)
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> GetUser(int id)
         {
-            Course course = await db.Courses.FindAsync(id);
-            if (course == null)
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(course);
+            return Ok(user);
         }
 
-        // PUT: api/Course/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutCourse(int id, Course course)
+        public async Task<IHttpActionResult> PutUser(int id, User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != course.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(course).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +58,7 @@ namespace WebApp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -71,35 +71,36 @@ namespace WebApp.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Course
-        [ResponseType(typeof(Course))]
-        public async Task<IHttpActionResult> PostCourse(Course course)
+        // POST: api/Users
+        [ResponseType(typeof(User))]
+        [HttpPost]
+        public async Task<IHttpActionResult> PostUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Courses.Add(course);
+            db.Users.Add(user);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = course.Id }, course);
+            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Course/5
-        [ResponseType(typeof(Course))]
-        public async Task<IHttpActionResult> DeleteCourse(int id)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> DeleteUser(int id)
         {
-            Course course = await db.Courses.FindAsync(id);
-            if (course == null)
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            db.Courses.Remove(course);
+            db.Users.Remove(user);
             await db.SaveChangesAsync();
 
-            return Ok(course);
+            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
@@ -111,9 +112,9 @@ namespace WebApp.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CourseExists(int id)
+        private bool UserExists(int id)
         {
-            return db.Courses.Count(e => e.Id == id) > 0;
+            return db.Users.Count(e => e.Id == id) > 0;
         }
     }
 }

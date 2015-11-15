@@ -21,6 +21,7 @@ namespace WebApp.Models
         }
     
         public int Id { get; set; }
+        public byte Year { get; set; }
         public string CourseName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

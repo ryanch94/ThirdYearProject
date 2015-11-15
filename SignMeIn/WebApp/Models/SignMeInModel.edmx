@@ -4,12 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="projectdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Course">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Year" Type="tinyint" Nullable="false" />
           <Property Name="CourseName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="CourseModule">
@@ -93,7 +94,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
-          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="DayofWeek" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -328,7 +330,7 @@
           <Parameter Name="userid" Type="int" Mode="InOut" />
           <Parameter Name="fname" Type="varchar" Mode="InOut" />
         </Function>
-        <EntityContainer Name="ModelStoreContainer">
+        <EntityContainer Name="projectdbModelStoreContainer">
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseModule" EntityType="Self.CourseModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
@@ -407,15 +409,17 @@
             <End Role="WatchRoom" EntitySet="WatchRoom" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="projectdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Course">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Year" Type="Byte" Nullable="false" />
           <Property Name="CourseName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Modules" Relationship="Self.CourseModule" FromRole="Course" ToRole="Module" />
         </EntityType>
@@ -491,7 +495,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ModuleId" Type="Int32" Nullable="false" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
-          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DayofWeek" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Module" Relationship="Self.FK_TimeTable_Module" FromRole="TimeTable" ToRole="Module" />
           <NavigationProperty Name="Room" Relationship="Self.FK_TimeTable_Room" FromRole="TimeTable" ToRole="Room" />
         </EntityType>
@@ -657,7 +662,7 @@
           <End Role="Program" Type="Self.Program" Multiplicity="*" />
           <End Role="Room" Type="Self.Room" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="Sign_Me_In_DataEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="projectdbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Courses" EntityType="Self.Course" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="Modules" EntityType="Self.Module" />
@@ -745,17 +750,18 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Sign_Me_In_DataEntities1">
+        <EntityContainerMapping StorageEntityContainer="projectdbModelStoreContainer" CdmEntityContainer="projectdbEntities">
           <EntitySetMapping Name="Courses">
-            <EntityTypeMapping TypeName="Model.Course">
+            <EntityTypeMapping TypeName="projectdbModel.Course">
               <MappingFragment StoreEntitySet="Course">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CourseName" ColumnName="CourseName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Logs">
-            <EntityTypeMapping TypeName="Model.Log">
+            <EntityTypeMapping TypeName="projectdbModel.Log">
               <MappingFragment StoreEntitySet="Log">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
@@ -766,7 +772,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Modules">
-            <EntityTypeMapping TypeName="Model.Module">
+            <EntityTypeMapping TypeName="projectdbModel.Module">
               <MappingFragment StoreEntitySet="Module">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -775,7 +781,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Privacies">
-            <EntityTypeMapping TypeName="Model.Privacy">
+            <EntityTypeMapping TypeName="projectdbModel.Privacy">
               <MappingFragment StoreEntitySet="Privacy">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PrivacyLevel" ColumnName="PrivacyLevel" />
@@ -783,7 +789,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Programs">
-            <EntityTypeMapping TypeName="Model.Program">
+            <EntityTypeMapping TypeName="projectdbModel.Program">
               <MappingFragment StoreEntitySet="Program">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -791,7 +797,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Rooms">
-            <EntityTypeMapping TypeName="Model.Room">
+            <EntityTypeMapping TypeName="projectdbModel.Room">
               <MappingFragment StoreEntitySet="Room">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
@@ -803,7 +809,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoomTypes">
-            <EntityTypeMapping TypeName="Model.RoomType">
+            <EntityTypeMapping TypeName="projectdbModel.RoomType">
               <MappingFragment StoreEntitySet="RoomType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -811,17 +817,18 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TimeTables">
-            <EntityTypeMapping TypeName="Model.TimeTable">
+            <EntityTypeMapping TypeName="projectdbModel.TimeTable">
               <MappingFragment StoreEntitySet="TimeTable">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="DayofWeek" ColumnName="DayofWeek" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="Model.User">
+            <EntityTypeMapping TypeName="projectdbModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SLType" ColumnName="SLType" />
@@ -835,7 +842,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WatchRooms">
-            <EntityTypeMapping TypeName="Model.WatchRoom">
+            <EntityTypeMapping TypeName="projectdbModel.WatchRoom">
               <MappingFragment StoreEntitySet="WatchRoom">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
@@ -843,7 +850,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CourseModule" TypeName="Model.CourseModule" StoreEntitySet="CourseModule">
+          <AssociationSetMapping Name="CourseModule" TypeName="projectdbModel.CourseModule" StoreEntitySet="CourseModule">
             <EndProperty Name="Course">
               <ScalarProperty Name="Id" ColumnName="CourseId" />
             </EndProperty>
@@ -851,7 +858,7 @@
               <ScalarProperty Name="Id" ColumnName="ModuleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="ModuleStudent" TypeName="Model.ModuleStudent" StoreEntitySet="ModuleStudent">
+          <AssociationSetMapping Name="ModuleStudent" TypeName="projectdbModel.ModuleStudent" StoreEntitySet="ModuleStudent">
             <EndProperty Name="Module">
               <ScalarProperty Name="Id" ColumnName="ModuleId" />
             </EndProperty>
@@ -859,7 +866,7 @@
               <ScalarProperty Name="Id" ColumnName="StudentId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="RoomProgram" TypeName="Model.RoomProgram" StoreEntitySet="RoomProgram">
+          <AssociationSetMapping Name="RoomProgram" TypeName="projectdbModel.RoomProgram" StoreEntitySet="RoomProgram">
             <EndProperty Name="Program">
               <ScalarProperty Name="Id" ColumnName="ProgramId" />
             </EndProperty>
@@ -867,9 +874,9 @@
               <ScalarProperty Name="Id" ColumnName="RoomId" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="CreateUserMaster" FunctionName="Model.Store.CreateUserMaster" />
-          <FunctionImportMapping FunctionImportName="InsertUser" FunctionName="Model.Store.InsertUser" />
-          <FunctionImportMapping FunctionImportName="Loginsproc" FunctionName="Model.Store.Loginsproc" />
+          <FunctionImportMapping FunctionImportName="CreateUserMaster" FunctionName="projectdbModel.Store.CreateUserMaster" />
+          <FunctionImportMapping FunctionImportName="InsertUser" FunctionName="projectdbModel.Store.InsertUser" />
+          <FunctionImportMapping FunctionImportName="Loginsproc" FunctionName="projectdbModel.Store.Loginsproc" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
