@@ -28,6 +28,8 @@
         <AssociationConnector Association="projectdbModel.CourseModule" ManuallyRouted="false" />
         <AssociationConnector Association="projectdbModel.ModuleStudent" ManuallyRouted="false" />
         <AssociationConnector Association="projectdbModel.RoomProgram" ManuallyRouted="false" />
+        <AssociationConnector Association="projectdbModel.FK_TimeTable_Course" />
+        <AssociationConnector Association="projectdbModel.CourseStudent" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

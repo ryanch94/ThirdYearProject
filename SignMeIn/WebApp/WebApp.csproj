@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ExampleWebAPI.html" />
     <Content Include="Global.asax" />
     <Content Include="Models\SignMeInModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -106,7 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\TimeTablesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -133,6 +133,9 @@
     <Compile Include="Models\RoomType.cs">
       <DependentUpon>SignMeInModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RyansAwesomeCode_Result.cs">
+      <DependentUpon>SignMeInModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SignMeInModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -151,7 +154,6 @@
     <Compile Include="Models\TimeTable.cs">
       <DependentUpon>SignMeInModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TimeTableClass.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>SignMeInModel.tt</DependentUpon>
     </Compile>

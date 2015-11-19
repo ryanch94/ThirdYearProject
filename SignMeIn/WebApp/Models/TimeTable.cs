@@ -18,9 +18,13 @@ namespace WebApp.Models
         public int ModuleId { get; set; }
         public int RoomId { get; set; }
         public System.DateTime StartTime { get; set; }
-        public byte DayofWeek { get; set; }
+        public int CourseId { get; set; }
+        public Nullable<byte> WeekDayNumber { get; set; }
+        public Nullable<byte> WeekNumber { get; set; }
+        public Nullable<byte> DayBlock { get; set; }
     
         public virtual Module Module { get; set; }
         public virtual Room Room { get; set; }
+        public virtual Course Course { get; set; }
     }
 }

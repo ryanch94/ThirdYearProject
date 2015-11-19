@@ -27,18 +27,14 @@ namespace WebApp.Controllers
         [ResponseType(typeof(TimeTable))]
         public async Task<IHttpActionResult> GetTimeTable(int id)
         {
-            //TimeTable timetable = await db.TimeTables.FindAsync(id);
-            //if (timetable == null)
-            //{
-            //    return NotFound();
-            //}
-            List<TimeTableClass> classList = new List<TimeTableClass>()
+            var timetable = db.RyansAwesomeCode(id);
+            //TimeTable timeTable = await db.TimeTables.FindAsync(id);
+            if (timetable == null)
             {
-                new TimeTableClass() { Name = "Database Dev", RoomCode = "D2034", StartTime = DateTime.Parse("11:00:00").ToShortTimeString(), Day = 1, LengthHours = 1 },
-                new TimeTableClass() { Name = "Web Prog 3", RoomCode = "B1041", StartTime = DateTime.Parse("11:00:00").ToShortTimeString(), Day = 2, LengthHours = 2},
+                return NotFound();
+            }
 
-            };
-            return Ok(classList);
+            return Ok(timetable);
         }
 
         // PUT: api/TimeTables/5

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="projectdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="projectdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Course">
           <Key>
             <PropertyRef Name="Id" />
@@ -21,13 +21,21 @@
           <Property Name="CourseId" Type="int" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CourseStudent">
+          <Key>
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TimeIn" Type="datetime" Nullable="false" />
-          <Property Name="TimeOut" Type="datetime" />
+          <Property Name="TimeIn" Type="smalldatetime" Nullable="false" />
+          <Property Name="TimeOut" Type="smalldatetime" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
         </EntityType>
@@ -94,8 +102,11 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
-          <Property Name="StartTime" Type="datetime" Nullable="false" />
-          <Property Name="DayofWeek" Type="tinyint" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="WeekDayNumber" Type="tinyint" />
+          <Property Name="WeekNumber" Type="tinyint" />
+          <Property Name="DayBlock" Type="tinyint" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -117,7 +128,7 @@
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
-          <Property Name="Time" Type="datetime" />
+          <Property Name="Time" Type="smalldatetime" />
         </EntityType>
         <Association Name="FK_CourseModule_Course">
           <End Role="Course" Type="Self.Course" Multiplicity="1" />
@@ -140,6 +151,30 @@
             </Principal>
             <Dependent Role="CourseModule">
               <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseStudent_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CourseStudent" Type="Self.CourseStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseStudent">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseStudent_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="CourseStudent" Type="Self.CourseStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseStudent">
+              <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -251,6 +286,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TimeTable_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="TimeTable" Type="Self.TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TimeTable">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TimeTable_Module">
           <End Role="Module" Type="Self.Module" Multiplicity="1" />
           <End Role="TimeTable" Type="Self.TimeTable" Multiplicity="*" />
@@ -311,6 +358,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="adminupdatetimetable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CreateUserMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="studentno" Type="char" Mode="In" />
           <Parameter Name="fname" Type="varchar" Mode="In" />
@@ -330,9 +378,13 @@
           <Parameter Name="userid" Type="int" Mode="InOut" />
           <Parameter Name="fname" Type="varchar" Mode="InOut" />
         </Function>
+        <Function Name="RyansAwesomeCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StudentID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="projectdbModelStoreContainer">
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseModule" EntityType="Self.CourseModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseStudent" EntityType="Self.CourseStudent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Module" EntityType="Self.Module" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ModuleStudent" EntityType="Self.ModuleStudent" Schema="dbo" store:Type="Tables" />
@@ -351,6 +403,14 @@
           <AssociationSet Name="FK_CourseModule_Module" Association="Self.FK_CourseModule_Module">
             <End Role="Module" EntitySet="Module" />
             <End Role="CourseModule" EntitySet="CourseModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseStudent_Course" Association="Self.FK_CourseStudent_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CourseStudent" EntitySet="CourseStudent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseStudent_User" Association="Self.FK_CourseStudent_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="CourseStudent" EntitySet="CourseStudent" />
           </AssociationSet>
           <AssociationSet Name="FK_Log_Room" Association="Self.FK_Log_Room">
             <End Role="Room" EntitySet="Room" />
@@ -388,6 +448,10 @@
             <End Role="Room" EntitySet="Room" />
             <End Role="RoomProgram" EntitySet="RoomProgram" />
           </AssociationSet>
+          <AssociationSet Name="FK_TimeTable_Course" Association="Self.FK_TimeTable_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="TimeTable" EntitySet="TimeTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_TimeTable_Module" Association="Self.FK_TimeTable_Module">
             <End Role="Module" EntitySet="Module" />
             <End Role="TimeTable" EntitySet="TimeTable" />
@@ -409,8 +473,7 @@
             <End Role="WatchRoom" EntitySet="WatchRoom" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="projectdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -422,14 +485,16 @@
           <Property Name="Year" Type="Byte" Nullable="false" />
           <Property Name="CourseName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Modules" Relationship="Self.CourseModule" FromRole="Course" ToRole="Module" />
+          <NavigationProperty Name="TimeTables" Relationship="projectdbModel.FK_TimeTable_Course" FromRole="Course" ToRole="TimeTable" />
+          <NavigationProperty Name="Users" Relationship="projectdbModel.CourseStudent" FromRole="Course" ToRole="User" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TimeIn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TimeOut" Type="DateTime" Precision="3" />
+          <Property Name="TimeIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TimeOut" Type="DateTime" Precision="0" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Log_Room" FromRole="Log" ToRole="Room" />
@@ -495,10 +560,14 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ModuleId" Type="Int32" Nullable="false" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DayofWeek" Type="Byte" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Module" Relationship="Self.FK_TimeTable_Module" FromRole="TimeTable" ToRole="Module" />
           <NavigationProperty Name="Room" Relationship="Self.FK_TimeTable_Room" FromRole="TimeTable" ToRole="Room" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="WeekDayNumber" Type="Byte" />
+          <Property Name="WeekNumber" Type="Byte" />
+          <Property Name="DayBlock" Type="Byte" />
+          <NavigationProperty Name="Course" Relationship="projectdbModel.FK_TimeTable_Course" FromRole="TimeTable" ToRole="Course" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -518,6 +587,7 @@
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_User" FromRole="User" ToRole="Room" />
           <NavigationProperty Name="WatchRooms" Relationship="Self.FK_WatchRoom_User" FromRole="User" ToRole="WatchRoom" />
           <NavigationProperty Name="Modules1" Relationship="Self.ModuleStudent" FromRole="User" ToRole="Module" />
+          <NavigationProperty Name="Courses" Relationship="projectdbModel.CourseStudent" FromRole="User" ToRole="Course" />
         </EntityType>
         <EntityType Name="WatchRoom">
           <Key>
@@ -526,7 +596,7 @@
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
-          <Property Name="Time" Type="DateTime" Precision="3" />
+          <Property Name="Time" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Room" Relationship="Self.FK_WatchRoom_Room" FromRole="WatchRoom" ToRole="Room" />
           <NavigationProperty Name="User" Relationship="Self.FK_WatchRoom_User" FromRole="WatchRoom" ToRole="User" />
         </EntityType>
@@ -744,7 +814,43 @@
             <Parameter Name="userid" Mode="InOut" Type="Int32" />
             <Parameter Name="fname" Mode="InOut" Type="String" />
           </FunctionImport>
+          <AssociationSet Name="FK_TimeTable_Course" Association="projectdbModel.FK_TimeTable_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="TimeTable" EntitySet="TimeTables" />
+          </AssociationSet>
+          <AssociationSet Name="CourseStudent" Association="projectdbModel.CourseStudent">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <FunctionImport Name="adminupdatetimetable" ReturnType="Collection(DateTime)" />
+          <FunctionImport Name="RyansAwesomeCode" ReturnType="Collection(projectdbModel.RyansAwesomeCode_Result)" >
+            <Parameter Name="StudentID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <Association Name="FK_TimeTable_Course">
+          <End Type="projectdbModel.Course" Role="Course" Multiplicity="1" />
+          <End Type="projectdbModel.TimeTable" Role="TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TimeTable">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CourseStudent">
+          <End Type="projectdbModel.Course" Role="Course" Multiplicity="*" />
+          <End Type="projectdbModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <ComplexType Name="RyansAwesomeCode_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="75" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="Byte" Name="DayBlock" Nullable="true" />
+          <Property Type="Byte" Name="WeekDayNumber" Nullable="true" />
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="5" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -819,11 +925,14 @@
           <EntitySetMapping Name="TimeTables">
             <EntityTypeMapping TypeName="projectdbModel.TimeTable">
               <MappingFragment StoreEntitySet="TimeTable">
+                <ScalarProperty Name="DayBlock" ColumnName="DayBlock" />
+                <ScalarProperty Name="WeekNumber" ColumnName="WeekNumber" />
+                <ScalarProperty Name="WeekDayNumber" ColumnName="WeekDayNumber" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="DayofWeek" ColumnName="DayofWeek" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -877,6 +986,27 @@
           <FunctionImportMapping FunctionImportName="CreateUserMaster" FunctionName="projectdbModel.Store.CreateUserMaster" />
           <FunctionImportMapping FunctionImportName="InsertUser" FunctionName="projectdbModel.Store.InsertUser" />
           <FunctionImportMapping FunctionImportName="Loginsproc" FunctionName="projectdbModel.Store.Loginsproc" />
+          <AssociationSetMapping Name="CourseStudent" TypeName="projectdbModel.CourseStudent" StoreEntitySet="CourseStudent">
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="StudentId" />
+            </EndProperty>
+            <EndProperty Name="Course">
+              <ScalarProperty Name="Id" ColumnName="CourseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="adminupdatetimetable" FunctionName="projectdbModel.Store.adminupdatetimetable" />
+          <FunctionImportMapping FunctionImportName="RyansAwesomeCode" FunctionName="projectdbModel.Store.RyansAwesomeCode">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="projectdbModel.RyansAwesomeCode_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DayBlock" ColumnName="DayBlock" />
+                <ScalarProperty Name="WeekDayNumber" ColumnName="WeekDayNumber" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

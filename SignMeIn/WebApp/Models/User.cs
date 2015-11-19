@@ -22,6 +22,7 @@ namespace WebApp.Models
             this.Rooms = new HashSet<Room>();
             this.WatchRooms = new HashSet<WatchRoom>();
             this.Modules1 = new HashSet<Module>();
+            this.Courses = new HashSet<Course>();
         }
     
         public int Id { get; set; }
@@ -44,5 +45,7 @@ namespace WebApp.Models
         public virtual ICollection<WatchRoom> WatchRooms { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Module> Modules1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

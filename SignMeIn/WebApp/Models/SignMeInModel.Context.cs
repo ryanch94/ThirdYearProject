@@ -96,5 +96,19 @@ namespace WebApp.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Loginsproc", emailParameter, userid, fname);
         }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> adminupdatetimetable()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("adminupdatetimetable");
+        }
+    
+        public virtual ObjectResult<RyansAwesomeCode_Result> RyansAwesomeCode(Nullable<int> studentID)
+        {
+            var studentIDParameter = studentID.HasValue ?
+                new ObjectParameter("StudentID", studentID) :
+                new ObjectParameter("StudentID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RyansAwesomeCode_Result>("RyansAwesomeCode", studentIDParameter);
+        }
     }
 }

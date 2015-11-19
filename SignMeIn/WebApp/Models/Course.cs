@@ -18,6 +18,8 @@ namespace WebApp.Models
         public Course()
         {
             this.Modules = new HashSet<Module>();
+            this.TimeTables = new HashSet<TimeTable>();
+            this.Users = new HashSet<User>();
         }
     
         public int Id { get; set; }
@@ -26,5 +28,9 @@ namespace WebApp.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Module> Modules { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TimeTable> TimeTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }
