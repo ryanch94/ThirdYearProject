@@ -110,5 +110,18 @@ namespace WebApp.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RyansAwesomeCode_Result>("RyansAwesomeCode", studentIDParameter);
         }
+    
+        public virtual ObjectResult<TodaysTimetable_Result> TodaysTimetable(Nullable<int> studentID, Nullable<int> weekdaynumber)
+        {
+            var studentIDParameter = studentID.HasValue ?
+                new ObjectParameter("StudentID", studentID) :
+                new ObjectParameter("StudentID", typeof(int));
+    
+            var weekdaynumberParameter = weekdaynumber.HasValue ?
+                new ObjectParameter("weekdaynumber", weekdaynumber) :
+                new ObjectParameter("weekdaynumber", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<TodaysTimetable_Result>("TodaysTimetable", studentIDParameter, weekdaynumberParameter);
+        }
     }
 }

@@ -24,10 +24,10 @@ namespace WebApp.Controllers
         }
 
         // GET: api/TimeTables/5
-        [ResponseType(typeof(TimeTable))]
+        [ResponseType(typeof(object))]
         public async Task<IHttpActionResult> GetTimeTable(int id)
         {
-            var timetable = db.RyansAwesomeCode(id);
+            var timetable = db.TodaysTimetable(id, 4);
             //TimeTable timeTable = await db.TimeTables.FindAsync(id);
             if (timetable == null)
             {

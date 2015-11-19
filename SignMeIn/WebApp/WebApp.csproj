@@ -154,6 +154,9 @@
     <Compile Include="Models\TimeTable.cs">
       <DependentUpon>SignMeInModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TodaysTimetable_Result.cs">
+      <DependentUpon>SignMeInModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>SignMeInModel.tt</DependentUpon>
     </Compile>

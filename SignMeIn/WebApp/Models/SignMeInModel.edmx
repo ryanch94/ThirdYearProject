@@ -378,8 +378,9 @@
           <Parameter Name="userid" Type="int" Mode="InOut" />
           <Parameter Name="fname" Type="varchar" Mode="InOut" />
         </Function>
-        <Function Name="RyansAwesomeCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="TodaysTimetable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StudentID" Type="int" Mode="In" />
+          <Parameter Name="weekdaynumber" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="projectdbModelStoreContainer">
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
@@ -826,6 +827,10 @@
           <FunctionImport Name="RyansAwesomeCode" ReturnType="Collection(projectdbModel.RyansAwesomeCode_Result)" >
             <Parameter Name="StudentID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="TodaysTimetable" ReturnType="Collection(projectdbModel.TodaysTimetable_Result)">
+            <Parameter Name="StudentID" Mode="In" Type="Int32" />
+            <Parameter Name="weekdaynumber" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <Association Name="FK_TimeTable_Course">
           <End Type="projectdbModel.Course" Role="Course" Multiplicity="1" />
@@ -844,6 +849,14 @@
           <End Type="projectdbModel.User" Role="User" Multiplicity="*" />
         </Association>
         <ComplexType Name="RyansAwesomeCode_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="75" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="Byte" Name="DayBlock" Nullable="true" />
+          <Property Type="Byte" Name="WeekDayNumber" Nullable="true" />
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="5" />
+        </ComplexType>
+        <ComplexType Name="TodaysTimetable_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="75" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
@@ -995,9 +1008,9 @@
             </EndProperty>
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="adminupdatetimetable" FunctionName="projectdbModel.Store.adminupdatetimetable" />
-          <FunctionImportMapping FunctionImportName="RyansAwesomeCode" FunctionName="projectdbModel.Store.RyansAwesomeCode">
+          <FunctionImportMapping FunctionImportName="TodaysTimetable" FunctionName="projectdbModel.Store.TodaysTimetable">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="projectdbModel.RyansAwesomeCode_Result">
+              <ComplexTypeMapping TypeName="projectdbModel.TodaysTimetable_Result">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
