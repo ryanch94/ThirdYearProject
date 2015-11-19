@@ -27,13 +27,22 @@ namespace WebApp.Controllers
         [ResponseType(typeof(object))]
         public async Task<IHttpActionResult> GetTimeTable(int id)
         {
-            var timetable = db.TodaysTimetable(id, 4);
-            //TimeTable timeTable = await db.TimeTables.FindAsync(id);
+            DateTime todaysDate = DateTime.Now;
+            int weekDay = (int) todaysDate.DayOfWeek;
+            weekDay++;
+            var timetable = db.TodaysTimetable(id, weekDay);
             if (timetable == null)
             {
                 return NotFound();
             }
 
+            return Ok(timetable);
+        }
+
+        // GET: api/Timetables/GetRoomTimeTable?id=5&weekDayNum=5
+        public async Task<IHttpActionResult> GetRoomTimeTable(int id, int weekDayNum)
+        {
+            var timetable = "";
             return Ok(timetable);
         }
 

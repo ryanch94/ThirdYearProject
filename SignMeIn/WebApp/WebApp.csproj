@@ -91,7 +91,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ExampleWebAPI.html" />
     <Content Include="Global.asax" />
     <Content Include="Models\SignMeInModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
