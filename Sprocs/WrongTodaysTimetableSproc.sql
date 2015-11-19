@@ -1,4 +1,4 @@
-alter proc TodaysTimetable --1
+alter proc WrongTodaysTimetable --1
 @userid int
 --@outmodulename varchar(75) output,
 --@outfname varchar(50) output,
@@ -18,6 +18,8 @@ select @daynum = DATEPART(dw,getdate())
 select @courseid = CourseId
 from dbo.CourseStudent
 where StudentId = @userid
+
+select @courseid
 
 --reads Variables for output or to get Variables for other read
 select 
