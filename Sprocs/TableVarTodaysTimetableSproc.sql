@@ -1,4 +1,4 @@
-alter proc TodaysTimetable --1
+alter proc TodaysTimetable 1
 @userid int
 --@outmodulename varchar(75) output,
 --@outfname varchar(50) output,
@@ -9,6 +9,12 @@ as
 declare @moduleid int,@modulename varchar(75), @lectureid int, @fname varchar(50), @lname varchar(50)
 declare @courseid int, @roomid int, @roomcode char(5), @startime smalldatetime
 declare @weeknum tinyint, @daynum tinyint, @dayblock tinyint
+
+CREATE TABLE ##LocalTempTable(
+Module varchar(75),
+Lecturer varchar(100), 
+RoomCode char(5),
+DayBlock tinyint)
 
 --Gives current week and Day
 select @weeknum = 47 --DATEPART(wk,getdate())
@@ -50,5 +56,14 @@ select
 from [dbo].[Room]
 where Id=@roomid
 
+
+
 --temp output
-select @modulename,@fname,@lname,@roomcode,@dayblock
+insert into ##LocalTempTable
+(Module,Lecturer,RoomCode,DayBlock)
+values (@modulename,@fname+' '+@lname,@roomcode,@dayblock)
+
+select *
+from ##LocalTempTable
+
+drop table ##LocalTempTable
