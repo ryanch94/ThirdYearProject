@@ -1,7 +1,68 @@
 ﻿body {
 }
 
-.timetableblock {
-border:;
+
+
+/*
+    CSS to style the tabs to align on left in bootstrap usual tab style.
+*/
+/* custom inclusion of right, left and below tabs */
+
+.tabs-left > .nav-tabs {
+  border-bottom: 0;
+  float: left;
+  margin-right: 19px;
+}
+
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
 
 }
+
+.tabs-left.nav-tabs > li.active > a,.tabs-left .nav-tabs > li.active > a:focus,.tabs-left .nav-tabs > li.active > a:hover {
+    border:white 2px !important;
+}
+
+
+.tab-content > .active > li > a,
+.pill-content > .active >li > a {
+  color:black;
+  
+}
+
+.tabs-left > .nav-tabs > li{
+  float: none;
+  background-color:#3498db;
+}
+
+.tabs-left > .nav-tabs > li :hover{
+  float: none;
+  background-color:#34495e;
+}
+
+.tabs-left > .nav-tabs > li > a{
+  /*min-width: 80px;
+  min-height: 80px;*/
+  margin-right: -1px;
+  margin-bottom: 3px;
+  font-size:50px;
+  color:white;
+  text-align:center;
+}
+
+/*timetable style for blocks*/
+.timeBlock {
+height:100px;
+}
+
+.navTimetable > li {
+    text-align:center;
+}
+

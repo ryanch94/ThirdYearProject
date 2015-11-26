@@ -13,9 +13,11 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <!--font awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
-
+    <link href="css/custom.css" rel="stylesheet" />
     <!-- Angular JS -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
@@ -30,19 +32,7 @@
 <body>
     <!--#region Navigation Tabs-->
     <ul class="nav nav-tabs">
-        <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Day <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a data-toggle="tab" href="#dayView">Monday</a></li>
-                <li><a data-toggle="tab" href="#dayView">Tuesday</a></li>
-                <li><a data-toggle="tab" href="#dayView">Wednesday</a></li>
-                <li><a data-toggle="tab" href="#dayView">Thursday</a></li>
-                <li><a data-toggle="tab" href="#dayView">Friday</a></li>
-            </ul>
-        </li>
-        <li role="presentation"><a data-toggle="tab" href="#weekView">Week</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#dayView">Week</a></li>
         <li role="presentation"><a data-toggle="tab" href="#customView">Custom</a></li>
     </ul>
     <!--#endregion Navigation Tabs-->
@@ -50,93 +40,116 @@
     <div class="tab-content">
         <!--#region Day-->
         <div id="dayView" class="tab-pane fade in active">
-            <h3>Day</h3>
-            <div ng-app ng-init="classes=[
-{name:'Web Content Management Systems',room:'B1042'},
-{name:'Prof Dev',room:'C1005'},
-{name:'Project Work - Web',room:'B1042'}
-                 ,{name:'',room:''}]">
+            <div id="container">
 
-                <div ng-repeat="x in classes">
-                    <div class="row timetableblock" >
-                        <div class="col-lg-1">
-                   {{$index + 9}}:00
-                            </div>
-                            <div class="col-lg-11">
-                        <h4>{{x.name}}</h4>
-                        <p>{{x.room}}</p>
+                <!-- tabs left -->
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div class="tabbable tabs-left">
+
+                            <ul class="nav nav-tabs">
+                                <!--need to write code in js to add active class based on date.-->
+                                <li><a class="active" href="#a" data-toggle="tab">M</a></li>
+                                <li><a href="#b" data-toggle="tab">T</a></li>
+                                <li><a href="#c" data-toggle="tab">W</a></li>
+                                <li><a href="#d" data-toggle="tab">T</a></li>
+                                <li><a href="#e" data-toggle="tab">F</a></li>
+                            </ul>
+                        </div>
                     </div>
+                    <div class="tab-content col-lg-11">
+                        <div class="tab-pane active" id="a">
+                            <div class="container">
+                                <div class="row timeBlock">
+                                    <div class="col-lg-3">9:00</div>
+                                    <div id="9block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row timeBlock">
+                                    <div class="col-lg-3 ">10:00</div>
+                                    <div id="10block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row timeBlock">
+                                    <div class="col-lg-3">11:00</div>
+                                    <div id="11block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">12:00</div>
+                                    <div id="12block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">13:00</div>
+                                    <div id="1block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">14:00</div>
+                                    <div id="2block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">15:00</div>
+                                    <div id="3block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">16:00</div>
+                                    <div id="4block" class="col-lg-9"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">17:00</div>
+                                    <div id="5block" class="col-lg-9"></div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="tab-pane" id="b">
+                                Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                                Aliquam in felis sit amet augue.
+                            </div>
+                            <div class="tab-pane" id="c">
+                                Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                                Quisque mauris augue, molestie tincidunt condimentum vitae.
+                            </div>
+                            <div class="tab-pane" id="d">
+                                Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                                Aliquam in felis sit amet augue.
+                            </div>
+                            <div class="tab-pane" id="e">
+                                Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                                Quisque mauris augue, molestie tincidunt condimentum vitae.
+                            </div>
+
+                        </div>
+                        </div>
+                        <!-- /tabs -->
+
                     </div>
                 </div>
-
-
+               
+                <!-- /tabcontent -->
             </div>
-        </div>
+            <!-- /container -->
         <!--#endregion Day-->
-        <!--#region Week-->
-        <div id="weekView" class="tab-pane fade">
-            <h3>Week</h3>
-            <div class="container">
-                <h2>Bordered Table</h2>
-                <p>The .table-bordered class adds borders to a table:</p>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td>john@example.com</td>
-                        </tr>
-                        <tr>
-                            <td>Mary</td>
-                            <td>Moe</td>
-                            <td>mary@example.com</td>
-                        </tr>
-                        <tr>
-                            <td>July</td>
-                            <td>Dooley</td>
-                            <td>july@example.com</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-        <!--#endregion Week-->
+        
         <!--#region Custom-->
         <div id="customView" class="tab-pane fade">
-            <h3>Custom</h3>
+            
 
         </div>
         <!--#endregion Custom-->
     </div>
+        </div>
     <!--#endregion Tabs Content-->
     <!-- jQuery -->
     <script src="Scripts/jquery-1.9.1.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="Scripts/bootstrap.min.js"></script>
     <script>
-    $(document).ready(function () {
-    // Send an AJAX request
-        $.getJSON("http://neiltest.azurewebsites.net/api/Rooms",
-    function (data) {
-    // On success, 'data' contains a list of products.
-    $.each(data, function (key, val) {
+        $(document).ready(function() {
+            var data = {};
 
-    // Format the text to display.
-    var str = val.Name + val.Block + val.Seats;
+            $.getJSON("http://localhost:3688/api/timetables/8").done(function(data2) {
+                data = data2;
+                document.getElementById("customView").innerHTML = data[0].Name;
 
-    // Add a list item for the product.
-    $('<li />', { html: str }).appendTo($('#products'));
-    });
-    });
-    });
+            });
+        });
     </script>
 </body>
 </html>

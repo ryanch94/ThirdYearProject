@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sign Me In, an application to aid attendance taking and to make it easier to find spaces to work in.">
+    <meta name="author" content="Grace Stevens">
+
+    <title>Timetable</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <!--font awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet" />
+    <!-- Angular JS -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <!--#region Navigation Tabs-->
+    <div class="row">
+        <ul class="nav nav-tabs navTimetable">
+            <li class="col-lg-6 col-md-6 col-sm-6 col-xs-6"  role="presentation"><a data-toggle="tab" href="#dayView"><h4>Week</h4></a></li>
+            <li class="col-lg-6 col-md-6 col-sm-6 col-xs-6" role="presentation"><a data-toggle="tab" href="#customView"><h4>Custom</h4></a></li>
+        </ul>
+    </div>
+    <!--#endregion Navigation Tabs--
+
+    <!-- jQuery -->
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var data = {};
+
+            $.getJSON("http://localhost:3688/api/timetables/8").done(function (data2) {
+                data = data2;
+                document.getElementById("customView").innerHTML = data[0].Name;
+
+            });
+        });
+    </script>
+</body>
+</html>
