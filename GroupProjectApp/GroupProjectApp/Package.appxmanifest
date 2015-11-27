@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="d8022c0b-2ab3-4a95-bbe1-cdb39b12f028"
-    Publisher="CN=Declan"
+    Name="78281fba-df8c-479f-b0dc-06dde3c9b67c"
+    Publisher="CN=Niamh Maquet"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="d8022c0b-2ab3-4a95-bbe1-cdb39b12f028" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="78281fba-df8c-479f-b0dc-06dde3c9b67c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>SignMeInApp</DisplayName>
-    <PublisherDisplayName>Declan</PublisherDisplayName>
+    <DisplayName>GroupProjectApp</DisplayName>
+    <PublisherDisplayName>Niamh Maquet</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="SignMeInApp.App">
+      EntryPoint="GroupProjectApp.App">
       <uap:VisualElements
-        DisplayName="SignMeInApp"
+        DisplayName="GroupProjectApp"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="SignMeInApp"
+        Description="GroupProjectApp"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
