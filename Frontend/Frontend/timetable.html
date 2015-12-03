@@ -144,7 +144,7 @@
         $(document).ready(function() {
             var data = {};
 
-            $.getJSON("http://localhost:3688/api/timetables/8").done(function(data2) {
+            $.getJSON("http://signmeinwebapi.azurewebsites.net/api/timetables/1?dayOfWeek=4").done(function (data2) {
                 data = data2;
                 document.getElementById("customView").innerHTML = data[0].Name;
 

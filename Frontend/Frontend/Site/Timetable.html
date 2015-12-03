@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <!-- Bootstrap Core CSS -->
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="../css/business-frontpage.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <!--#region Weekday Tabs-->
+    <div class="row">
+        <ul class="nav nav-tabs navTimetable">
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Monday"><h2>Mon</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Tuesday"><h2>Tue</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Wednesday"><h2>Wed</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Thursday"><h2>Thur</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Friday"><h2>Fri</h2></a></li>
+        </ul>
+    </div>
+    <!--#endregion Navigation Tabs-->
+
+    <div class="tab-content">
+        <!--#region Day-->
+        <div id="Monday" class="active tab-pane">
+Mon
+        </div>
+        <div id="Tuesday" class="tab-pane">
+Tue
+        </div>
+        <div id="Wednesday" class="tab-pane">
+Wed
+        </div>
+        <div id="Thursday" class="tab-pane">
+Thurs
+        </div>
+        <div id="Friday" class="tab-pane">
+Fri
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var data = {};
+            var id = 8;
+            $.getJSON("http://signmeinwebapi.azurewebsites.net/api/timetables/" + id + "?dayOfWeek=1").done(function (data2) {
+                data = data2;
+                document.getElementById("Monday").innerHTML = data[0].Name;
+
+            });
+        });
+    </script>
+</body>
+</html>
