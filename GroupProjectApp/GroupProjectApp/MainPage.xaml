@@ -56,7 +56,7 @@
                     <Pivot Title="Daily schedule">
                         <PivotItem Header="Monday" Tag="2">
                             <StackPanel>
-                                <ListBox Name="lbxMon"></ListBox>
+                                <ListBox Name="lstMon"></ListBox>
                             </StackPanel>
                         </PivotItem>
                         <PivotItem Header="Tuesday" Tag="3">
@@ -72,7 +72,7 @@
                         </PivotItem>
                         <PivotItem Header="Thursday" Tag="5">
                             <StackPanel>
-                                <ListBox Name="lstThurs" DataContext="{Binding}" ></ListBox>
+                                <ListBox Name="lstThurs" DataContext="{Binding Path=Test}" ></ListBox>
                             </StackPanel>
 
                         </PivotItem>

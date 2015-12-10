@@ -35,12 +35,12 @@ namespace GroupProjectApp
         /// </summary>
         /// 
 
-        public static string ApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/8?dayofWeek=3";
+        public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}?dayofWeek={1}";
 
         public async static Task<string> LoadDataFromAPI()
         {
             HttpClient http = new System.Net.Http.HttpClient();
-            HttpResponseMessage response = await http.GetAsync(ApiAddress);
+            HttpResponseMessage response = await http.GetAsync(DayblockApiAddress);
 
             return await response.Content.ReadAsStringAsync();
         }
@@ -51,9 +51,29 @@ namespace GroupProjectApp
             List<DailyClass> DayModules = new List<DailyClass>();
             var array = JsonConvert.DeserializeObject<DailyClass[]>(data);
 
-            if (array != null)
-                if (array.Length > 0)
-                    DayModules = array.ToList();
+            int n = 0;
+            foreach (var item in array)
+            {
+                for (int i = 0; i <= 8; i++)
+                {
+                    if (item.DayBlock == i)
+                    {
+                        DayModules.Add(item);
+                        n++;
+                    }
+                    else
+                    {
+                        DayModules.Add(new DailyClass(0, "", "", "", n, 0, ""));
+                        n++;
+                        break;
+                    }
+
+                }
+            }
+
+            //if (array != null)
+            //    if (array.Length > 0)
+            //        DayModules = array.ToList();
 
 
             return DayModules;
