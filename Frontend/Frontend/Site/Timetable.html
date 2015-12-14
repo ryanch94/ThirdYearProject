@@ -15,16 +15,42 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        @media (max-width: 480px) {
+            .mytab a{
+                font-size: 50px;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 767px) {
+            .mytab a{
+                font-size: 50px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 979px) {
+            .mytab a{
+                font-size: 50px;
+            }
+        }
+
+        @media (min-width: 980px) {
+            .mytab a{
+                font-size: 50px;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <!--#region Weekday Tabs-->
     <div class="row">
-        <ul class="nav nav-tabs navTimetable">
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Monday"><h2>M</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Tuesday"><h2>T</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Wednesday"><h2>W</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Thursday"><h2>T</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Friday"><h2>F</h2></a></li>
+        <ul class="nav navTimetable">
+            <li class="col-lg-2 col-lg-offset-1 col-xs-2 col-xs-offset-1 mytab" role="presentation"><a data-toggle="tab" href="#Monday">M</a></li>
+            <li class="col-lg-2 col-xs-2 mytab" role="presentation"><a data-toggle="tab" href="#Tuesday">T</a></li>
+            <li class="col-lg-2 col-xs-2 mytab" role="presentation"><a data-toggle="tab" href="#Wednesday">W</a></li>
+            <li class="col-lg-2 col-xs-2 mytab" role="presentation"><a data-toggle="tab" href="#Thursday">T</a></li>
+            <li class="col-lg-2 col-xs-2 mytab" role="presentation"><a data-toggle="tab" href="#Friday">F</a></li>
         </ul>
     </div>
     <!--#endregion Navigation Tabs-->
@@ -32,27 +58,21 @@
     <div class="tab-content" ng-app="myApp" ng-controller="customersCtrl">
         <!--#region Day-->
         <div id="Monday" class="active tab-pane">
-            <div class="container">
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Class</th>
-                            <th>Room</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>
-                    </tbody>
-                </table>
+            <div class="container" >
+                <div class="row">
+                    <div class="col-lg-4 col-xs-2">Time</div>
+                    <div class="col-lg-4 col-xs-6">Class</div>
+                    <div class="col-lg-4 col-xs-4">Room</div>
+                </div>           
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>
+                    <div class="trow row"></div>        
             </div>
         </div>
         <div id="Tuesday" class="tab-pane">
@@ -83,25 +103,27 @@ app.controller('customersCtrl', function($scope, $http) {
         function fillDays(element, index, array) {
             var time = $scope.names[index].DayBlock;
             var length = 2;
+            //grab all rows of table
+            var rows = document.getElementsByClassName('trow');
             //if only an hour long class
             if (length == 1) {
-                $("tr:nth(" + time + ")").html("<td>" + (time+8) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
+                rows[(time - 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 8 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
             }
             //if class 2 hours
             else if (length == 2) {
-                $("tr:nth(" + time + ")").html("<td>" + (time + 8) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");       
-                $("tr:nth(" + (time+1) + ")").html("<td>" + (time + 9) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
+                rows[(time - 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 8 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
+                rows[(time)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 9 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
             }
             //if class 3 hours
             else if (length == 3) {
-                $("tr:nth(" + time + ")").html("<td>" + (time + 8) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
-                $("tr:nth(" + (time + 1) + ")").html("<td>" + (time + 9) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
-                $("tr:nth(" + (time + 2) + ")").html("<td>" + (time + 10) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
+                rows[(time - 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 8 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
+                rows[(time)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 9 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
+                rows[(time + 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 10 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
             }            
             
+
         }
         ($scope.names).forEach(fillDays);    
-    $("tr:nth(" + time + ")").css("background-color", "yellow");
 
 
     });
