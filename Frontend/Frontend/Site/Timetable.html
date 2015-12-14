@@ -20,11 +20,11 @@
     <!--#region Weekday Tabs-->
     <div class="row">
         <ul class="nav nav-tabs navTimetable">
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Monday"><h2>Mon</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Tuesday"><h2>Tue</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Wednesday"><h2>Wed</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Thursday"><h2>Thur</h2></a></li>
-            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Friday"><h2>Fri</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Monday"><h2>M</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Tuesday"><h2>T</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Wednesday"><h2>W</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Thursday"><h2>T</h2></a></li>
+            <li class="col-xs-2" role="presentation"><a data-toggle="tab" href="#Friday"><h2>F</h2></a></li>
         </ul>
     </div>
     <!--#endregion Navigation Tabs-->
@@ -33,8 +33,6 @@
         <!--#region Day-->
         <div id="Monday" class="active tab-pane">
             <div class="container">
-                <h2>Condensed Table</h2>
-                <p>The .table-condensed class makes a table more compact by cutting cell padding in half:</p>
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -84,25 +82,25 @@ app.controller('customersCtrl', function($scope, $http) {
         //function to take a class and enter it in its particular row.
         function fillDays(element, index, array) {
             var time = $scope.names[index].DayBlock;
-            alert(time);
             var length = 2;
             //if only an hour long class
-            if (length = 1) {
+            if (length == 1) {
                 $("tr:nth(" + time + ")").html("<td>" + (time+8) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
             }
-            else if (a == b) {
-                $("body").html("<p>A is equal to B</p>");
+            //if class 2 hours
+            else if (length == 2) {
+                $("tr:nth(" + time + ")").html("<td>" + (time + 8) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");       
+                $("tr:nth(" + (time+1) + ")").html("<td>" + (time + 9) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
             }
-            else {
-                $("body").html("<p>B is larger than A</p>");
-            }
-            alert(element.Name);
-            
+            //if class 3 hours
+            else if (length == 3) {
+                $("tr:nth(" + time + ")").html("<td>" + (time + 8) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
+                $("tr:nth(" + (time + 1) + ")").html("<td>" + (time + 9) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
+                $("tr:nth(" + (time + 2) + ")").html("<td>" + (time + 10) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
+            }            
             
         }
-        ($scope.names).forEach(fillDays);
-        alert($scope.names[0].DayBlock);
-    
+        ($scope.names).forEach(fillDays);    
     $("tr:nth(" + time + ")").css("background-color", "yellow");
 
 
