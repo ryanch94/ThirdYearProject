@@ -37,13 +37,12 @@ namespace GroupProjectApp.Classes
         }
         public override string ToString()
         {
-            return ShortName + " " + Code + " " + DayBlock;
+            return  Name + "   " + "Room:" + Code;
         }
 
         public string Test
         {
-            get
-            { return ShortName + " " + Code + " " + DayBlock; }
+            get { return Name + "   " + "Room:" + Code; }
         }
     }
 }
