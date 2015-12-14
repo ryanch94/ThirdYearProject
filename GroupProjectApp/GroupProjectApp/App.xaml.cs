@@ -1,4 +1,5 @@
-﻿using GroupProjectApp.Classes;
+﻿
+using GroupProjectApp.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,48 +36,57 @@ namespace GroupProjectApp
         /// </summary>
         /// 
 
-        public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}?dayofWeek={1}";
+            // Main API 
+        public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}";
 
         public async static Task<string> LoadDataFromAPI()
         {
+            // depending on the response returned from the API call, the student number will be added to the 
+            int studentno = 8;
+            string timetableAPI = string.Format("http://signmeinwebapi.azurewebsites.net/api/timetables/" + "{0}", studentno);
+
             HttpClient http = new System.Net.Http.HttpClient();
-            HttpResponseMessage response = await http.GetAsync(DayblockApiAddress);
+            HttpResponseMessage response = await http.GetAsync(timetableAPI);
 
             return await response.Content.ReadAsStringAsync();
+
         }
 
-        public static List<DailyClass> ConvertJsonToRoom(string data)
+        public static List<DailyClass> ConvertJsonToArray(string data, int dayNumber)
         {
 
-            List<DailyClass> DayModules = new List<DailyClass>();
-            var array = JsonConvert.DeserializeObject<DailyClass[]>(data);
+            List<DailyClass> weekModules = new List<DailyClass>();
+            var weekTimetable = JsonConvert.DeserializeObject<DailyClass[]>(data);
 
-            int n = 0;
-            foreach (var item in array)
+            #region 
+            //foreach (var item in weekTimetable)
+            //{
+            //    if (item.WeekDayNumber == dayNumber)
+            //    {
+            //        for (int i = 0; i <= 8; i++)
+            //        {
+            //            if (item.DayBlock == i)
+            //            {
+            //                weekModules.Add(item);
+            //            }
+            //        }
+            //    }
+            //}
+            #endregion
+
+
+            // dayblock not cuuurently being used
+            for (int i = 0; i <= 8; i++)
             {
-                for (int i = 0; i <= 8; i++)
+                foreach (var item in weekTimetable)
                 {
-                    if (item.DayBlock == i)
+                    if (item.WeekDayNumber == dayNumber && item.DayBlock == i)
                     {
-                        DayModules.Add(item);
-                        n++;
+                        weekModules.Add(item);
                     }
-                    else
-                    {
-                        DayModules.Add(new DailyClass(0, "", "", "", n, 0, ""));
-                        n++;
-                        break;
-                    }
-
                 }
             }
-
-            //if (array != null)
-            //    if (array.Length > 0)
-            //        DayModules = array.ToList();
-
-
-            return DayModules;
+            return weekModules;
         }
 
         public App()

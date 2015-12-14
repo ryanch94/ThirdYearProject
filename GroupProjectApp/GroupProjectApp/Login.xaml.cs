@@ -22,6 +22,8 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class Login : Page
     {
+        public int studentnum = 0;
+
         public Login()
         {
             this.InitializeComponent();
@@ -29,7 +31,9 @@ namespace GroupProjectApp
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            App.RootFrame.Navigate(typeof(MainPage), null);
+            studentnum = 8;
+
+            App.RootFrame.Navigate(typeof(MainPage), studentnum);
         }
     }
 }

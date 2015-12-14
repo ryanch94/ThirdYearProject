@@ -11,33 +11,39 @@ namespace GroupProjectApp.Classes
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ShortName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int DayBlock { get; set; }
-        public int WeekDayNumber { get; set; }
         public string Code { get; set; }
+        public int ClassLength { get; set; }
+        public int WeekDayNumber { get; set; }
 
 
-        public DailyClass(int id, string nme,string frstnme, string lstnme, int dyblck, int dynmbr, string cd)
+
+        public DailyClass(int id, string nme, string shortnme, string frstnme, string lstnme, int dyblck, string cd, int clssL, int dynmbr)
         {
             Id = id;
             Name = nme;
+            ShortName = shortnme;
             FirstName = frstnme;
             LastName = lstnme;
             DayBlock = dyblck;
-            WeekDayNumber = dynmbr;
             Code = cd;
+            ClassLength = clssL;
+            WeekDayNumber = dynmbr;
+
 
         }
         public override string ToString()
         {
-            return Name + " " + Code + " " + DayBlock;
+            return ShortName + " " + Code + " " + DayBlock;
         }
 
         public string Test
         {
             get
-            { return Name + " " + Code + " " + DayBlock; }
+            { return ShortName + " " + Code + " " + DayBlock; }
         }
     }
 }

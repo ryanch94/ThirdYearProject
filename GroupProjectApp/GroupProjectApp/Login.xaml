@@ -11,7 +11,13 @@
             <RowDefinition Height="4*"></RowDefinition>
             <RowDefinition Height="3*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image Height="300" Width="200" VerticalAlignment="Bottom"></Image>
+        
+        <StackPanel Grid.Row="0">
+            <TextBlock TextAlignment="Center" FontSize="30" Margin="0,20">Sign Me In</TextBlock>
+            <Image Height="300" Width="200" VerticalAlignment="Bottom" Source="images/zebraLogin.jpg"></Image>
+            
+        </StackPanel>
+        
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Height="20" TextAlignment="Center" Margin="0,5">Email</TextBlock>
             <TextBox Name="tbxEmail" Height="20" Width="250"></TextBox>

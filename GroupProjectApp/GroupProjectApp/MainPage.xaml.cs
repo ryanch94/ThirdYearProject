@@ -23,38 +23,45 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        List<DailyClass> MonClasses = new List<DailyClass>();
-        List<DailyClass> TueClasses = new List<DailyClass>();
-        List<DailyClass> WedClasses = new List<DailyClass>();
-        List<DailyClass> ThuClasses = new List<DailyClass>();
-        List<DailyClass> FriClasses = new List<DailyClass>();
+        // lists to hold each days classes
+        List<DailyClass> MondayClasses = new List<DailyClass>();
+        List<DailyClass> TuesdayClasses = new List<DailyClass>();
+        List<DailyClass> WednesdayClasses = new List<DailyClass>();
+        List<DailyClass> ThursdayClasses = new List<DailyClass>();
+        List<DailyClass> FridayClasses = new List<DailyClass>();
 
         private string rawJSON;
 
         public MainPage()
         {
-            this.InitializeComponent();
+            // Call to data methods to populate day lists
+            // Day numbering set to match sql server format 
 
-            #region 
-            data(MonClasses, 2);
-            data(TueClasses, 3);
-            data(WedClasses, 4);
-            data(ThuClasses, 5);
-            data(FriClasses, 6);
+            data(MondayClasses, 2);
+            data(TuesdayClasses, 3);
+            data(WednesdayClasses, 4);
+            data(ThursdayClasses, 5);
+            data(FridayClasses, 6);
+
+            this.InitializeComponent();
         }
 
-        private async void data(List<DailyClass> dayClasses, int dayNum)
+        private async void data(List<DailyClass> dayClasses, int dayNumber)
         {
+            // Get 
             rawJSON = await App.LoadDataFromAPI();
 
-            dayClasses = App.ConvertJsonToRoom(rawJSON);
+            dayClasses = App.ConvertJsonToArray(rawJSON, dayNumber);
 
-            PopulateList(dayClasses, dayNum);
+            PopulateList(dayClasses, dayNumber);
         }
 
-        private void PopulateList(List<DailyClass> daysClasses, int dayNum)
+        private void PopulateList(List<DailyClass> daysClasses, int dayNumber)
         {
-            switch (dayNum)
+            // Sort which day list to populate depending on day number
+            #region switch statement
+
+            switch (dayNumber)
             {
                 case 2:
                     lstMon.ItemsSource = daysClasses;
@@ -75,11 +82,10 @@ namespace GroupProjectApp
                 case 6:
                     lstFri.ItemsSource = daysClasses;
                     break;
-
-                default:
-                    break;
             }
+            #endregion
         }
+
 
         #region Navigation
         private void btnHome_Click(object sender, RoutedEventArgs e)
