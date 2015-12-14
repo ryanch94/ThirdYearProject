@@ -31,7 +31,11 @@ namespace GroupProjectApp
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
+            // Oauth code to be implemented
+            //  database will return student db id 
+
             studentnum = 8;
+            // pass student number got back from the Oauth and db calls to the API on the main page          
 
             App.RootFrame.Navigate(typeof(MainPage), studentnum);
         }
