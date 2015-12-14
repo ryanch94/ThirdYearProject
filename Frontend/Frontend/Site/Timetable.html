@@ -14,7 +14,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 </head>
 <body>
     <!--#region Weekday Tabs-->
@@ -29,7 +29,7 @@
     </div>
     <!--#endregion Navigation Tabs-->
 
-    <div class="tab-content">
+    <div class="tab-content" ng-app="myApp" ng-controller="customersCtrl">
         <!--#region Day-->
         <div id="Monday" class="active tab-pane">
             <div class="container">
@@ -40,21 +40,19 @@
                         <tr>
                             <th>Time</th>
                             <th>Class</th>
+                            <th>Room</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{}</td>
-                            <td>{}</td>
-                        </tr>
-                        <tr>
-                            <td>Mary</td>
-                            <td>Moe</td>
-                        </tr>
-                        <tr>
-                            <td>July</td>
-                            <td>Dooley</td>
-                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
                     </tbody>
                 </table>
             </div>
@@ -77,23 +75,68 @@ Fri
     <!-- Bootstrap Core JavaScript -->
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var data = {};
-            var id = 8;
-            var str1 = '"';
-            var str2 = "http://signmeinwebapi.azurewebsites.net/api/timetables/";
-            var str3 = String(id);
-            var str4 = "?dayOfWeek=2";
-            var str5 = '"';
-            var res = str1.concat(str2,str3,str4,str5);
-            alert(res);
-            $.getJSON(res).done(function (data2) {
-                data = data2;
-                document.getElementById("Monday").innerHTML = data[0].Name;
-                
+        //grabs the JSON file from WebAPI and puts it in scope.names
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+    $http.get("http://signmeinwebapi.azurewebsites.net/api/timetables/8?dayOfWeek=3")
+    .then(function (response) {
+        $scope.names = response.data;
+        //function to take a class and enter it in its particular row.
+        function fillDays(element, index, array) {
+            var time = $scope.names[index].DayBlock;
+            alert(time);
+            var length = 2;
+            //if only an hour long class
+            if (length = 1) {
+                $("tr:nth(" + time + ")").html("<td>" + (time+8) + "</td><td>" + element.Name + "</td><td>" + element.Code + "</td>");
+            }
+            else if (a == b) {
+                $("body").html("<p>A is equal to B</p>");
+            }
+            else {
+                $("body").html("<p>B is larger than A</p>");
+            }
+            alert(element.Name);
+            
+            
+        }
+        ($scope.names).forEach(fillDays);
+        alert($scope.names[0].DayBlock);
+    
+    $("tr:nth(" + time + ")").css("background-color", "yellow");
 
+
+    });
+    
+});
+
+
+    </script>
+    <script>
+        $(document).ready(function() {
+            //var data = {};
+            var data=[
+           
+                {"Name":"Maths", "Room":"b1041", "Length":"1","Starts":"9"}, 
+                {"Name":"RAD", "Room":"B1042", "Length":"2","Starts":"10"}, 
+                {"Name":"Web Prog","Room":"C1003", "Length":"1","Starts":"12"},
+                {"Name":"Maths","Room":"b1041", "Length":"1","Starts":"2"}, 
+                {"Name":"RAD", "Room":"B1042", "Length":"1","Starts":"3"}, 
+                {"Name":"Web Prog","Room":"C1003", "Length":"2","Starts":"4"},
+     
+            ];
+            //var id = 8;
+            //var str1 = '"';
+            //var str2 = "http://signmeinwebapi.azurewebsites.net/api/timetables/";
+            //var str3 = String(id);
+            //var str4 = "?dayOfWeek=2";
+            //var str5 = '"';
+            //var res = str1.concat(str2,str3,str4,str5);
+            //alert(res);
+            //$.getJSON(res).done(function (data2) {
+            //    data = data2;
             });
-        });
+      
     </script>
 </body>
 </html>
