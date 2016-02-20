@@ -21,7 +21,6 @@ using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using System.Net.Http;
 
-
 namespace GroupProjectApp
 {
     /// <summary>
@@ -36,7 +35,7 @@ namespace GroupProjectApp
         /// </summary>
         /// 
 
-            // Main API 
+        // Main API 
         public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}";
 
         public async static Task<string> LoadDataFromAPI()
@@ -74,20 +73,18 @@ namespace GroupProjectApp
             //}
             #endregion
 
-
-            // dayblock not cuuurently being used
+            // dayblock not curently being use
             for (int i = 0; i <= 8; i++)
             {
                 foreach (var item in weekTimetable)
                 {
-                    if (item.WeekDayNumber == dayNumber && item.DayBlock == i)
-                    {
-                        weekModules.Add(item);
-                    }
+                    if (item.WeekDayNumber == dayNumber && item.DayBlock == i) { weekModules.Add(item); }
                 }
             }
             return weekModules;
         }
+
+      
 
         public App()
         {

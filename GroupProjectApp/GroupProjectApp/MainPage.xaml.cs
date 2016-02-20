@@ -55,6 +55,7 @@ namespace GroupProjectApp
 
             PopulateList(dayClasses, dayNumber);
         }
+        
 
         private void PopulateList(List<DailyClass> daysClasses, int dayNumber)
         {
