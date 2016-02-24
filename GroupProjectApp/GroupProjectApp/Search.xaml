@@ -17,8 +17,13 @@
                     <TextBlock Text="Home" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
-                       Width="50" Height="50" Background="Transparent" Click="btnWatch_Click"/>
+                    <Button x:Name="btnFreeRooms" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
+             Width="50" Height="50" Background="Transparent"/>
+                    <TextBlock Text="Currently free" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE718;"
+             Width="50" Height="50" Background="Transparent" Click="btnWatch_Click"/>
                     <TextBlock Text="Watching" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -41,13 +46,29 @@
         <SplitView.Content>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="71*"/>
+                    <RowDefinition Height="66*"/>
+                    <RowDefinition Height="503*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="1" Grid.RowSpan="2">
+
+                    <!--Pivot control enables individual day view-->
+
+                    <Pivot Title="Search by..">
+                        <PivotItem Header="Room type" Tag="2">
+                            <StackPanel>
+                                <ComboBox Name="cbxRoomType" HorizontalAlignment="Stretch"></ComboBox>
+                            
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="Room number" Tag="3">
+                            <StackPanel>
+                              <ComboBox Name="cbxRoomId" />
+                            </StackPanel>
+                        </PivotItem>
+                    </Pivot>
                     
                 </StackPanel>
-
             </Grid>
         </SplitView.Content>
     </SplitView>

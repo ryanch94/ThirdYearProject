@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using System.Net.Http;
+using GroupProjectApp.Models;
 
 namespace GroupProjectApp
 {
@@ -35,8 +36,13 @@ namespace GroupProjectApp
         /// </summary>
         /// 
 
+
+        public static string validAuthDetails;
+        public static string validUserDetails;
+
+
         // Main API 
-        public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}";
+        // public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}";
 
         public async static Task<string> LoadDataFromAPI()
         {
@@ -82,9 +88,9 @@ namespace GroupProjectApp
                 }
             }
             return weekModules;
-        }
 
-      
+
+        }
 
         public App()
         {

@@ -31,7 +31,10 @@ namespace GroupProjectApp
         {
             App.RootFrame.Navigate(typeof(MainPage), null);
         }
-
+        private void btnFreeRooms_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(FreeRooms), null);
+        }
         private void btnWatch_Click(object sender, RoutedEventArgs e)
         {
             App.RootFrame.Navigate(typeof(WatchList), null);

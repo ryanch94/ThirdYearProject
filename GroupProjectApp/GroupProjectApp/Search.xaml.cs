@@ -26,7 +26,10 @@ namespace GroupProjectApp
         {
             this.InitializeComponent();
         }
-
+        private void btnFreeRooms_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(FreeRooms), null);
+        }
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
             App.RootFrame.Navigate(typeof(MainPage), null);

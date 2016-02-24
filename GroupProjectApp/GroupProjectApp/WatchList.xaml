@@ -17,8 +17,13 @@
                     <TextBlock Text="Home" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
-                       Width="50" Height="50" Background="Transparent" Click="btnWatch_Click"/>
+                    <Button x:Name="btnFreeRooms" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
+             Width="50" Height="50" Background="Transparent"/>
+                    <TextBlock Text="Currently free" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE718;"
+             Width="50" Height="50" Background="Transparent" Click="btnWatch_Click"/>
                     <TextBlock Text="Watching" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
