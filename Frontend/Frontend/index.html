@@ -17,12 +17,38 @@
     <!-- Custom CSS -->
     <link href="css/business-frontpage.css" rel="stylesheet" />
 
+    <!--jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+        function authenticate() {
+            
+                // Ajax request to authenticate the user
+                $.ajax({
+                    url: "http://signmeinwebapi.azurewebsites.net/authenticate",
+                    type: "POST",
+                    data: {
+                        "grant_type": "password",
+                        "username": $('#email').val(),
+                        "password": $('#pwd').val()
+                    },
+                    success: function (data) {
+                        localStorage.setItem("authToken", data['access_token']);
+                        localStorage.setItem("grace", "test");
+                        window.location = "Site/Timetable.html";
+                    },
+                    error: function (jqXHR) {
+                        $('#errorLogin').html('Incorrect Email or Password');
+                    }
+                });
+            }
+        
+    </script>
 
 </head>
 
@@ -86,11 +112,11 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email address:</label>
-                            <input type="email" class="form-control" id="email">
+                            <input type="email" class="form-control" id="email2">
                         </div>
                         <div class="form-group">
                             <label for="pwd">Password:</label>
-                            <input type="password" class="form-control" id="pwd">
+                            <input type="password" class="form-control" id="pwd2">
                         </div>
                         <div class="form-group">
                             <label for="selInstitute">Select your Institute:</label>
@@ -116,7 +142,7 @@
     <!-- Modal Login -->
     <div id="login" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
-
+            
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -135,11 +161,12 @@
                             <input type="password" class="form-control" id="pwd">
                         </div>
                     </form>
+                    <p id="errorLogin"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" data-target="#register">Not a member?</button>
                     <button type="button" class="btn btn-default btn-group" data-dismiss="modal">Close</button>
-                    <a href="Site/Timetable.html" class="btn btn-success btn-group" role="button">Login</a>
+                    <a class="btn btn-success btn-group" onclick="authenticate()" role="button">Login</a>
                 </div>
             </div>
 
