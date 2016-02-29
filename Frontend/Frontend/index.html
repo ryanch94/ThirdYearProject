@@ -46,7 +46,11 @@
                         $('#errorLogin').html('Incorrect Email or Password');
                     }
                 });
-            }
+        }
+
+        function clearData() {
+            $('#errorLogin').html('');
+        }
         
     </script>
 
@@ -161,11 +165,11 @@
                             <input type="password" class="form-control" id="pwd">
                         </div>
                     </form>
-                    <p id="errorLogin"></p>
+                    <p style="color:red;font-weight:bold;" id="errorLogin"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" data-target="#register">Not a member?</button>
-                    <button type="button" class="btn btn-default btn-group" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" onclick="clearData()" data-target="#register">Not a member?</button>
+                    <button type="button" class="btn btn-default btn-group" onclick="clearData()" data-dismiss="modal">Close</button>
                     <a class="btn btn-success btn-group" onclick="authenticate()" role="button">Login</a>
                 </div>
             </div>

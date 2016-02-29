@@ -63,7 +63,6 @@
            <div class="col-lg-4 col-xs-4" style="border:0 2px solid white;"><h3 style="text-align:center;">0 Mail <i class="fa fa-envelope-o fa"></i></h3></div>
        </div>
        <div class="row" style="background-color:#3A78A4;height:450px;">
-           <div class="col-lg-1"></div>
            <div class="col-lg-4">
                <ul style="margin-top:20px;"class="list-group">
                    <li class="list-group-item">09:00 Maths <span class="badge">B1040</span></li>
@@ -78,7 +77,6 @@
                    <li class="list-group-item">18:00 Proj Mng <span class="badge">B1041</span></li>
                </ul>
            </div>
-           <div class="col-lg-2"></div>
            <div class="col-lg-4">
                <div class="row" style="height:50px">
                    <div class="btn-group" role="group" aria-label="..." style="margin-top:20px;">
@@ -120,6 +118,7 @@
                            </ul>
                        </div>
                    </div>
+                   <div class="col-lg-2"></div>
                </div>
                <div class="row">
                    <div class="list-group" style="margin-top:20px;max-height: 360px;overflow-y:scroll; ">
@@ -172,13 +171,13 @@
             success: function(data) {
                 $('#users').html(JSON.stringify(data));
             },
-            //error: function (jqXHR) {
-                // Check if the status code is 401 (Unauthorized)
-                //if (jqXHR.status == '401')
-                  // window.location = "401Error.html";
-               // else
-                    // Handle any other error status code
-                    //window.location = "401Error.html";
+            error: function (jqXHR) {
+                //Check if the status code is 401 (Unauthorized)
+                if (jqXHR.status == '401')
+                  window.location = "401Error.html";
+               else
+                    //Handle any other error status code
+                    window.location = "401Error.html";
            // }
         });
         });
