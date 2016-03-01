@@ -39,7 +39,6 @@
                     },
                     success: function (data) {
                         localStorage.setItem("authToken", data['access_token']);
-                        localStorage.setItem("grace", "test");
                         window.location = "Site/Timetable.html";
                     },
                     error: function (jqXHR) {

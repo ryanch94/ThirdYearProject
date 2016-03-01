@@ -103,6 +103,7 @@
     <Content Include="Site\401Error.html" />
     <Content Include="Site\ExampleAngular.html" />
     <Content Include="Site\Timetable.html" />
+    <Content Include="tests\apis.html" />
     <Content Include="tests\Labs.html" />
     <Content Include="tests\table.html" />
     <Content Include="timetable.html" />
