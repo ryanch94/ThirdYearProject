@@ -106,6 +106,7 @@
     <Content Include="tests\apis.html" />
     <Content Include="tests\Labs.html" />
     <Content Include="tests\table.html" />
+    <Content Include="tests\testdates.html" />
     <Content Include="timetable.html" />
     <Content Include="timetableNew.html" />
     <Content Include="Web.config" />

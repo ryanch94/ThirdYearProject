@@ -34,11 +34,13 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
-var app = angular.module('myApp', []);
-app.controller('labsCtrl', function($scope, $http) {
-    $http.get("http://signmeinwebapi.azurewebsites.net/api/timetables/8?dayOfWeek=3")
-    .then(function(response) {$scope.room = response.data;});
-});
+
+    var app = angular.module('myApp', []);
+        app.controller('labsCtrl', function($scope, $http) {
+        $http.get("http://signmeinwebapi.azurewebsites.net/api/timetables/8?dayOfWeek=3")
+        .then(function(response) {$scope.room = response.data;});
+    });
+
     </script>
 
 

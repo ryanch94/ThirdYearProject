@@ -37,7 +37,7 @@
                         "Authorization": "bearer " + localStorage.getItem("authToken")
                     },
                     success: function (data) {
-                        alert(JSON.stringify(data));
+                        $("#test").html(JSON.stringify(data));
                         localStorage.setItem("UserID", data['UserID']);
                     },
                     error: function (jqXHR) {
@@ -46,40 +46,310 @@
                 });
         }
 
+       
+
+        function getUsers() {
+
+            // Ajax request to get users 
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/Users" ,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+
+        function setRoleLecturer() {
+            //api/users/AddToRole?userId={userId}&roleName={roleName}
+            // Ajax request to get user info
+            var id = localStorage.getItem("UserID");
+            var str1 = "https://signmeinwebapi.azurewebsites.net/api/users/AddToRole?userId=";
+            var str2 = String(id);
+            var str3 = "&roleName=";
+            var str4 = "Lecturer";
+            var res = str1.concat(str2,str3,str4);
+
+            $.ajax({
+
+                url: res,
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+
+        function setRoleSudent() {
+            //api/users/AddToRole?userId={userId}&roleName={roleName}
+            // Ajax request to get user info
+            var id = localStorage.getItem("UserID");
+            var str1 = "https://signmeinwebapi.azurewebsites.net/api/users/AddToRole?userId=";
+            var str2 = String(id);
+            var str3 = "&roleName=";
+            var str4 = "Student";
+            var res = str1.concat(str2, str3, str4);
+
+            $.ajax({
+
+                url: res,
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+
+        function setNotificationsOn() {
+
+            // Ajax request to get user info
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/users/notifications?value=true",
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        function setNotificationsOff() {
+           
+            // Ajax request to get user info
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/users/notifications?value=false",
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        function setDeleteUser() {
+
+            // Ajax request to get user info
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/Users/DeleteUser/a9ccf681-6e90-4d19-bf6f-c0ab56099f16",
+                type: "DELETE",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+         
+    
+
+
+    //* ROOMS *//
+    //************************************************************************
+
         function getTimetable() {
 
             // Ajax request to get user info
             var id = localStorage.getItem("UserID");
-            var str1 = '"';
-            var str2 = "http://signmeinwebapi.azurewebsites.net/api/timetables/";
-            var str3 = String(id);
-            var str4 = '"';
-            var res = str1.concat(str2,str3,str4);
-            alert(res);
+            var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
+            var str2 = String(id);
+            var res = str1.concat(str2);
 
-                $.ajax({
-                
-                    url: res ,
-                    type: "GET",
-                    headers: {
-                        "Authorization": "bearer " + localStorage.getItem("authToken")
-                    },
-                    success: function (data) {
-                        alert(JSON.stringify(data));
-                    },
-                    error: function (jqXHR) {
-                        alert('error');
-                    }
-                });
-            }
+            $.ajax({
 
-        
-           
+                url: res,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+
+        function getRooms() {
+
+            // Ajax request to get rooms
+
+            $.ajax({
+
+                url:"https://signmeinwebapi.azurewebsites.net/api/Rooms",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        function getRoomTimetable() {
+
+            // Ajax request to get rooms
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/Rooms/3",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        function getRoomsTypes() {
+
+            // Ajax request to get room types
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/RoomTypes",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+
+        function getMisc() {
+
+            // Ajax request to get room types
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/Programs",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+
+
+        //register
+        function newUser() {
+
+            // Ajax request to authenticate the user
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/Register",
+                type: "POST",
+                data: {
+                    "Email": "newtest@mail.itsligo.ie",
+                    "Password": "chickensalad",
+                    "ConfirmPassword": "chickensalad",
+                    "FirstName": "joe",
+                    "LastName": "bloggs",
+                    "SLID":"s00147111"
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert("error");
+                }
+            });
+        }
+
+    //change Password
+        function changePassword() {
+
+            // Ajax request to change password
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/ChangePassword",
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                data: {
+                    "currentPassword": "Password",
+                    "newPassword": "chickensalad",
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
 </script>
     </head>
 <body>
     <button onclick="getUserInfo()">User Info</button>
-    <button onclick="getTimetable()">User Info</button>
-
+    <button onclick="getUsers()">All Users</button>
+    <button onclick="setRoleLecturer()">Lecturer</button>
+    <button onclick="setRoleSudent()">Student</button>
+    <button onclick="setNotificationsOn()">notifications on</button>
+    <button onclick="setNotificationsOff()">notifications off</button>
+    <button onclick="getRooms()">All Rooms</button>
+    <button onclick="getRoomTimetable()">Room timetable</button>
+    <button onclick="getTimetable()">Timetable</button>
+    <div id="test"></div>
+    <button onclick="setDeleteUser()">Delete User</button>
+    <button onclick="getRoomsTypes()">Room Types</button>
+    <button onclick="getMisc()">Get Misc</button>
+    <button onclick="newUser()">Register New User</button>
+    <button onclick="changePassword()">Change Password</button>
 </body>
 </html>

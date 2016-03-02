@@ -51,6 +51,29 @@
             $('#errorLogin').html('');
         }
         
+        //register
+        function newUser() {
+
+            // Ajax request to authenticate the user
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/Register",
+                type: "POST",
+                data: {
+                    "Email": $('#email2').val(),
+                    "Password": $('#pwd2').val(),
+                    "ConfirmPassword": $('#pwd3').val(),
+                    "FirstName": $('#fName').val(),
+                    "LastName": $('#lName').val(),
+                    "SLID": $('#SLID').val(),
+                },
+                success: function (data) {
+                    alert("<h1>Registered Successfully - Please Login now</h1>");
+                },
+                error: function (jqXHR) {
+                    alert(jqXHR);
+                }
+            });
+        }
     </script>
 
 </head>
@@ -103,7 +126,7 @@
                     <h4 class="modal-title">Register for Sign Me In</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Please fill in the following information about yourself. Be sure to use your institute's email and password.</p>
+                    <p>Please fill in the following information about yourself</p>
                     <form role="form">
                         <div class="form-group">
                             <label for="fName">First name:</label>
@@ -118,14 +141,16 @@
                             <input type="email" class="form-control" id="email2">
                         </div>
                         <div class="form-group">
-                            <label for="pwd">Password:</label>
+                            <label for="pwd2">Password:</label>
                             <input type="password" class="form-control" id="pwd2">
                         </div>
                         <div class="form-group">
-                            <label for="selInstitute">Select your Institute:</label>
-                            <select class="form-control" id="selInstitute">
-                                <option>Institute of Technology Sligo</option>
-                            </select>
+                            <label for="pwd3">Confirm Password:</label>
+                            <input type="password" class="form-control" id="pwd3">
+                        </div>
+                        <div class="form-group">
+                            <label for="SLID">Enter Institute ID (s000../i000..):</label>
+                            <input type="text" class="form-control" id="SLID">
                         </div>
 
                     </form>
@@ -133,7 +158,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" data-target="#login">Already a member?</button>
                     <button type="button" class="btn btn-default btn-group" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success btn-group" data-dismiss="modal">Register</button>
+                    <button type="submit" class="btn btn-success btn-group" onclick="newUser()" data-dismiss="modal">Register</button>
                 </div>
             </div>
 
