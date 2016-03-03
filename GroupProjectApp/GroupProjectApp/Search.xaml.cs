@@ -27,18 +27,19 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class Search : Page
     {
+        // Api addresses to use 
         static string FreeRoomsApi = "https://signmeinwebapi.azurewebsites.net/api/FreeRooms";
         static string RoomTypeApi = "https://signmeinwebapi.azurewebsites.net/api/RoomTypes";
         static string ProgramTypeApi = "https://signmeinwebapi.azurewebsites.net/api/Programs";
 
+        // list for searching 
         List<FreeRoom> _roomsCurrentlyFree = new List<FreeRoom>();
         List<RoomType> _roomTypesList = new List<RoomType>();
         List<ProgramType> _programList = new List<ProgramType>();
-        //List<>
+
 
         public Search()
         {
-
             //Get and proccess data to populate currently free rooms listbox - send freeRooms for sort
             PopulateFreeRoomsList();
             PopulateProgramsCombo();
@@ -65,8 +66,6 @@ namespace GroupProjectApp
                 _roomTypesList.Add(new RoomType { Id = item.Id, Type = item.Type });
             }
             cbxRoomType.ItemsSource = _roomTypesList;
-
-
         }
 
         private async void PopulateProgramsCombo()
