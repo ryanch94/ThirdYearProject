@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    
+</head>
+<body>
+    <div id="test"></div>
+    <button onclick="getTimetable()">Go!</button>
+     <!-- jQuery -->
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    
+    <!-- Bootstrap Core JavaScript -->
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script>
+        function getToday() {
+            //get num
+            var day = new Date();
+            var todayNum = (day.getDay())+1;
+            //get day
+            var weekday = new Array(7);
+            weekday[0] = "Sunday";
+            weekday[1] = "Monday";
+            weekday[2] = "Tuesday";
+            weekday[3] = "Wednesday";
+            weekday[4] = "Thursday";
+            weekday[5] = "Friday";
+            weekday[6] = "Saturday";
+            var todayText = weekday[day.getDay()];
+            $("#test").html(todayNum + todayText);
+
+
+        }
+
+        function getTimetable() {
+
+            //get num
+            var day = new Date();
+            var todayNum = (day.getDay())+1;
+            //get day
+            var weekday = new Array(7);
+            weekday[0] = "Sunday";
+            weekday[1] = "Monday";
+            weekday[2] = "Tuesday";
+            weekday[3] = "Wednesday";
+            weekday[4] = "Thursday";
+            weekday[5] = "Friday";
+            weekday[6] = "Saturday";
+            var todayText = weekday[day.getDay()];
+            $("#test").html(todayNum + todayText);
+
+            // Ajax request to get user info
+            var id = localStorage.getItem("UserID");
+            var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
+            var str2 = String(id);
+            var res = str1.concat(str2);
+
+            $.ajax({
+
+                url: res,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        alert("in");
+                        var today;
+                        if (data[i].WeekDayNumber == todayNum)
+                        {
+                            today += data[i].Name + " " + data[i].DayBlock  + " " + data[i].Code + "</br>";
+                        }
+
+                    }
+                    alert(today);
+                    $("#test").html(today);
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        
+
+
+    </script>
+</body>
+</html>
