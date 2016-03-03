@@ -35,15 +35,19 @@ namespace GroupProjectApp.Classes
 
 
         }
-        public override string ToString()
-        {
-            return  Name + "   " + "Room:" + Code;
-        }
+
+
+        //public override string ToString()
+        //{
+        //    return  Name + "   " + "Room:" + Code;
+        //}
 
         public string Test
         {
-            get { return Name + "   " + "Room:" + Code; }
+            get { return Name + Code; }
         }
+
+      
     }
 
     public class ValidAuth

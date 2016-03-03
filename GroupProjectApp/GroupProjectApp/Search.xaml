@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView.Pane>
             <StackPanel Background="Gray">
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"></Button>
@@ -17,17 +17,12 @@
                     <TextBlock Text="Home" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnFreeRooms" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
-             Width="50" Height="50" Background="Transparent"/>
-                    <TextBlock Text="Currently free" FontSize="18" VerticalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE718;"
+                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
              Width="50" Height="50" Background="Transparent" Click="btnWatch_Click"/>
                     <TextBlock Text="Watching" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnSearch" FontFamily="Segoe MDL2 Assets" Content="&#xE71C;"
+                    <Button x:Name="btnSearch" FontFamily="Segoe MDL2 Assets" Content="&#xE71E;"
                        Width="50" Height="50" Background="Transparent" Click="btnSearch_Click"/>
                     <TextBlock Text="Search" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
@@ -53,21 +48,39 @@
                 <StackPanel Grid.Row="1" Grid.RowSpan="2">
 
                     <!--Pivot control enables individual day view-->
-
                     <Pivot Title="Search by..">
-                        <PivotItem Header="Room type" Tag="2">
-                            <StackPanel>
-                                <ComboBox Name="cbxRoomType" HorizontalAlignment="Stretch"></ComboBox>
-                            
-                            </StackPanel>
+                        <PivotItem Header="Currently Free">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="8*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="All rooms available now" FontSize="20" Padding="5" Grid.Row="0"></TextBlock>
+                                <ListBox Name="lbxCurrentlyFreeRooms" Height="400" Margin="10"  Grid.Row="1" ItemTemplate="{StaticResource FreeRoomslbxItem}"></ListBox>
+                            </Grid>
                         </PivotItem>
-                        <PivotItem Header="Room number" Tag="3">
-                            <StackPanel>
-                              <ComboBox Name="cbxRoomId" />
-                            </StackPanel>
+                        <PivotItem Header="Room type">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="8*"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Name="cbxRoomType" HorizontalAlignment="Stretch" Grid.Row="0"  DisplayMemberPath="Type" SelectionChanged="cbxRoomType_SelectionChanged"></ComboBox>
+                                <ListBox Name="lbxRoomType" Grid.Row="1" Margin="5" ItemTemplate="{StaticResource FreeRoomslbxItem}" Height="400" />
+                            </Grid>
                         </PivotItem>
+                        <PivotItem Header="Program">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="8*"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Name="cbxPrograms" HorizontalAlignment="Stretch" DisplayMemberPath="Description"></ComboBox>
+                                <ListBox Name="lbxPrograms" Grid.Row="1" Margin="5" Height="400"/>
+                            </Grid>
+                        </PivotItem>
+
                     </Pivot>
-                    
                 </StackPanel>
             </Grid>
         </SplitView.Content>

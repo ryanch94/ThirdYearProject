@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView.Pane>
             <StackPanel Background="Gray">
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"></Button>
@@ -48,9 +48,16 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="8*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <TextBlock></TextBlock>
+                <TextBlock Grid.Row="0"></TextBlock>
+                <StackPanel Grid.Row="1">
+                    <TextBlock>Rooms you're watching</TextBlock>
+                    <ListBox></ListBox>
+              
+                </StackPanel>
 
+                <Button Grid.Row="2" Name="btnUnwatch" HorizontalAlignment="Center">Unwatch</Button>
             </Grid>
         </SplitView.Content>
     </SplitView>

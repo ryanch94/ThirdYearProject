@@ -1,0 +1,49 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GroupProjectApp">
+
+
+    <Style x:Key="Button1" TargetType="Button">
+
+    </Style>
+
+    <DataTemplate x:Key="DailyClassStyle">
+        <StackPanel>
+            <TextBlock Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+            <TextBlock Text="{Binding Code}"></TextBlock>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Comboboxstyle" >
+        <ComboBoxItem>
+            <TextBlock Text="{Binding Type}" FontWeight="Bold"></TextBlock>
+        </ComboBoxItem>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FreeRoomslbxItem">
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="{Binding Code}" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontSize="20" Padding="10"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Height="auto">
+                <TextBlock Text="{Binding Size}" HorizontalAlignment="Right"></TextBlock>
+                <TextBlock Text="{Binding Type}" HorizontalAlignment="Right"></TextBlock>
+                <TextBlock Text="{Binding Count}" HorizontalAlignment="Stretch"></TextBlock>
+            </StackPanel>
+        </Grid>
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="ComboItem">
+        <StackPanel>
+            <TextBlock Text="{Binding Type}" FontSize="15" FontWeight="Bold" Grid.Column="0" TextAlignment="Center"></TextBlock>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

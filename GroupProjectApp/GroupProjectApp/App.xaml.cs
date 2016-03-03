@@ -39,7 +39,7 @@ namespace GroupProjectApp
 
         public static string validAuthDetails;
         public static string validUserDetails;
-
+        public static string userID;
 
         // Main API 
         // public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}";
@@ -47,14 +47,13 @@ namespace GroupProjectApp
         public async static Task<string> LoadDataFromAPI()
         {
             // depending on the response returned from the API call, the student number will be added to the 
-            int studentno = 8;
-            string timetableAPI = string.Format("http://signmeinwebapi.azurewebsites.net/api/timetables/" + "{0}", studentno);
+            string userID1 = "a1ffdd24-ed22-4088-be96-1cd3fc11f56b";
+            string timetableAPI = string.Format("http://signmeinwebapi.azurewebsites.net/api/timetables/" + "{0}", userID1);
 
             HttpClient http = new System.Net.Http.HttpClient();
             HttpResponseMessage response = await http.GetAsync(timetableAPI);
 
             return await response.Content.ReadAsStringAsync();
-
         }
 
         public static List<DailyClass> ConvertJsonToArray(string data, int dayNumber)

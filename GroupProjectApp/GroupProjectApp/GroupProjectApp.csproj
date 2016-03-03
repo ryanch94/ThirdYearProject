@@ -99,8 +99,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FreeRooms.xaml.cs">
-      <DependentUpon>FreeRooms.xaml</DependentUpon>
+    <Compile Include="ClientDetails.xaml.cs">
+      <DependentUpon>ClientDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\DailyClass.cs" />
     <Compile Include="Login.xaml.cs">
@@ -109,6 +109,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DropdownLists.cs" />
     <Compile Include="Models\FreeRoom.cs" />
     <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Models\UserDetailsAndAuth.cs" />
@@ -144,10 +145,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="FreeRooms.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,9 +153,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ClientDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Search.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="WatchList.xaml">
       <SubType>Designer</SubType>

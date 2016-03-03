@@ -40,7 +40,7 @@ namespace GroupProjectApp
 
             using (var client = new HttpClient())
             {
-                var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password", tbxPassword.Text } };
+                var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password", tbxPassword.Password } };
                 var content = new FormUrlEncodedContent(values);
                 var rawAuthResponse = await client.PostAsync("https://signmeinwebapi.azurewebsites.net/authenticate", content);
                 var responseString = await rawAuthResponse.Content.ReadAsStringAsync();
@@ -60,17 +60,19 @@ namespace GroupProjectApp
 
                     App.validUserDetails = userDetailsRaw;
 
-                    var userDetailArray = JsonConvert.DeserializeObject<UserDetails>(userDetailsRaw);                 
+                    var userDetailArray = JsonConvert.DeserializeObject<UserDetails>(userDetailsRaw);
 
                     // pass student number got back from the Oauth and db calls to the API on the main page 
-                    studentnum = 8;
-                    App.RootFrame.Navigate(typeof(MainPage), studentnum);
+                    App.userID = "a1ffdd24 - ed22 - 4088 - be96 - 1cd3fc11f56b";
+
+                    App.RootFrame.Navigate(typeof(MainPage), userDetailArray.UserID);
                 }
                 catch
                 {
                     var InvalidResponse = JsonConvert.DeserializeObject<InvalidAuth>(responseString);
                     tbkInvalidDetails.Text = string.Format(InvalidResponse.error_description);
                 }
+
             }
         }
     }

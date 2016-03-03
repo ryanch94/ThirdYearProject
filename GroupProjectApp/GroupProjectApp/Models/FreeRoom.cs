@@ -6,21 +6,25 @@ using System.Threading.Tasks;
 
 namespace GroupProjectApp.Models
 {
-    public class FreeRoom
+    class FreeRoom
     {
+        //"[{\"Code\":\"A0004\",\"Size\":132,\"Count\":0,\"Type\":\"Lecture Hall\"},
         public string Code { get; set; }
         public int Size { get; set; }
-        public int Count { get; set; }
+        public byte Count { get; set; }
         public string Type { get; set; }
 
-        public override string ToString()
+        public FreeRoom(string code, int size, byte count, string type)
         {
-            return "Room:" + Code + "  " + Type;
+            Code = code;
+            Size = size;
+            Count = count;
+            Type = type;
         }
 
-        public string Test
+        public string test
         {
-            get { return "Room:" + Code + "  " + Type; }
+            get { return Code + Size + Count + Type; }
         }
     }
 }
