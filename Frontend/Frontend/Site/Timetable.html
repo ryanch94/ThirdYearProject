@@ -18,8 +18,50 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"></script>
+
     <!-- font awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+   <script>
+
+
+       function getTimetable() {
+
+           var app = angular.module("myApp", ['ngRoute','ngResource']);     
+
+
+           // Ajax request to get user info
+           var id = localStorage.getItem("UserID");
+           var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
+           var str2 = String(id);
+           var res = str1.concat(str2);
+
+           $.ajax({
+
+               url: res,
+               type: "GET",
+               headers: {
+                   "Authorization": "bearer " + localStorage.getItem("authToken")
+               },
+               success: function (data) {
+                   $("#test").html(JSON.stringify(data));
+                   //alert(data);
+                   //alert(JSON.stringify(data));
+                   //alert(data[0].Name);
+                   app.controller("myCtrl", function ($scope) {
+                       $scope.class = data;
+                       alert($scope.class[0].Name);
+                   })
+               },
+               error: function (jqXHR) {
+                   alert('error');
+               }
+           });
+       };
+
+
+    </script>
 </head>
 
 <body>
@@ -50,7 +92,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a data-toggle="modal" data-target="#login" href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <li><a data-toggle="modal" data-target="#login" href="#" ><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -62,16 +104,16 @@
            <div class="col-lg-4">
 
                <ul style="margin-top:20px;"class="list-group" id="timetableToday">
-                   <li class="list-group-item">09:00<span id="Name1"></span><span id="Room1" class="badge"></span></li>
-                   <li class="list-group-item">10:00<span id="Name2"></span><span id="Room2" class="badge"></span></li>
-                   <li class="list-group-item">11:00<span id="Name3"></span><span id="Room3" class="badge"></span></li>
-                   <li class="list-group-item">12:00<span id="Name4"></span><span id="Room4" class="badge"></span></li>
-                   <li class="list-group-item">13:00<span id="Name5"></span><span id="Room5" class="badge"></span></li>
-                   <li class="list-group-item">14:00<span id="Name6"></span><span id="Room6" class="badge"></span></li>
-                   <li class="list-group-item">15:00<span id="Name7"></span><span id="Room7" class="badge"></span></li>
-                   <li class="list-group-item">16:00<span id="Name8"></span><span id="Room8" class="badge"></span></li>
-                   <li class="list-group-item">17:00<span id="Name9"></span><span id="Room9" class="badge"></span></li>
-                   <li class="list-group-item">18:00<span id="Name10"></span><span id="Room10" class="badge"></span></li>
+                   <li class="list-group-item t1">9:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">10:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">11:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">12:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">13:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">14:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">15:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">16:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">17:00<span></span><span class="badge"></span></li>
+                   <li class="list-group-item t1">18:00<span></span><span class="badge"></span></li>
                </ul>
            </div>
            <div class="col-lg-4">
@@ -140,47 +182,99 @@
            </div>
            <div class="col-lg-1"></div>
        </div>
-
    </div>
-
-
-
-
-
-
-
-
-
 
     <!-- jQuery -->
     <script src="../Scripts/jquery-1.9.1.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
-        $(document).ready ( function(){
-        $.ajax({
-            url: "http://signmeinwebapi.azurewebsites.net/api/rooms",
-            method: "GET",
-            headers: {
-                "Authorization": "bearer " + localStorage.getItem("authToken") // Sets the 'Authorization' HTTP header to "bearer [auth_token]", which is the required format to authenticate the user
-            },
-            success: function(data) {
-                $('#users').html(JSON.stringify(data));
-            },
-            error: function (jqXHR) {
-                //Check if the status code is 401 (Unauthorized)
-                if (jqXHR.status == '401')
-                  window.location = "401Error.html";
-               else
-                    //Handle any other error status code
-                    window.location = "401Error.html";
+
+
+        function getFreeRooms() {
+
+            // Ajax request to get rooms
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+         
+       
+        function formatTimetable(Timetable) {
+            for (i = 0; i < Timetable.length; i++) {
+                //get num of today and compare against weeks timetable
+                var day = new Date();
+                var todayNum = (day.getDay()) + 1;
+                //if sat/sun
+                if (todayNum == 7 || todayNum == 8)
+                {
+                    todayNum = 3;
+                }
+                if (Timetable[i].WeekDayNumber == todayNum) {
+                    var time = Timetable[i].DayBlock;
+                    var length = Timetable[i].ClassLength;
+                    //grab all rows of table
+                    var Timetablerows = document.getElementsByClassName('t1');
+                    //if only an hour long class
+                    if (length == 1) {
+                        Timetablerows[(time - 1)].innerHTML =((time + 8) + ":00") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
+                    }
+                        //if class 2 hours
+                    else if (length == 2) {
+                        Timetablerows[(time - 1)].innerHTML =((time + 8) + ":00") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
+                        Timetablerows[(time)].innerHTML =((time + 9) + ":00") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
+                    }
+
+                }
+
+
             }
-        });
-        });
-            
-   
+        }
+
+        $(document).ready (
+        function getTimetable() {
+            getFreeRooms();
+            var Timetablerows = document.getElementsByClassName('t1');
+          
+            // Ajax request to get user info
+            var id = localStorage.getItem("UserID");
+            var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
+            var str2 = String(id);
+            var res = str1.concat(str2);
+
+            $.ajax({
+
+                url: res,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                    formatTimetable(data);
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        })
+
+        
+       
     </script>
-    <script>
+    <!--<script>
         //grabs the JSON file from WebAPI and puts it in scope.names
 var app = angular.module('myApp', []);
 app.controller('customersCtrl', function($scope, $http) {
@@ -219,7 +313,7 @@ app.controller('customersCtrl', function($scope, $http) {
 });
 
 
-    </script>
+    </script>-->
     <script>
         $(document).ready(function() {
             //var data = {};
