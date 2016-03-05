@@ -1,8 +1,13 @@
-﻿using System;
+﻿using GroupProjectApp.Classes;
+using GroupProjectApp.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -24,7 +29,53 @@ namespace GroupProjectApp
     {
         public WatchList()
         {
+            init();
+        }
+
+        private async void init()
+        {
+            var rawData = await GetCurrentlyWatched();
+
+            var watchedRooms = JsonConvert.DeserializeObject<string[]>(rawData);
+
+            List<WatchedRoom> _watchedRoomsList = new List<WatchedRoom>();
+
+            foreach (var item in watchedRooms)
+            {
+                WatchedRoom room = new WatchedRoom();
+                room.Code = item;
+               // watchedRooms 
+                
+             _watchedRoomsList.Add(room);
+            }
+
+            lbxWatchedRooms.ItemsSource = _watchedRoomsList;
             this.InitializeComponent();
+        }
+
+        private async Task<string> GetCurrentlyWatched()
+        {
+            var rawAuthInfo = App.validAuthDetails;
+            var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
+            var rawData = "";
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
+            HttpResponseMessage ResponseMsg = await httpClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
+
+            if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return rawData = await ResponseMsg.Content.ReadAsStringAsync();
+
+            }
+            else if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                rawData = null;
+                return rawData;
+            }
+
+            return null;
+
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
@@ -36,7 +87,6 @@ namespace GroupProjectApp
         {
             App.RootFrame.Navigate(typeof(WatchList), null);
         }
-
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             App.RootFrame.Navigate(typeof(Search), null);

@@ -1,13 +1,13 @@
 ﻿<Page
-    x:Class="GroupProjectApp.WatchList"
+    x:Class="GroupProjectApp.Models.ClientDetails"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:GroupProjectApp"
+    xmlns:local="using:GroupProjectApp.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <!--<SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView.Pane>
             <StackPanel Background="Gray">
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"></Button>
@@ -17,17 +17,12 @@
                     <TextBlock Text="Home" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnFreeRooms" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
-             Width="50" Height="50" Background="Transparent"/>
-                    <TextBlock Text="Currently free" FontSize="18" VerticalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE718;"
+                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
              Width="50" Height="50" Background="Transparent" Click="btnWatch_Click"/>
                     <TextBlock Text="Watching" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnSearch" FontFamily="Segoe MDL2 Assets" Content="&#xE71C;"
+                    <Button x:Name="btnSearch" FontFamily="Segoe MDL2 Assets" Content="&#xE71E;"
                        Width="50" Height="50" Background="Transparent" Click="btnSearch_Click"/>
                     <TextBlock Text="Search" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
@@ -46,18 +41,16 @@
         <SplitView.Content>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="8*"/>
-                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="71*"/>
+                    <RowDefinition Height="66*"/>
+                    <RowDefinition Height="503*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"></TextBlock>
-
-                <TextBlock Grid.Row="1" Style="{StaticResource TitleTextBlockStyle}" Margin="5">Rooms you're watching</TextBlock>
-                <ListBox Name="lbxWatchedRooms" Margin="5" Grid.Row="2"></ListBox>
-                <Button Grid.Row="3" Name="btnUnwatch" HorizontalAlignment="Center">Unwatch</Button>
-
+                <StackPanel Grid.Row="1" Grid.RowSpan="2">
+                    <TextBlock></TextBlock>
+               
+                </StackPanel>
             </Grid>
         </SplitView.Content>
-    </SplitView>
+    </SplitView-->
 </Page>

@@ -21,9 +21,10 @@
             <TextBlock Height="20" TextAlignment="Center" Margin="0,5">Email</TextBlock>
             <TextBox Name="tbxEmail" Height="20" Width="250"></TextBox>
             <TextBlock Height="20" Width="250" TextAlignment="Center" Margin="0,5">Password</TextBlock>
-            <TextBox Name="tbxPassword" Height="20" Width="250"></TextBox>
-            <Button Name="btnLogin" Width="100" Height="35" HorizontalAlignment="Center" Margin="0,10" Click="btnLogin_Click">Login</Button>
+            <PasswordBox Name="tbxPassword" Height="20" Width="250" PasswordChar="*"></PasswordBox>
+            <Button Name="btnLogin" Width="100" Height="35" HorizontalAlignment="Center" Margin="0,10" Style="{StaticResource Button1}" Click="btnLogin_Click">Login</Button>
             <TextBlock Name="tbkInvalidDetails" Height="20" TextAlignment="Center" Margin="0,5"/>
+            
         </StackPanel>
     </Grid>
 </Page>

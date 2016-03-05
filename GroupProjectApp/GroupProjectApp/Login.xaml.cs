@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Net.Http;
 using Newtonsoft.Json;
 using GroupProjectApp.Classes;
+using GroupProjectApp.Models;
 
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -26,8 +27,6 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class Login : Page
     {
-        public int studentnum = 0;
-
         public Login()
         {
             this.InitializeComponent();
@@ -35,43 +34,52 @@ namespace GroupProjectApp
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            // Oauth code to be implemented
-            using (var client = new HttpClient())
+            if (App.InternetConnected() == true)
             {
-                var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password", tbxPassword.Text } };
+                // Send entered details to be authenticated. 
 
-                var content = new FormUrlEncodedContent(values);
-
-                var response = await client.PostAsync("http://signmeinwebapi.azurewebsites.net/authenticate", content);
-
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                // check for typeof class the data has - valid class or invalid                     
-                if (responseString.GetType() == typeof(ValidAuth))
+                using (var client = new HttpClient())
                 {
-                    var ValidResponse = JsonConvert.DeserializeObject<ValidAuth[]>(responseString);
+                    var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password", tbxPassword.Password } };
+                    var content = new FormUrlEncodedContent(values);
+                    var rawAuthResponse = await client.PostAsync("https://signmeinwebapi.azurewebsites.net/authenticate", content);
+                    var responseString = await rawAuthResponse.Content.ReadAsStringAsync();
+                    App.validAuthDetails = responseString;
 
-                    // code for user id api call required here when available
+                    try
+                    {
+                        var ValidResponse = JsonConvert.DeserializeObject<ValidAuth>(responseString);
 
-                    // sample number needs replacing
-                    studentnum = 8;
-                    App.RootFrame.Navigate(typeof(MainPage), studentnum);
+                        string tokenType = string.Format(ValidResponse.token_type);
+                        string accessToken = string.Format(ValidResponse.access_token);
+
+                        string authValues = string.Format("{0}" + " " + "{1}", tokenType, accessToken);
+                        // Send authentication details and return user details
+                        #region UserDetailsHttpClient 
+                        HttpClient userDetailsClient = new HttpClient();
+                        userDetailsClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(tokenType, accessToken);
+                        HttpResponseMessage userDetailsResponseMsg = await userDetailsClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/users/UserInfo");
+                        var userDetailsRaw = await userDetailsResponseMsg.Content.ReadAsStringAsync();
+                        #endregion
+
+                        App.validUserDetails = userDetailsRaw;
+
+                        var userDetailArray = JsonConvert.DeserializeObject<UserDetails>(userDetailsRaw);
+
+                        // pass student number got back from the Oauth and db calls to the API on the main page 
+                        App.userID = userDetailArray.UserID;
+
+                        App.RootFrame.Navigate(typeof(MainPage));
+                    }
+                    catch
+                    {
+                        var InvalidResponse = JsonConvert.DeserializeObject<InvalidAuth>(responseString);
+                        tbkInvalidDetails.Text = string.Format(InvalidResponse.error_description);
+                    }
 
                 }
-                else
-                {
-                    var InvalidResponse = JsonConvert.DeserializeObject<InvalidAuth>(responseString);
-                    tbkInvalidDetails.Text = string.Format(InvalidResponse.error_description);
-                }
-
             }
-
-            //  database will return student db id 
-
-            // studentnum = 8;
-            // pass student number got back from the Oauth and db calls to the API on the main page          
-
-
+            else { tbkInvalidDetails.Text = "Not connected to the internet"; }
         }
     }
 }
