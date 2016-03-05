@@ -27,4 +27,24 @@ namespace GroupProjectApp.Models
             get { return Code + Size + Count + Type; }
         }
     }
+
+    public class WatchedRoom
+    {
+        public string Code { get; set; }
+
+        public WatchedRoom()
+        {
+
+        }
+
+        public WatchedRoom(string code)
+        {
+            Code = code;
+        }
+
+        public string test
+        {
+            get { return Code; }
+        }
+    }
 }

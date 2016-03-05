@@ -27,8 +27,6 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class Login : Page
     {
-        public int studentnum = 0;
-
         public Login()
         {
             this.InitializeComponent();
@@ -36,44 +34,52 @@ namespace GroupProjectApp
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            // Send entered details to be authenticated. 
-
-            using (var client = new HttpClient())
+            if (App.InternetConnected() == true)
             {
-                var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password", tbxPassword.Password } };
-                var content = new FormUrlEncodedContent(values);
-                var rawAuthResponse = await client.PostAsync("https://signmeinwebapi.azurewebsites.net/authenticate", content);
-                var responseString = await rawAuthResponse.Content.ReadAsStringAsync();
-                App.validAuthDetails = responseString;
+                // Send entered details to be authenticated. 
 
-                try
+                using (var client = new HttpClient())
                 {
-                    var ValidResponse = JsonConvert.DeserializeObject<ValidAuth>(responseString);
+                    var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password", tbxPassword.Password } };
+                    var content = new FormUrlEncodedContent(values);
+                    var rawAuthResponse = await client.PostAsync("https://signmeinwebapi.azurewebsites.net/authenticate", content);
+                    var responseString = await rawAuthResponse.Content.ReadAsStringAsync();
+                    App.validAuthDetails = responseString;
 
-                    // Send authentication details and return user details
-                    #region UserDetailsHttpClient 
-                    HttpClient userDetailsClient = new HttpClient();
-                    userDetailsClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(ValidResponse.token_type, ValidResponse.access_token);
-                    HttpResponseMessage userDetailsResponseMsg = await client.GetAsync("https://signmeinwebapi.azurewebsites.net/api/users/userinfo");
-                    var userDetailsRaw = await userDetailsResponseMsg.Content.ReadAsStringAsync();
-                    #endregion
+                    try
+                    {
+                        var ValidResponse = JsonConvert.DeserializeObject<ValidAuth>(responseString);
 
-                    App.validUserDetails = userDetailsRaw;
+                        string tokenType = string.Format(ValidResponse.token_type);
+                        string accessToken = string.Format(ValidResponse.access_token);
 
-                    var userDetailArray = JsonConvert.DeserializeObject<UserDetails>(userDetailsRaw);
+                        string authValues = string.Format("{0}" + " " + "{1}", tokenType, accessToken);
+                        // Send authentication details and return user details
+                        #region UserDetailsHttpClient 
+                        HttpClient userDetailsClient = new HttpClient();
+                        userDetailsClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(tokenType, accessToken);
+                        HttpResponseMessage userDetailsResponseMsg = await userDetailsClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/users/UserInfo");
+                        var userDetailsRaw = await userDetailsResponseMsg.Content.ReadAsStringAsync();
+                        #endregion
 
-                    // pass student number got back from the Oauth and db calls to the API on the main page 
-                    App.userID = "a1ffdd24 - ed22 - 4088 - be96 - 1cd3fc11f56b";
+                        App.validUserDetails = userDetailsRaw;
 
-                    App.RootFrame.Navigate(typeof(MainPage), userDetailArray.UserID);
+                        var userDetailArray = JsonConvert.DeserializeObject<UserDetails>(userDetailsRaw);
+
+                        // pass student number got back from the Oauth and db calls to the API on the main page 
+                        App.userID = userDetailArray.UserID;
+
+                        App.RootFrame.Navigate(typeof(MainPage));
+                    }
+                    catch
+                    {
+                        var InvalidResponse = JsonConvert.DeserializeObject<InvalidAuth>(responseString);
+                        tbkInvalidDetails.Text = string.Format(InvalidResponse.error_description);
+                    }
+
                 }
-                catch
-                {
-                    var InvalidResponse = JsonConvert.DeserializeObject<InvalidAuth>(responseString);
-                    tbkInvalidDetails.Text = string.Format(InvalidResponse.error_description);
-                }
-
             }
+            else { tbkInvalidDetails.Text = "Not connected to the internet"; }
         }
     }
 }

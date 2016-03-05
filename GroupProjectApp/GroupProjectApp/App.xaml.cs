@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using System.Net.Http;
 using GroupProjectApp.Models;
+using Windows.Networking.Connectivity;
 
 namespace GroupProjectApp
 {
@@ -47,8 +48,8 @@ namespace GroupProjectApp
         public async static Task<string> LoadDataFromAPI()
         {
             // depending on the response returned from the API call, the student number will be added to the 
-            string userID1 = "a1ffdd24-ed22-4088-be96-1cd3fc11f56b";
-            string timetableAPI = string.Format("http://signmeinwebapi.azurewebsites.net/api/timetables/" + "{0}", userID1);
+            //string userID = "a1ffdd24-ed22-4088-be96-1cd3fc11f56b";
+            string timetableAPI = string.Format("http://signmeinwebapi.azurewebsites.net/api/timetables/" + "{0}", App.userID);
 
             HttpClient http = new System.Net.Http.HttpClient();
             HttpResponseMessage response = await http.GetAsync(timetableAPI);
@@ -87,8 +88,14 @@ namespace GroupProjectApp
                 }
             }
             return weekModules;
+        }
 
+        // check for internet connection on device
+        public static bool InternetConnected()
+        {
+            var connectionProfile = NetworkInformation.GetInternetConnectionProfile();
 
+            return (connectionProfile != null && connectionProfile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
         }
 
         public App()

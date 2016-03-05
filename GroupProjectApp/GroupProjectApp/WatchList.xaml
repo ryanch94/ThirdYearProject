@@ -47,17 +47,16 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                     <RowDefinition Height="8*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"></TextBlock>
-                <StackPanel Grid.Row="1">
-                    <TextBlock>Rooms you're watching</TextBlock>
-                    <ListBox></ListBox>
-              
-                </StackPanel>
 
-                <Button Grid.Row="2" Name="btnUnwatch" HorizontalAlignment="Center">Unwatch</Button>
+                <TextBlock Grid.Row="1" Style="{StaticResource TitleTextBlockStyle}" Margin="5">Rooms you're watching</TextBlock>
+                <ListBox Name="lbxWatchedRooms" Margin="5" Grid.Row="2"></ListBox>
+                <Button Grid.Row="3" Name="btnUnwatch" HorizontalAlignment="Center">Unwatch</Button>
+
             </Grid>
         </SplitView.Content>
     </SplitView>
