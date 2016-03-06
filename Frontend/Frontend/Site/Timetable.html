@@ -23,45 +23,6 @@
 
     <!-- font awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-   <script>
-
-
-       function getTimetable() {
-
-           var app = angular.module("myApp", ['ngRoute','ngResource']);     
-
-
-           // Ajax request to get user info
-           var id = localStorage.getItem("UserID");
-           var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
-           var str2 = String(id);
-           var res = str1.concat(str2);
-
-           $.ajax({
-
-               url: res,
-               type: "GET",
-               headers: {
-                   "Authorization": "bearer " + localStorage.getItem("authToken")
-               },
-               success: function (data) {
-                   $("#test").html(JSON.stringify(data));
-                   //alert(data);
-                   //alert(JSON.stringify(data));
-                   //alert(data[0].Name);
-                   app.controller("myCtrl", function ($scope) {
-                       $scope.class = data;
-                       alert($scope.class[0].Name);
-                   })
-               },
-               error: function (jqXHR) {
-                   alert('error');
-               }
-           });
-       };
-
-
-    </script>
 </head>
 
 <body>
@@ -160,68 +121,104 @@
                    <div class="col-lg-2"></div>
                </div>
                <div class="row">
-                   <div class="list-group" style="margin-top:20px;max-height: 360px;overflow-y:scroll; ">
-                       <button type="button" class="list-group-item">B1041</button>
-                       <button type="button" class="list-group-item">B1041</button>
-                       <button type="button" class="list-group-item">C1004</button>
-                       <button type="button" class="list-group-item">D1008</button>
-                       <button type="button" class="list-group-item">D2030</button>
-                       <button type="button" class="list-group-item">C2004</button>
-                       <button type="button" class="list-group-item">D1009</button>
-                       <button type="button" class="list-group-item">D2032</button>
-                       <button type="button" class="list-group-item">B1041</button>
-                       <button type="button" class="list-group-item">B1041</button>
-                       <button type="button" class="list-group-item">C1004</button>
-                       <button type="button" class="list-group-item">D1008</button>
-                       <button type="button" class="list-group-item">D2030</button>
-                       <button type="button" class="list-group-item">C2004</button>
-                       <button type="button" class="list-group-item">D1009</button>
-                       <button type="button" class="list-group-item">D2032</button>
+                   <div id="freeRoomsList" class="list-group" style="margin-top:20px;max-height: 360px;overflow-y:scroll; ">
                    </div>
                </div>
            </div>
            <div class="col-lg-1"></div>
        </div>
+
+       <!--Free Rooms Modal-->
+       <div id="freeRoomModal" class="modal fade " role="dialog">
+           <div class="modal-dialog modal-sm">
+
+               <!-- Modal content-->
+               <div class="modal-content">
+                   <div class="modal-header ">
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+                       <h4 class="modal-title">Room Details <i id="watchStar" style="float:right;margin-right:30px;color:red" title="Click me to watch this room!" class="fa fa-star fa-2x"></i></h4>
+                   </div>
+                   <div class="modal-body">
+                       <!--<p style="border:1px red solid;border-radius:3px;padding:10px;">Click the star if you would like to watch this room </p>-->
+                     <h4>Room Number:B1041</h4>
+                     <h4>Room Count:22</h4>
+                     <h4>Room Type:Lab</h4>
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" data-target="#login">Already a member?</button>
+                       <button type="button" class="btn btn-default btn-group" data-dismiss="modal">Close</button>
+                       <button type="submit" class="btn btn-success btn-group" onclick="newUser()" data-dismiss="modal">Register</button>
+                   </div>
+               </div>
+
+           </div>
+       </div>
    </div>
 
+
+    
     <!-- jQuery -->
     <script src="../Scripts/jquery-1.9.1.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
 
+       
 
+        //Populates the modal window that appears when you click a room
+        $('#freeRoomsList button').click(function () {
+            alert("Test");
+        });
+
+        //Populates a list with all rooms that are free now
         function getFreeRooms() {
-
-            // Ajax request to get rooms
+            // Ajax request to get all free rooms
 
             $.ajax({
-
-                url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+                 url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
                 type: "GET",
                 headers: {
                     "Authorization": "bearer " + localStorage.getItem("authToken")
                 },
                 success: function (data) {
-                    $("#test").html(JSON.stringify(data));
+                
+                    //grab all rows of list for free rooms
+                    var freeRoomsList = document.getElementById('freeRoomsList');
+                    
+                    //loops through all rooms
+                    for (i = 0; i < data.length; i++) {
+                        //create new list item
+                        newListItem = document.createElement('button');
+                        newListItem.setAttribute('data-toggle', 'modal');
+                        newListItem.setAttribute('data-target', '#freeRoomModal');
+                        newListItem.setAttribute('href', '#');
+                       // newListItem.setAttribute('onclick', 'freeRoomModal(this.text)');
+                        newListItem.setAttribute('type', 'button');
+                        newListItem.setAttribute('class', 'list-group-item');
+                        newListItem.text =  data[i].Code;
+                        newListItem.innerHTML = data[i].Code;
+                        //append it to the ul
+                        freeRoomsList.appendChild(newListItem);
+                    }
                 },
                 error: function (jqXHR) {
-                    alert('error');
+                    alert('error loading free rooms');
                 }
             });
         }
          
-       
+        //writes out todays timetable
         function formatTimetable(Timetable) {
             for (i = 0; i < Timetable.length; i++) {
                 //get num of today and compare against weeks timetable
                 var day = new Date();
                 var todayNum = (day.getDay()) + 1;
-                //if sat/sun
-                if (todayNum == 7 || todayNum == 8)
+                //if sat/sun day is monday
+                if (todayNum == 7 || todayNum == 1)
                 {
-                    todayNum = 3;
+                    todayNum = 2;
                 }
+                //if class is on today
                 if (Timetable[i].WeekDayNumber == todayNum) {
                     var time = Timetable[i].DayBlock;
                     var length = Timetable[i].ClassLength;
@@ -231,7 +228,7 @@
                     if (length == 1) {
                         Timetablerows[(time - 1)].innerHTML =((time + 8) + ":00") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
                     }
-                        //if class 2 hours
+                    //if class 2 hours
                     else if (length == 2) {
                         Timetablerows[(time - 1)].innerHTML =((time + 8) + ":00") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
                         Timetablerows[(time)].innerHTML =((time + 9) + ":00") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
@@ -243,8 +240,22 @@
             }
         }
 
-        $(document).ready (
+        $(document).ready(
+
+             
+             
+        
+             
         function getTimetable() {
+
+            $("#watchStar").hover(function () {
+                $(this).removeClass("fa-2x");
+                $(this).addClass("fa-3x");
+            }, function () {
+                $(this).removeClass("fa-3x");
+                $(this).addClass("fa-2x");
+            })
+
             getFreeRooms();
             var Timetablerows = document.getElementsByClassName('t1');
           
