@@ -45,12 +45,7 @@
                     <RowDefinition Height="66*"/>
                     <RowDefinition Height="503*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"></TextBlock>
-                <StackPanel Grid.Row="1" Grid.RowSpan="2">
-                    <TextBlock></TextBlock>
-               
-                </StackPanel>
             </Grid>
         </SplitView.Content>
-    </SplitView-->
+    </SplitView>-->
 </Page>

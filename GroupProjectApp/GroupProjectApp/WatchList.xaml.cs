@@ -3,6 +3,7 @@ using GroupProjectApp.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -34,23 +35,24 @@ namespace GroupProjectApp
 
         private async void init()
         {
+            this.InitializeComponent();
             var rawData = await GetCurrentlyWatched();
 
             var watchedRooms = JsonConvert.DeserializeObject<string[]>(rawData);
 
-            List<WatchedRoom> _watchedRoomsList = new List<WatchedRoom>();
+            List<string> _watchedRoomsList = new List<string>();
 
             foreach (var item in watchedRooms)
             {
-                WatchedRoom room = new WatchedRoom();
-                room.Code = item;
-               // watchedRooms 
-                
-             _watchedRoomsList.Add(room);
+                //WatchedRoom room = new WatchedRoom();
+                // room.Code = item;
+                // watchedRooms 
+
+                _watchedRoomsList.Add(item);
             }
 
             lbxWatchedRooms.ItemsSource = _watchedRoomsList;
-            this.InitializeComponent();
+
         }
 
         private async Task<string> GetCurrentlyWatched()
