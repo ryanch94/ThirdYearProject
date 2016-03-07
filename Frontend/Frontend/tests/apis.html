@@ -23,7 +23,12 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"></script>
 
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 
 <script>
@@ -45,8 +50,8 @@
                     }
                 });
         }
-
        
+
 
         function getUsers() {
 
@@ -206,13 +211,41 @@
             });
         }
 
+        function getTimetableAngular() {
+            alert("function started")
+            var id = localStorage.getItem("UserID");
+            var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
+            var str2 = String(id);
+            var res = str1.concat(str2);
+
+            //try it in angular
+            var app = angular.module('myApp', []);
+            app.controller('myCtrl', function ($scope, $http) {
+                alert("2nd function");
+                $http({
+                    method: "GET",
+                    url: res,
+                    headers: {
+                        "Authorization": "bearer " + localStorage.getItem("authToken")
+                    }
+                }).then(function mySuccess(response) {
+                    $scope.myTimetable = response.data;
+                    alert("success")
+                }, function myError(response) {
+                    $scope.myTimetable = response.statusText;
+                });
+            });
+
+        }
+
+
         function getRooms() {
 
             // Ajax request to get rooms
 
             $.ajax({
 
-                url:"https://signmeinwebapi.azurewebsites.net/api/Rooms",
+                url:"https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
                 type: "GET",
                 headers: {
                     "Authorization": "bearer " + localStorage.getItem("authToken")
@@ -238,6 +271,7 @@
                 },
                 success: function (data) {
                     $("#test").html(JSON.stringify(data));
+
                 },
                 error: function (jqXHR) {
                     alert('error');
@@ -342,7 +376,7 @@
     <button onclick="setRoleSudent()">Student</button>
     <button onclick="setNotificationsOn()">notifications on</button>
     <button onclick="setNotificationsOff()">notifications off</button>
-    <button onclick="getRooms()">All Rooms</button>
+    <button onclick="getRooms()">All Free Rooms</button>
     <button onclick="getRoomTimetable()">Room timetable</button>
     <button onclick="getTimetable()">Timetable</button>
     <div id="test"></div>
@@ -351,5 +385,19 @@
     <button onclick="getMisc()">Get Misc</button>
     <button onclick="newUser()">Register New User</button>
     <button onclick="changePassword()">Change Password</button>
+
+    <button onclick="getTimetableAngular()"></button>
+
+    <br />
+    <div class="container-fluid ">
+        <div class="row" style="background-color:#3A78A4;height:450px;margin-top:50px;">
+            <div ng-app="myApp" ng-controller="myCtrl" class="col-lg-4">
+
+                <ul style="margin-top:20px;" class="list-group" id="timetableToday">
+                    <li ng-repeat="x in Timetable" class="list-group-item">{{ x.DayBlock + 8 + ":00" }}<span>{{x.Name}}</span><span class="badge">{{x.Code}}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 </body>
 </html>
