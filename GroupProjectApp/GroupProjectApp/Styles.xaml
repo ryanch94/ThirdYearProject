@@ -3,39 +3,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GroupProjectApp">
 
+<!-- Style for textblocks containing sub headings such as in client details page-->
+    <Style x:Key="DetailsTbk" TargetType="TextBlock">
+        <Setter  Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Padding" Value="10 2"/>
+        
+    </Style>
 
-    <Style x:Key="Button1" TargetType="Button">
-
+    <!-- Style for textblocks containing details data such as in client details page-->
+    <Style x:Key="UserDetailstbk" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="10 3"/>
+        <Setter  Property="FontWeight" Value="Light"/>
     </Style>
 
     <DataTemplate x:Key="DailyClassStyle">
         <StackPanel>
-            <TextBlock Text="{Binding Name}" FontWeight="Bold"></TextBlock>
-            <TextBlock Text="{Binding Code}"></TextBlock>
+            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Code}"/>
         </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="Comboboxstyle" >
         <ComboBoxItem>
-            <TextBlock Text="{Binding Type}" FontWeight="Bold"></TextBlock>
+            <TextBlock Text="{Binding Type}" FontWeight="Bold"/>
         </ComboBoxItem>
     </DataTemplate>
 
     <DataTemplate x:Key="FreeRoomslbxItem">
         <Grid HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0">
-                <TextBlock Text="{Binding Code}" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontSize="20" Padding="10"></TextBlock>
+                <TextBlock Text="{Binding Code}" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontSize="20" Padding="10"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Height="auto">
-                <TextBlock Text="{Binding Size}" HorizontalAlignment="Right"></TextBlock>
-                <TextBlock Text="{Binding Type}" HorizontalAlignment="Right"></TextBlock>
-                <TextBlock Text="{Binding Count}" HorizontalAlignment="Stretch"></TextBlock>
+                <TextBlock Text="{Binding Size}" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Type}" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Count}" HorizontalAlignment="Stretch"/>
             </StackPanel>
         </Grid>
 

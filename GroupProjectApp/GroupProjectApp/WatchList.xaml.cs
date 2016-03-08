@@ -28,27 +28,28 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class WatchList : Page
     {
+        public static List<WatchedRoom> _watchedRoomsList = new List<WatchedRoom>();
         public WatchList()
         {
+            this.InitializeComponent();
             init();
+
         }
 
-        private async void init()
+        public async void init()
         {
-            this.InitializeComponent();
             var rawData = await GetCurrentlyWatched();
 
             var watchedRooms = JsonConvert.DeserializeObject<string[]>(rawData);
 
-            List<string> _watchedRoomsList = new List<string>();
+            _watchedRoomsList.Clear();
 
             foreach (var item in watchedRooms)
             {
-                //WatchedRoom room = new WatchedRoom();
-                // room.Code = item;
-                // watchedRooms 
+                WatchedRoom room = new WatchedRoom();
+                room.Code = item;
 
-                _watchedRoomsList.Add(item);
+                _watchedRoomsList.Add(room);
             }
 
             lbxWatchedRooms.ItemsSource = _watchedRoomsList;
@@ -103,5 +104,19 @@ namespace GroupProjectApp
         {
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
+
+        private void lbxWatchedRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            WatchedRoom selected = (WatchedRoom)lbxWatchedRooms.SelectedItem;
+
+            btnUnwatch.IsEnabled = true;
+        }
+
+        private void btnUnwatch_Click(object sender, RoutedEventArgs e)
+        {
+            WatchedRoom room = (WatchedRoom)lbxWatchedRooms.SelectedItem;
+            App.AddOrRemoveFromWatchList(room.Code);
+        }
     }
 }
+

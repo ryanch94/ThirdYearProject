@@ -42,11 +42,12 @@
         <SplitView.Content>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="71*"/>
-                    <RowDefinition Height="66*"/>
-                    <RowDefinition Height="503*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="1" Grid.RowSpan="2">
+                <TextBlock Grid.Row="0"></TextBlock>
+                <StackPanel Grid.Row="1">
 
                     <!--Pivot control enables individual day view-->
 
@@ -80,6 +81,7 @@
                         </PivotItem>
                     </Pivot>
                 </StackPanel>
+                <TextBlock Name="tbkErrorMessage" Grid.Row="2" Height="20" TextAlignment="Center" Margin="0,5"/>
             </Grid>
         </SplitView.Content>
     </SplitView>

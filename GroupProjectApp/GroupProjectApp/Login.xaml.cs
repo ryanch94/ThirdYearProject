@@ -40,7 +40,7 @@ namespace GroupProjectApp
 
                 using (var client = new HttpClient())
                 {
-                    var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password", tbxPassword.Password } };
+                    var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", "s00143284@mail.itsligo.ie" }, { "password", "chickensalad" } };
                     var content = new FormUrlEncodedContent(values);
                     var rawAuthResponse = await client.PostAsync("https://signmeinwebapi.azurewebsites.net/authenticate", content);
                     var responseString = await rawAuthResponse.Content.ReadAsStringAsync();
@@ -53,11 +53,11 @@ namespace GroupProjectApp
                         string tokenType = string.Format(ValidResponse.token_type);
                         string accessToken = string.Format(ValidResponse.access_token);
 
-                        string authValues = string.Format("{0}" + " " + "{1}", tokenType, accessToken);
+                   
                         // Send authentication details and return user details
                         #region UserDetailsHttpClient 
                         HttpClient userDetailsClient = new HttpClient();
-                        userDetailsClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(tokenType, accessToken);
+                        userDetailsClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(ValidResponse.token_type, ValidResponse.access_token);
                         HttpResponseMessage userDetailsResponseMsg = await userDetailsClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/users/UserInfo");
                         var userDetailsRaw = await userDetailsResponseMsg.Content.ReadAsStringAsync();
                         #endregion

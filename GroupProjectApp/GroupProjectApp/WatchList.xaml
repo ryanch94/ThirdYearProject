@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView.Pane>
             <StackPanel Background="Gray">
@@ -54,9 +54,8 @@
                 <TextBlock Grid.Row="0"></TextBlock>
 
                 <TextBlock Grid.Row="1" Style="{StaticResource TitleTextBlockStyle}" Margin="5">Rooms you're watching</TextBlock>
-                <ListBox Name="lbxWatchedRooms" Margin="5" Grid.Row="2"></ListBox>
-                <Button Grid.Row="3" Name="btnUnwatch" HorizontalAlignment="Center">Unwatch</Button>
-
+                <ListBox Name="lbxWatchedRooms" Margin="5" Grid.Row="2" DisplayMemberPath="Code" SelectionChanged="lbxWatchedRooms_SelectionChanged"></ListBox>
+                <Button Grid.Row="3" Name="btnUnwatch" HorizontalAlignment="Center" IsEnabled="False" Click="btnUnwatch_Click" >Unwatch</Button>
             </Grid>
         </SplitView.Content>
     </SplitView>

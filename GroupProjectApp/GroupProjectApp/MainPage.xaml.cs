@@ -1,4 +1,6 @@
 ﻿using GroupProjectApp.Classes;
+using GroupProjectApp.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,26 +33,53 @@ namespace GroupProjectApp
         List<DailyClass> ThursdayClasses = new List<DailyClass>();
         List<DailyClass> FridayClasses = new List<DailyClass>();
 
+        public static List<Room> _AllRooms = new List<Room>();
+        public static List<WatchedRoom> _WatchedRooms = new List<WatchedRoom>();
+
         private string rawJSON;
 
         public MainPage()
         {
-            // Call to data methods to populate day lists
-            // Day numbering set to match sql server format 
+            this.InitializeComponent();
 
+            // Call to data methods to populate day lists
+            // Day numbering set to match sql server format
             data(MondayClasses, 2);
             data(TuesdayClasses, 3);
             data(WednesdayClasses, 4);
             data(ThursdayClasses, 5);
             data(FridayClasses, 6);
 
-            this.InitializeComponent();
+            GetAllRooms();
+            GetWatchedRooms();
+
+        }
+
+        private void GetWatchedRooms()
+        {
+            _WatchedRooms = WatchList._watchedRoomsList;
+        }
+
+        public async void GetAllRooms()
+        {
+            // get all rooms in database
+            string AllRoomsAPI = string.Format("https://signmeinwebapi.azurewebsites.net/api/Rooms");
+
+            var rawData = await App.LoadDataFromAPI(AllRoomsAPI);
+
+            var DataArray = JsonConvert.DeserializeObject<Room[]>(rawData);
+
+            foreach (var item in DataArray)
+            {
+                _AllRooms.Add(item);
+            }
         }
 
         private async void data(List<DailyClass> dayClasses, int dayNumber)
         {
-            // Get 
-            rawJSON = await App.LoadDataFromAPI();
+            string timetableAPI = string.Format("https://signmeinwebapi.azurewebsites.net/api/timetables/" + "{0}", App.userID);
+
+            rawJSON = await App.LoadDataFromAPI(timetableAPI);
 
             dayClasses = App.ConvertJsonToArray(rawJSON, dayNumber);
 

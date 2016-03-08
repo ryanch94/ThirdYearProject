@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,50 @@ namespace GroupProjectApp.Models
         public ClientDetails()
         {
             this.InitializeComponent();
+
+            FillInDetails();
         }
+
+        private void FillInDetails()
+        {
+            var DataArray = JsonConvert.DeserializeObject<UserDetails[]>(App.validUserDetails);
+
+            tbkName.Text = string.Format("{0}" + " " + "{1}", DataArray[0].FirstName, DataArray[0].LastName);
+            tbkCollegeID.Text = Convert.ToString(DataArray[0].StudentID);
+            tbkEmail.Text = Convert.ToString(DataArray[0].Email);
+        }
+
+        #region nav
+
+        private void btnHome_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(MainPage), null);
+        }
+
+        private void btnWatch_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(WatchList), null);
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(Search), null);
+        }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(Login), null);
+        }
+
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
+        }
+
+
+
+
+        #endregion
+
     }
 }
