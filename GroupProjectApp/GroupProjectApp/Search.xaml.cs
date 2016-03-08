@@ -58,6 +58,11 @@ namespace GroupProjectApp
                 _roomTypesList.Add(new RoomType { Id = item.Id, Type = item.Type });
             }
             cbxRoomType.ItemsSource = _roomTypesList;
+
+            if (_roomTypesList.Count() != 0)
+            {
+                cbxRoomType.SelectedIndex = 0;
+            }
         }
 
         private async void PopulateProgramsCombo()
@@ -70,11 +75,15 @@ namespace GroupProjectApp
 
                 foreach (var item in DataArray)
                 {
-
                     _programList.Add(item);
                 }
 
                 cbxPrograms.ItemsSource = _programList;
+
+                if (_programList.Count() != 0)
+                {
+                    cbxPrograms.SelectedIndex = 0;
+                }
             }
             else { }
         }
@@ -128,10 +137,37 @@ namespace GroupProjectApp
         private void btnWatchPT_Click(object sender, RoutedEventArgs e)
         {
 
+            FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
+            App.AddOrRemoveFromWatchList(room.Code);
+            //EnableDisableButton(selected, buttonName);
+
         }
+
+        //private void EnableDisableButton(FreeRoom selected, string buttonName)
+        //{
+        //    foreach (var room in MainPage._WatchedRooms)
+        //    {
+        //        if (room.Code == selected.Code)
+        //        {
+        //            Button button = new Button();
+        //            button.Name = buttonName;
+        //            button.IsEnabled = false;
+
+        //        }
+        //        else
+        //        {
+        //            Button button = new Button();
+        //            button.Name = buttonName;
+
+        //            button.IsEnabled = true;
+        //        }
+
+        //    }
+        //}
 
         private void btnWDayAndTime_Click(object sender, RoutedEventArgs e)
         {
+
 
         }
         private void lbxCurrentlyFreeRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -179,9 +215,26 @@ namespace GroupProjectApp
 
 
 
+
         #endregion
 
+        private void cbxPrograms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<FreeRoom> _ProgramRoomAvail = new List<FreeRoom>();
+            ProgramType program = (ProgramType)cbxPrograms.SelectedItem;
 
+            foreach (var freeRoom in _roomsCurrentlyFree)
+            {
+
+                if (freeRoom.Description != null && freeRoom.Description.Contains(program.Description) == true)
+                {
+                    _ProgramRoomAvail.Add(freeRoom);
+                }
+            }
+
+            lbxPrograms.ItemsSource = _ProgramRoomAvail;
+
+        }
     }
 }
 

@@ -3,12 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GroupProjectApp">
 
-<!-- Style for textblocks containing sub headings such as in client details page-->
+    <!-- Style for textblocks containing sub headings such as in client details page-->
     <Style x:Key="DetailsTbk" TargetType="TextBlock">
         <Setter  Property="FontWeight" Value="SemiBold"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Padding" Value="10 2"/>
-        
+
     </Style>
 
     <!-- Style for textblocks containing details data such as in client details page-->

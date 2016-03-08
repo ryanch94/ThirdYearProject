@@ -53,14 +53,7 @@ namespace GroupProjectApp
                         string tokenType = string.Format(ValidResponse.token_type);
                         string accessToken = string.Format(ValidResponse.access_token);
 
-                   
-                        // Send authentication details and return user details
-                        #region UserDetailsHttpClient 
-                        HttpClient userDetailsClient = new HttpClient();
-                        userDetailsClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(ValidResponse.token_type, ValidResponse.access_token);
-                        HttpResponseMessage userDetailsResponseMsg = await userDetailsClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/users/UserInfo");
-                        var userDetailsRaw = await userDetailsResponseMsg.Content.ReadAsStringAsync();
-                        #endregion
+                        var userDetailsRaw = await App.LoadDataFromAPI("https://signmeinwebapi.azurewebsites.net/api/users/UserInfo");
 
                         App.validUserDetails = userDetailsRaw;
 

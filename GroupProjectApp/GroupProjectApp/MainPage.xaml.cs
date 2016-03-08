@@ -144,5 +144,10 @@ namespace GroupProjectApp
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
         #endregion
+
+        private void btnMyDetails_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(ClientDetails), null);
+        }
     }
 }

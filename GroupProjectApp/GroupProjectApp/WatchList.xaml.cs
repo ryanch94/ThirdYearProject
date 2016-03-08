@@ -38,7 +38,7 @@ namespace GroupProjectApp
 
         public async void init()
         {
-            var rawData = await GetCurrentlyWatched();
+            var rawData = await App.LoadDataFromAPI("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
 
             var watchedRooms = JsonConvert.DeserializeObject<string[]>(rawData);
 
@@ -56,30 +56,19 @@ namespace GroupProjectApp
 
         }
 
-        private async Task<string> GetCurrentlyWatched()
+        private void lbxWatchedRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var rawAuthInfo = App.validAuthDetails;
-            var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
-            var rawData = "";
+            WatchedRoom selected = (WatchedRoom)lbxWatchedRooms.SelectedItem;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
-            HttpResponseMessage ResponseMsg = await httpClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
-
-            if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return rawData = await ResponseMsg.Content.ReadAsStringAsync();
-
-            }
-            else if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                rawData = null;
-                return rawData;
-            }
-
-            return null;
-
+            btnUnwatch.IsEnabled = true;
         }
+
+        private void btnUnwatch_Click(object sender, RoutedEventArgs e)
+        {
+            WatchedRoom room = (WatchedRoom)lbxWatchedRooms.SelectedItem;
+            App.AddOrRemoveFromWatchList(room.Code);
+        }
+
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
@@ -105,18 +94,7 @@ namespace GroupProjectApp
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
 
-        private void lbxWatchedRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            WatchedRoom selected = (WatchedRoom)lbxWatchedRooms.SelectedItem;
-
-            btnUnwatch.IsEnabled = true;
-        }
-
-        private void btnUnwatch_Click(object sender, RoutedEventArgs e)
-        {
-            WatchedRoom room = (WatchedRoom)lbxWatchedRooms.SelectedItem;
-            App.AddOrRemoveFromWatchList(room.Code);
-        }
+     
     }
 }
 

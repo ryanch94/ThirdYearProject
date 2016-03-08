@@ -82,8 +82,8 @@
                                     <RowDefinition Height="8*"/>
                                     <RowDefinition Height="1.5*"/>
                                 </Grid.RowDefinitions>
-                                <ComboBox Name="cbxPrograms" HorizontalAlignment="Stretch" DisplayMemberPath="Description"></ComboBox>
-                                <ListBox Name="lbxPrograms" Grid.Row="1" Margin="5" Height="400"/>
+                                <ComboBox Name="cbxPrograms" HorizontalAlignment="Stretch" DisplayMemberPath="Description" SelectionChanged="cbxPrograms_SelectionChanged"></ComboBox>
+                                <ListBox Name="lbxPrograms" Grid.Row="1" Margin="5" Height="400" ItemTemplate="{StaticResource FreeRoomslbxItem}"/>
                                 <Button Name="btnWatchPT" Grid.Row="2" Height="30" HorizontalAlignment="Center" Click="btnWatchPT_Click">Add to watch list</Button>
                             </Grid>
                         </PivotItem>

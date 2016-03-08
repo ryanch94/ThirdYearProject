@@ -6,25 +6,26 @@ using System.Threading.Tasks;
 
 namespace GroupProjectApp.Models
 {
-
     public class FreeRoom
     {
         public string Code { get; set; }
         public int Size { get; set; }
         public byte Count { get; set; }
         public string Type { get; set; }
+        public string Description { get; set; }
 
-        public FreeRoom(string code, int size, byte count, string type)
+        public FreeRoom(string code, int size, byte count, string type, string description)
         {
             Code = code;
             Size = size;
             Count = count;
             Type = type;
+            Description = description;
         }
 
         public string test
         {
-            get { return Code + Size + Count + Type; }
+            get { return Code + Size + Count + Type + Description; }
         }
     }
 
@@ -50,7 +51,7 @@ namespace GroupProjectApp.Models
         public byte Count { get; set; }
         public string Type { get; set; }
 
-        public Room(int id,string code, int size, byte count, string type)
+        public Room(int id, string code, int size, byte count, string type)
         {
             Id = id;
             Code = code;

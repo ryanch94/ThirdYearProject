@@ -32,11 +32,19 @@ namespace GroupProjectApp.Models
 
         private void FillInDetails()
         {
-            var DataArray = JsonConvert.DeserializeObject<UserDetails[]>(App.validUserDetails);
+            var DataArray = JsonConvert.DeserializeObject<UserDetails>(App.validUserDetails);
 
-            tbkName.Text = string.Format("{0}" + " " + "{1}", DataArray[0].FirstName, DataArray[0].LastName);
-            tbkCollegeID.Text = Convert.ToString(DataArray[0].StudentID);
-            tbkEmail.Text = Convert.ToString(DataArray[0].Email);
+            tbkName.Text = string.Format("{0}" + " " + "{1}", DataArray.FirstName, DataArray.LastName);
+            tbkCollegeID.Text = Convert.ToString(DataArray.StudentID);
+            tbkEmail.Text = Convert.ToString(DataArray.Email);
+            if (DataArray.Notifications == true) { tbkNotifications.Text = "On"; } else { tbkNotifications.Text = "Off"; }
+
+            string roles = "";
+            foreach (var role in DataArray.Roles)
+            {
+                roles += role + ", ";
+            }
+            tbkRoles.Text = roles.Remove(roles.Length - 2);
         }
 
         #region nav

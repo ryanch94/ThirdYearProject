@@ -74,22 +74,20 @@
                     </StackPanel>
                     <StackPanel Grid.Row="4">
                         <TextBlock Style="{StaticResource DetailsTbk}">Notifications</TextBlock>
-                        <TextBlock Style="{StaticResource UserDetailstbk}">hsrthsrt</TextBlock>
+                        <TextBlock Name="tbkNotifications" Style="{StaticResource UserDetailstbk}">hsrthsrt</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="5">
                         <TextBlock Style="{StaticResource DetailsTbk}">Privacy level</TextBlock>
-                        <TextBlock Style="{StaticResource UserDetailstbk}">hsrthsrt</TextBlock>
+                        <TextBlock Name="tbkPrivacyLevel" Style="{StaticResource UserDetailstbk}"></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="6">
                         <TextBlock Style="{StaticResource DetailsTbk}">Roles</TextBlock>
-                        <TextBlock Style="{StaticResource UserDetailstbk}">hsrthsrt</TextBlock>
+                        <TextBlock Name="tbkRoles" Style="{StaticResource UserDetailstbk}">hsrthsrt</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="7">
-                       
                     </StackPanel>
-
                 </Grid>
-               
+
             </Grid>
         </SplitView.Content>
     </SplitView>

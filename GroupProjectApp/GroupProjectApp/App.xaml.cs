@@ -91,6 +91,7 @@ namespace GroupProjectApp
         public static async void AddOrRemoveFromWatchList(string roomCode)
         {
             int roomId = 0;
+
             foreach (var room in MainPage._AllRooms)
             {
                 if (room.Code == roomCode)
@@ -100,10 +101,26 @@ namespace GroupProjectApp
                 }
             }
 
-            string addOrRemoveApi = string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=" + "{0}", roomId);
 
-            var response = await LoadDataFromAPI(addOrRemoveApi);
+            var rawAuthInfo = App.validAuthDetails;
+            var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
+
+            HttpClient Client = new HttpClient();
+
+            string query = string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid={" + "{0}" + "}", roomId);
+            //var stringContent = new StringContent(Convert.ToString(roomId));
+
+
+            StringContent queryString = new StringContent(string.Format("roomid="+"{0}", roomId));
+            var content = new FormUrlEncodedContent(values);
+            Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
+            HttpResponseMessage response = await Client.PostAsync("https://signmeinwebapi.azurewebsites.net/api/watchrooms", queryString);
+
+
+            // HttpResponseMessage response = await Client.PostAsync(string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=" +"{0}", stringContent));
+
         }
+
 
         // check for internet connection on device
         public static bool InternetConnected()
