@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <!-- Bootstrap Core CSS -->
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="../css/custom.css" rel="stylesheet" />
+
+    <!--jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"></script>
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Sign Me In</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">My Account</a>
+                    </li>
+                    <li>
+                        <a href="Timetable.html">Timetable</a>
+                       
+                    </li>
+                    <li>
+                        <a href="Attendance.html">Attendance</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a data-toggle="modal" data-target="#login" href="#"><span id="logoutIcon" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <div class="container-fluid">
+        <div class="row" style="background-color:#3A78A4;height:550px;padding-top:70px;">
+            <div class="col-lg-1"></div>
+           <div style="background-color:white; border:2px solid white;border-radius:5px;" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                   <h2>My Info</h2>
+                   
+               <ul style="margin-top:20px;" class="list-group" id="MyInfo">
+                   <li class="list-group-item t1">First Name<span class="pull-right" id="fName"></span></li>
+                   <li class="list-group-item t1">Surname<span class="pull-right" id="sName"></span></li>
+                   <li class="list-group-item t1">Email<span class="pull-right" id="email"></span></li>
+                   <li class="list-group-item t1">ID Number<span class="pull-right" id="idNum"></span></li>
+                   <li class="list-group-item t1">Role<span id="role" class="pull-right"></span></li>
+                   <li class="list-group-item list-group-item-success">Change Password</li>
+                   <li class="list-group-item t1">Old <input type="password" placeholder="Old Password" class="input-sm pull-right" /></li>
+                   <li class="list-group-item t1">New <input type="password" placeholder="New Password" class="input-sm pull-right" /></li>
+                   <li class="list-group-item t1"><button class="btn btn-md btn-success"><span class="glyphicon glyphicon-pencil"></span>  Edit</button></li>
+                 
+               </ul>
+                         
+          
+           <div class="col-lg-6">
+
+           </div>
+        </div>
+
+
+</div>
+    <script>
+        $(document).ready(function getUserInfo() {
+      
+
+            // Ajax request to get user info
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    localStorage.setItem("UserID", data['UserID']);
+                    (document.getElementById('fName')).innerHTML = data.FirstName;
+                    (document.getElementById('sName')).innerHTML = data.LastName;
+                    (document.getElementById('email')).innerHTML = data.Email;
+                    (document.getElementById('idNum')).innerHTML = data.StudentID;
+                    var roleString ="";
+                    for (i = 0; i < (data.Roles).length; i++) {             
+                        roleString += (data.Roles)[i] + " ";
+                    }
+                    (document.getElementById('role')).innerHTML = roleString;
+                   
+
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        )
+
+
+        function changePassword() {
+
+            // Ajax request to change password
+
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/ChangePassword",
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                data: {
+                    "currentPassword": "Password",
+                    "newPassword": "chickensalad",
+                },
+                success: function (data) {
+                    $("#test").html(JSON.stringify(data));
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
