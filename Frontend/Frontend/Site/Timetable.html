@@ -2,6 +2,9 @@
 <html>
 <head>
     <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8" />
     <!-- Bootstrap Core CSS -->
     <link href="../Content/bootstrap.min.css" rel="stylesheet" />
@@ -64,12 +67,13 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    
+                    <li>
+                        <a href="#">Dashboard</a>
+                    </li>
                     <li>
                         <a href="My Account.html">My Account</a>
 
-                    </li>
-                    <li>
-                        <a href="#">Timetable</a>
                     </li>
                     <li>
                         <a href="Attendance.html">Attendance</a>
@@ -222,7 +226,50 @@
 
         function watchRoom(roomCode){
             alert(roomCode);
+           // POST api/WatchRooms?roomid={roomid}
 
+            // Ajax request to get users 
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/Rooms" ,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].Code == roomCode)
+                        {
+                            setWatchRoom(data[i].Id);
+                        }
+                    }
+                },
+                error: function (jqXHR) {
+                    alert('error waqtchRoom');
+                }
+            });
+        }
+        function setWatchRoom(roomID)
+        {
+            var stri1 = "https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=";
+            var add = stri1.concat(roomID);
+            alert(add);
+            $.ajax({
+                url: add,
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                data: {
+                    "id": roomID,
+                },
+                success: function (data) {
+                    alert("watching");
+                },
+                error: function (jqXHR) {
+                    alert("error setwatchroom");
+                }
+            });
         }
 
         function formatFree(dataarray) {
