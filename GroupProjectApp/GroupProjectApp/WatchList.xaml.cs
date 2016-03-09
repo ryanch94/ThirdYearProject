@@ -28,7 +28,7 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class WatchList : Page
     {
-        public static List<WatchedRoom> _watchedRoomsList = new List<WatchedRoom>();
+        public static List<Room> _watchedRoomsList = new List<Room>();
         public WatchList()
         {
             this.InitializeComponent();
@@ -40,16 +40,16 @@ namespace GroupProjectApp
         {
             var rawData = await App.LoadDataFromAPI("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
 
-            var watchedRooms = JsonConvert.DeserializeObject<string[]>(rawData);
+            var watchedRooms = JsonConvert.DeserializeObject<Room[]>(rawData);
 
             _watchedRoomsList.Clear();
 
             foreach (var item in watchedRooms)
             {
-                WatchedRoom room = new WatchedRoom();
-                room.Code = item;
+                //WatchedRoom room = new WatchedRoom();
+                //room.Code = item;
 
-                _watchedRoomsList.Add(room);
+                _watchedRoomsList.Add(item);
             }
 
             lbxWatchedRooms.ItemsSource = _watchedRoomsList;
@@ -58,15 +58,16 @@ namespace GroupProjectApp
 
         private void lbxWatchedRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            WatchedRoom selected = (WatchedRoom)lbxWatchedRooms.SelectedItem;
+            Room selected = (Room)lbxWatchedRooms.SelectedItem;
 
             btnUnwatch.IsEnabled = true;
         }
 
-        private void btnUnwatch_Click(object sender, RoutedEventArgs e)
+        private async void btnUnwatch_Click(object sender, RoutedEventArgs e)
         {
-            WatchedRoom room = (WatchedRoom)lbxWatchedRooms.SelectedItem;
-            App.AddOrRemoveFromWatchList(room.Code);
+            Room room = (Room)lbxWatchedRooms.SelectedItem;
+            var response = await App.AddOrRemoveFromWatchList(room.Id);
+
         }
 
 

@@ -13,19 +13,21 @@ namespace GroupProjectApp.Models
         public byte Count { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
+        public int Id { get; set; }
 
-        public FreeRoom(string code, int size, byte count, string type, string description)
+        public FreeRoom(string code, int size, byte count, string type, string description, int id)
         {
             Code = code;
             Size = size;
             Count = count;
             Type = type;
             Description = description;
+            Id = id;
         }
 
         public string test
         {
-            get { return Code + Size + Count + Type + Description; }
+            get { return Code + Size + Count + Type + Description + Id; }
         }
     }
 

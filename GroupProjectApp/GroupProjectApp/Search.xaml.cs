@@ -42,6 +42,7 @@ namespace GroupProjectApp
         public Search()
         {
             this.InitializeComponent();
+
             //Get and proccess data to populate currently free rooms listbox - send freeRooms for sort
             PopulateFreeRoomsList();
             PopulateProgramsCombo();
@@ -85,7 +86,7 @@ namespace GroupProjectApp
                     cbxPrograms.SelectedIndex = 0;
                 }
             }
-            else { }
+            else {  }
         }
         private async void PopulateFreeRoomsList()
         {
@@ -125,20 +126,20 @@ namespace GroupProjectApp
         private void btnWatchCF_Click(object sender, RoutedEventArgs e)
         {
             FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
-            App.AddOrRemoveFromWatchList(room.Code);
+            var rawData = App.AddOrRemoveFromWatchList(room.Id);
         }
 
         private void btnWatchRT_Click(object sender, RoutedEventArgs e)
         {
             FreeRoom room = (FreeRoom)lbxRoomType.SelectedItem;
-            App.AddOrRemoveFromWatchList(room.Code);
+            var rawData =  App.AddOrRemoveFromWatchList(room.Id);
         }
 
         private void btnWatchPT_Click(object sender, RoutedEventArgs e)
         {
 
             FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
-            App.AddOrRemoveFromWatchList(room.Code);
+            var rawData = App.AddOrRemoveFromWatchList(room.Id);
             //EnableDisableButton(selected, buttonName);
 
         }
@@ -185,6 +186,24 @@ namespace GroupProjectApp
             }
         }
 
+        private void cbxPrograms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<FreeRoom> _ProgramRoomAvail = new List<FreeRoom>();
+            ProgramType program = (ProgramType)cbxPrograms.SelectedItem;
+
+            foreach (var freeRoom in _roomsCurrentlyFree)
+            {
+
+                if (freeRoom.Description != null && freeRoom.Description.Contains(program.Description) == true)
+                {
+                    _ProgramRoomAvail.Add(freeRoom);
+                }
+            }
+
+            lbxPrograms.ItemsSource = _ProgramRoomAvail;
+
+        }
+
         #region nav
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
@@ -218,23 +237,7 @@ namespace GroupProjectApp
 
         #endregion
 
-        private void cbxPrograms_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            List<FreeRoom> _ProgramRoomAvail = new List<FreeRoom>();
-            ProgramType program = (ProgramType)cbxPrograms.SelectedItem;
-
-            foreach (var freeRoom in _roomsCurrentlyFree)
-            {
-
-                if (freeRoom.Description != null && freeRoom.Description.Contains(program.Description) == true)
-                {
-                    _ProgramRoomAvail.Add(freeRoom);
-                }
-            }
-
-            lbxPrograms.ItemsSource = _ProgramRoomAvail;
-
-        }
+       
     }
 }
 

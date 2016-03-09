@@ -88,36 +88,46 @@ namespace GroupProjectApp
             return weekModules;
         }
 
-        public static async void AddOrRemoveFromWatchList(string roomCode)
+        public static async Task<string> AddOrRemoveFromWatchList(int roomId)
         {
-            int roomId = 0;
-
-            foreach (var room in MainPage._AllRooms)
-            {
-                if (room.Code == roomCode)
-                {
-                    roomId = room.Id;
-                    break;
-                }
-            }
-
-
             var rawAuthInfo = App.validAuthDetails;
             var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
 
             HttpClient Client = new HttpClient();
 
-            string query = string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid={" + "{0}" + "}", roomId);
+            string query = string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=" + "{0}", roomId);
+
+            #region few different post formats
             //var stringContent = new StringContent(Convert.ToString(roomId));
 
-
-            StringContent queryString = new StringContent(string.Format("roomid="+"{0}", roomId));
+            var values = new Dictionary<string, string> { { "roomid", Convert.ToString(roomId) } };
             var content = new FormUrlEncodedContent(values);
+
+
+            //StringContent queryString = new StringContent(string.Format("roomid={0}", roomId));
+            //var content = new FormUrlEncodedContent(values);
+            #endregion
+
+            //api/ WatchRooms ? roomid ={ roomid}
+
             Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
-            HttpResponseMessage response = await Client.PostAsync("https://signmeinwebapi.azurewebsites.net/api/watchrooms", queryString);
+            //HttpResponseMessage response = await Client.PostAsync("https://signmeinwebapi.azurewebsites.net/api/watchrooms", content);
+             HttpResponseMessage response = await Client.PostAsync("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=",content );
+
+            return response.ReasonPhrase;
+
+            //            var formContent = new FormUrlEncodedContent(new[]
+            //{
+            //    new KeyValuePair<string, string>("comment", comment)
+            //});
+
+            //            var myHttpClient = new HttpClient();
+            //            var response = await myHttpClient.PostAsync(uri.ToString(), formContent);
 
 
-            // HttpResponseMessage response = await Client.PostAsync(string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=" +"{0}", stringContent));
+            //            HttpContent
+            //
+            //HttpResponseMessage response = await Client.PostAsync(string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=" + "{0}", roomId));
 
         }
 
