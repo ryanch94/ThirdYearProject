@@ -34,7 +34,7 @@ namespace GroupProjectApp
         List<DailyClass> FridayClasses = new List<DailyClass>();
 
         public static List<Room> _AllRooms = new List<Room>();
-        public static List<WatchedRoom> _WatchedRooms = new List<WatchedRoom>();
+        public static List<Room> _WatchedRooms = new List<Room>();
 
         private string rawJSON;
 
