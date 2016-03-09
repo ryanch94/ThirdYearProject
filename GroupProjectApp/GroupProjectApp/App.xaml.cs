@@ -37,47 +37,45 @@ namespace GroupProjectApp
         /// </summary>
         /// 
 
-
         public static string validAuthDetails;
         public static string validUserDetails;
         public static string userID;
 
-        // Main API 
-        // public string DayblockApiAddress = "http://signmeinwebapi.azurewebsites.net/api/timetables/{0}";
 
-        public async static Task<string> LoadDataFromAPI()
+
+        public static async Task<string> LoadDataFromAPI(string apiAddress)
         {
-            // depending on the response returned from the API call, the student number will be added to the 
-            //string userID = "a1ffdd24-ed22-4088-be96-1cd3fc11f56b";
-            string timetableAPI = string.Format("http://signmeinwebapi.azurewebsites.net/api/timetables/" + "{0}", App.userID);
+            //method to check if user is authenticated and has valid details
+            // if invalid details, response message will return unauthorised
 
-            HttpClient http = new System.Net.Http.HttpClient();
-            HttpResponseMessage response = await http.GetAsync(timetableAPI);
+            var rawAuthInfo = App.validAuthDetails;
+            var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
+            var rawData = "";
 
-            return await response.Content.ReadAsStringAsync();
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
+            HttpResponseMessage ResponseMsg = await httpClient.GetAsync(apiAddress);
+
+            // check to see if request was successful or not
+            if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                rawData = await ResponseMsg.Content.ReadAsStringAsync();
+
+            }
+            else if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                rawData = null;
+            }
+
+            return rawData;
         }
+
 
         public static List<DailyClass> ConvertJsonToArray(string data, int dayNumber)
         {
 
             List<DailyClass> weekModules = new List<DailyClass>();
             var weekTimetable = JsonConvert.DeserializeObject<DailyClass[]>(data);
-
-            #region 
-            //foreach (var item in weekTimetable)
-            //{
-            //    if (item.WeekDayNumber == dayNumber)
-            //    {
-            //        for (int i = 0; i <= 8; i++)
-            //        {
-            //            if (item.DayBlock == i)
-            //            {
-            //                weekModules.Add(item);
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
 
             // dayblock not curently being use
             for (int i = 0; i <= 8; i++)
@@ -90,6 +88,40 @@ namespace GroupProjectApp
             return weekModules;
         }
 
+        public static async void AddOrRemoveFromWatchList(string roomCode)
+        {
+            int roomId = 0;
+
+            foreach (var room in MainPage._AllRooms)
+            {
+                if (room.Code == roomCode)
+                {
+                    roomId = room.Id;
+                    break;
+                }
+            }
+
+
+            var rawAuthInfo = App.validAuthDetails;
+            var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
+
+            HttpClient Client = new HttpClient();
+
+            string query = string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid={" + "{0}" + "}", roomId);
+            //var stringContent = new StringContent(Convert.ToString(roomId));
+
+
+            StringContent queryString = new StringContent(string.Format("roomid="+"{0}", roomId));
+            var content = new FormUrlEncodedContent(values);
+            Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
+            HttpResponseMessage response = await Client.PostAsync("https://signmeinwebapi.azurewebsites.net/api/watchrooms", queryString);
+
+
+            // HttpResponseMessage response = await Client.PostAsync(string.Format("https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=" +"{0}", stringContent));
+
+        }
+
+
         // check for internet connection on device
         public static bool InternetConnected()
         {
@@ -98,6 +130,7 @@ namespace GroupProjectApp
             return (connectionProfile != null && connectionProfile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
         }
 
+        /*********************** App generated code below**************************/
         public App()
         {
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(

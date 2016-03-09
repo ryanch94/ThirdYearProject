@@ -3,6 +3,7 @@ using GroupProjectApp.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -27,56 +28,47 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class WatchList : Page
     {
+        public static List<WatchedRoom> _watchedRoomsList = new List<WatchedRoom>();
         public WatchList()
         {
+            this.InitializeComponent();
             init();
+
         }
 
-        private async void init()
+        public async void init()
         {
-            var rawData = await GetCurrentlyWatched();
+            var rawData = await App.LoadDataFromAPI("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
 
             var watchedRooms = JsonConvert.DeserializeObject<string[]>(rawData);
 
-            List<WatchedRoom> _watchedRoomsList = new List<WatchedRoom>();
+            _watchedRoomsList.Clear();
 
             foreach (var item in watchedRooms)
             {
                 WatchedRoom room = new WatchedRoom();
                 room.Code = item;
-               // watchedRooms 
-                
-             _watchedRoomsList.Add(room);
+
+                _watchedRoomsList.Add(room);
             }
 
             lbxWatchedRooms.ItemsSource = _watchedRoomsList;
-            this.InitializeComponent();
+
         }
 
-        private async Task<string> GetCurrentlyWatched()
+        private void lbxWatchedRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var rawAuthInfo = App.validAuthDetails;
-            var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
-            var rawData = "";
+            WatchedRoom selected = (WatchedRoom)lbxWatchedRooms.SelectedItem;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
-            HttpResponseMessage ResponseMsg = await httpClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
-
-            if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return rawData = await ResponseMsg.Content.ReadAsStringAsync();
-
-            }
-            else if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                rawData = null;
-                return rawData;
-            }
-
-            return null;
-
+            btnUnwatch.IsEnabled = true;
         }
+
+        private void btnUnwatch_Click(object sender, RoutedEventArgs e)
+        {
+            WatchedRoom room = (WatchedRoom)lbxWatchedRooms.SelectedItem;
+            App.AddOrRemoveFromWatchList(room.Code);
+        }
+
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
@@ -101,5 +93,8 @@ namespace GroupProjectApp
         {
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
+
+     
     }
 }
+

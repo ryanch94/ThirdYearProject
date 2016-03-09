@@ -32,6 +32,7 @@ namespace GroupProjectApp
         static string RoomTypeApi = "https://signmeinwebapi.azurewebsites.net/api/RoomTypes";
         static string ProgramTypeApi = "https://signmeinwebapi.azurewebsites.net/api/Programs";
 
+
         // list for searching 
         List<FreeRoom> _roomsCurrentlyFree = new List<FreeRoom>();
         List<RoomType> _roomTypesList = new List<RoomType>();
@@ -40,25 +41,16 @@ namespace GroupProjectApp
 
         public Search()
         {
+            this.InitializeComponent();
             //Get and proccess data to populate currently free rooms listbox - send freeRooms for sort
             PopulateFreeRoomsList();
             PopulateProgramsCombo();
             PropulateRoomType();
-            #region 
-            //PopulateRoomTypeCombo();
-            //PopulateProgramTypeCombo();
-
-            ////AddUserID();
-            ////GetFreeCurrentRooms();
-            ////GetPrograms();
-            #endregion
-
-            this.InitializeComponent();
         }
 
         private async void PropulateRoomType()
         {
-            var rawData = await GetRawHttpData(RoomTypeApi);
+            var rawData = await App.LoadDataFromAPI(RoomTypeApi);
             var DataArray = JsonConvert.DeserializeObject<RoomType[]>(rawData);
 
             foreach (var item in DataArray)
@@ -66,11 +58,16 @@ namespace GroupProjectApp
                 _roomTypesList.Add(new RoomType { Id = item.Id, Type = item.Type });
             }
             cbxRoomType.ItemsSource = _roomTypesList;
+
+            if (_roomTypesList.Count() != 0)
+            {
+                cbxRoomType.SelectedIndex = 0;
+            }
         }
 
         private async void PopulateProgramsCombo()
         {
-            var rawData = await GetRawHttpData(ProgramTypeApi);
+            var rawData = await App.LoadDataFromAPI(ProgramTypeApi);
 
             if (rawData != null)
             {
@@ -78,17 +75,22 @@ namespace GroupProjectApp
 
                 foreach (var item in DataArray)
                 {
-
                     _programList.Add(item);
                 }
 
                 cbxPrograms.ItemsSource = _programList;
+
+                if (_programList.Count() != 0)
+                {
+                    cbxPrograms.SelectedIndex = 0;
+                }
             }
+            else { }
         }
         private async void PopulateFreeRoomsList()
         {
 
-            var rawData = await GetRawHttpData(FreeRoomsApi);
+            var rawData = await App.LoadDataFromAPI(FreeRoomsApi);
             var DataArray = JsonConvert.DeserializeObject<FreeRoom[]>(rawData);
 
             foreach (var item in DataArray)
@@ -100,169 +102,88 @@ namespace GroupProjectApp
             lbxCurrentlyFreeRooms.ItemsSource = _roomsCurrentlyFree;
         }
 
-        public async Task<string> GetRawHttpData(string apiAddress)
+        private void cbxRoomType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var rawAuthInfo = App.validAuthDetails;
-            var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
-            var rawData = "";
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
-            HttpResponseMessage ResponseMsg = await httpClient.GetAsync(apiAddress);
+            List<FreeRoom> _RoomTypeAvail = new List<FreeRoom>();
 
-            if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.OK)
+            RoomType selected = (RoomType)cbxRoomType.SelectedValue;
+
+            foreach (var freeRoom in _roomsCurrentlyFree)
             {
-                rawData = await ResponseMsg.Content.ReadAsStringAsync();
 
-            }
-            else if (ResponseMsg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                rawData = null;
+                if (freeRoom.Type == selected.Type)
+                {
+                    _RoomTypeAvail.Add(freeRoom);
+                }
             }
 
-            return rawData;
+            lbxRoomType.ItemsSource = _RoomTypeAvail;
         }
 
-        //private async void AddUserID()
+        // BUTTON CLICK ACTIONS
+        private void btnWatchCF_Click(object sender, RoutedEventArgs e)
+        {
+            FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
+            App.AddOrRemoveFromWatchList(room.Code);
+        }
+
+        private void btnWatchRT_Click(object sender, RoutedEventArgs e)
+        {
+            FreeRoom room = (FreeRoom)lbxRoomType.SelectedItem;
+            App.AddOrRemoveFromWatchList(room.Code);
+        }
+
+        private void btnWatchPT_Click(object sender, RoutedEventArgs e)
+        {
+
+            FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
+            App.AddOrRemoveFromWatchList(room.Code);
+            //EnableDisableButton(selected, buttonName);
+
+        }
+
+        //private void EnableDisableButton(FreeRoom selected, string buttonName)
         //{
-
-
-        //    #region UserIdsHttpClient 
-        //    HttpClient userIdClient = new HttpClient();
-        //    userIdClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
-        //    HttpResponseMessage freeRoomsResponseMsg = await userIdClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/FreeRooms");
-
-
-
-        //    var freeRoomsRaw = await freeRoomsResponseMsg.Content.ReadAsStringAsync();
-        //    #endregion
-
-        //    var cfreeRooms = JsonConvert.DeserializeObject<FreeRoom[]>(freeRoomsRaw);
-        //    List<FreeRoom> _roomsCurrentlyFree = new List<FreeRoom>();
-
-        //    foreach (var item in cfreeRooms)
+        //    foreach (var room in MainPage._WatchedRooms)
         //    {
-        //        _roomsCurrentlyFree.Add(item);
-
-        //    }
-
-        //    lbxCurrentlyFreeRooms.ItemsSource = _roomsCurrentlyFree;
-        //}
-
-        //private async void GetPrograms()
-        //{
-        //    try
-        //    {
-        //        // get valid authentication details from app page and deserialise them
-        //        var rawAuthInfo = App.validAuthDetails;
-
-
-        //        // 
-
-
-
-
-        //        var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
-
-        //        #region ProgramsHttpClient 
-        //        HttpClient userIdClient = new HttpClient();
-        //        userIdClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
-
-        //        HttpResponseMessage freeRoomsResponseMsg = await userIdClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/FreeRooms");
-        //        var freeRoomsRaw = await freeRoomsResponseMsg.Content.ReadAsStringAsync();
-
-        //        HttpResponseMessage programsResponseMessage = await userIdClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/FreeRooms");
-        //        var programsRaw = await programsResponseMessage.Content.ReadAsStringAsync();
-
-        //        HttpResponseMessage RoomTypeResponseMsg = await userIdClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/RoomTypes");
-        //        var RoomTypeRaw = await RoomTypeResponseMsg.Content.ReadAsStringAsync();
-        //        #endregion
-
-
-        //        var freeRoomsList = JsonConvert.DeserializeObject<FreeRoom[]>(freeRoomsRaw);
-        //        var programsList = JsonConvert.DeserializeObject<ProgramType[]>(programsRaw);
-        //        var roomTypeList = JsonConvert.DeserializeObject<RoomType[]>(RoomTypeRaw);
-
-        //        foreach (var item in freeRoomsList)
+        //        if (room.Code == selected.Code)
         //        {
-        //            _roomsCurrentlyFree.Add(item);
+        //            Button button = new Button();
+        //            button.Name = buttonName;
+        //            button.IsEnabled = false;
+
         //        }
-
-        //        List<DropDownItem> _programsList = new List<DropDownItem>();
-
-        //        foreach (var item in programsList)
+        //        else
         //        {
-        //            _programsList.Add(new DropDownItem { Text = item.f, Value = Convert.ToString(item.ID) });
+        //            Button button = new Button();
+        //            button.Name = buttonName;
+
+        //            button.IsEnabled = true;
         //        }
-
-
-
-
-
-        //        #region method required here or somewhere to filter through rooms
-
-
-
-        //        #endregion
-
-
-
-        //        foreach (var item in _roomsCurrentlyFree)
-        //        {
-        //            if (cbxRoomType.SelectedValue.ToString() == item.Type) { lbxRoomType.Items.Add(item); }
-        //        }
-
-
-
-
-        //        List<RoomType> _roomtypes = new List<RoomType>();
-
-
-
-        //        foreach (var item in roomTypeList)
-        //        {
-
-        //            _roomtypes.Add(item);
-        //        }
-
-        //        cbxRoomType.ItemsSource = _roomtypes;
-        //    }
-
-
-        //    catch
-        //    {
 
         //    }
         //}
 
-        //private async void GetFreeCurrentRooms()
-        //{
-        //    try
-        //    {
-        //        // get valid authentication details from app page and deserialise them
-        //        var rawAuthInfo = App.validAuthDetails;
-        //        var authDetails = JsonConvert.DeserializeObject<ValidAuth>(rawAuthInfo);
+        private void btnWDayAndTime_Click(object sender, RoutedEventArgs e)
+        {
 
-        //        #region ProgramsHttpClient 
-        //        HttpClient userIdClient = new HttpClient();
-        //        userIdClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(authDetails.token_type, authDetails.access_token);
-        //        HttpResponseMessage freeRoomsResponseMsg = await userIdClient.GetAsync("https://signmeinwebapi.azurewebsites.net/api/FreeRooms");
-        //        var freeRoomsRaw = await freeRoomsResponseMsg.Content.ReadAsStringAsync();
-        //        #endregion
 
-        //        var cfreeRooms = JsonConvert.DeserializeObject<FreeRoom[]>(freeRoomsRaw);
+        }
+        private void lbxCurrentlyFreeRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FreeRoom selected = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
 
-        //        foreach (var item in cfreeRooms)
-        //        {
-        //            _roomsCurrentlyFree.Add(item);
-        //        }
-        //    }
-        //    catch
-        //    {
 
-        //    }
-
-        //}
+            foreach (var room in MainPage._WatchedRooms)
+            {
+                if (room.Code == selected.Code)
+                {
+                    btnWatchCF.IsEnabled = false;
+                }
+                else { btnWatchCF.IsEnabled = true; }
+            }
+        }
 
         #region nav
 
@@ -291,25 +212,28 @@ namespace GroupProjectApp
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
 
+
+
+
+
         #endregion
 
-        private void cbxRoomType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbxPrograms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            List<FreeRoom> _RoomTypeAvail = new List<FreeRoom>();
-
-            RoomType selected = (RoomType)cbxRoomType.SelectedValue;
+            List<FreeRoom> _ProgramRoomAvail = new List<FreeRoom>();
+            ProgramType program = (ProgramType)cbxPrograms.SelectedItem;
 
             foreach (var freeRoom in _roomsCurrentlyFree)
             {
 
-                if (freeRoom.Type == selected.Type)
+                if (freeRoom.Description != null && freeRoom.Description.Contains(program.Description) == true)
                 {
-                    _RoomTypeAvail.Add(freeRoom);
+                    _ProgramRoomAvail.Add(freeRoom);
                 }
             }
 
-            lbxRoomType.ItemsSource = _RoomTypeAvail;
+            lbxPrograms.ItemsSource = _ProgramRoomAvail;
+
         }
     }
 }
