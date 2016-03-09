@@ -170,16 +170,16 @@
 
             <div class="col-lg-4">
 
-                <h3 style="text-align:center;margin-top:50px;">Room Info</h3>
+                <h3 style="text-align:center;margin-top:60px;">Room Info</h3>
 
 
-                <h4 style="text-align:center"><i class="fa fa-info-circle"></i> Click on a room from the free rooms list</h4>
-                <ul style="margin-top:40px;" class="list-group" id="freeRoomInfo">
+                <h4 style="text-align:center"><i style="color:#337BB7;" class="fa fa-info-circle"></i> Click on a room from the free rooms list</h4>
+                <ul style="margin-top:20px;" class="list-group" id="freeRoomInfo">
                     <li class="list-group-item ">Room Number<span id="roomNum" class="pull-right"></span></li>
                     <li class="list-group-item ">Room Size<span id="roomSize" class="pull-right"></span></li>
                     <li class="list-group-item ">Room Count<span id="roomCount" class="pull-right"></span></li>
                     <li class="list-group-item ">Room Type<span id="roomType" class="pull-right"></span></li>
-                    <li class="list-group-item "><button type="button" class="btn btn-primary btn-md "><span class="glyphicon glyphicon-eye-open"></span>  Watch Room</button></li>
+                    <li class="list-group-item "><button type="button" onclick="watchRoom((document.getElementById('roomNum')).innerHTML)" class="btn btn-primary btn-md "><span class="glyphicon glyphicon-eye-open"></span>  Watch Room</button></li>
                 </ul>
 
             </div>
@@ -218,6 +218,11 @@
                     freeRoomsList.appendChild(newListItem);
                 }
             }
+        }
+
+        function watchRoom(roomCode){
+            alert(roomCode);
+
         }
 
         function formatFree(dataarray) {
