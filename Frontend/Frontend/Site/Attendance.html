@@ -2,7 +2,9 @@
 <html>
 <head>
     <title></title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap Core CSS -->
     <link href="../Content/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -25,13 +27,21 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 
-<body>
+<body style="background-color:#FFCF3A;">
+    <!--Check if user should be here before loading page-->
+    <script>
+        if (localStorage.getItem("authToken"))
+        { }
+        else {
+            window.location = "401Error.html";
+        }
+    </script>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -40,27 +50,177 @@
                 <a class="navbar-brand" href="#">Sign Me In</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav">
-                    
+
                     <li>
+
                         <a href="Timetable.html">Dashboard</a>
                     </li>
                     <li>
                         <a href="My Account.html">My Account</a>
+
                     </li>
                     <li>
                         <a href="#">Attendance</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a data-toggle="modal" data-target="#login" href="#"><span id="logoutIcon" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <li id="MyInfo" style="color:white;font-weight:bold;margin-top:15px;"></li>
+                    <li id="logoutIcon"><a><span id="logoutIcon" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
+    <div class="container">
+         <h3 style="margin-top:100px;">Check Your Classes Attendance</h3>
+        <div class="row" style="margin-top:10px;">
+            <div class='col-sm-5'>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="datePicker">Step 1: Choose Week</label>
+                        <div class="input-group">
+                            <input id="datePicker" type="week" class="form-control" />
+                            <span class="input-group-btn">
+                                <button onclick="lecturerId()" class="btn btn-success" type="button">
+                                    Search
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <label style="margin-top:10px" for="classList">Step 2: Choose Class</label>
+                <div id="classList" class="list-group" style="margin-top:10px;max-height: 310px;overflow-y:scroll; ">
+                </div>
 
+
+            </div>
+            <div class="col-lg-6">
+                <ul class="list-group" id="attendance">
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <script></script>
+    <!-- jQuery -->
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <script>
+
+    function getLecturerWeek(idNum)
+    {
+        var str1 = "https://signmeinwebapi.azurewebsites.net/api/LecturerTimetable?lectID=";
+        var str3 = "&weekNum=";
+        var str4 = $('#datePicker').val();
+        var n = str4.lastIndexOf('W');
+        var result = str4.substring(n + 1);
+        var res = str1.concat(idNum, str3, result);
+
+        $.ajax({
+            url: res,
+            type: "GET",
+            headers: {
+                "Authorization": "bearer " + localStorage.getItem("authToken")
+            },
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                //alert(data);
+                formatLecturerClasses(data);
+            },
+            error: function (jqXHR) {
+                alert('error');
+            }
+        });
+    }
+    function lecturerId()
+    {
+        // Ajax request to get user info
+        $.ajax({
+            url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
+            type: "GET",
+            headers: {
+                "Authorization": "bearer " + localStorage.getItem("authToken")
+            },
+            success: function (data) {
+                getLecturerWeek(data.UserID);
+
+            },
+            error: function (jqXHR) {
+                alert('error');
+            }
+        });
+    }
+
+   
+    function getFreeRooms() {
+    // Ajax request to get all free rooms
+
+    $.ajax({
+    url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+    type: "GET",
+    headers: {
+    "Authorization": "bearer " + localStorage.getItem("authToken")
+    },
+    success: function (data) {
+    formatFree(data);
+
+    },
+    error: function (jqXHR) {
+    alert('error loading free rooms');
+    }
+    });
+    }
+
+    function formatLecturerClasses(dataArray) {
+        //grab list
+       
+        var classList = document.getElementById('classList');
+        while (classList.firstChild) {
+            classList.removeChild(classList.firstChild);
+        }
+        //loops through all classes
+        for (i = 0; i < dataArray.length; i++) {
+            var newListItem;
+            //create new list item
+            newListItem = document.createElement('button');
+            newListItem.setAttribute('href', '#');
+            newListItem.setAttribute('onclick', 'classInfo(this.text)');
+            newListItem.setAttribute('type', 'button');
+            newListItem.setAttribute('class', 'list-group-item');
+            newListItem.text = dataArray[i].Name;
+            //get weekDayNumber as a day in text
+            var weekDay = changeToDay((dataArray[i].WeekDayNumber));
+            //<span style="font-weight:bold;">9:00</span><span></span><span class="badge"></span>
+            newListItem.innerHTML = '<span style="font-weight:bold">' + dataArray[i].Name + "</span><span>   " + dataArray[i].Code + "  " + (dataArray[i].DayBlock + 8) + ":00  " + weekDay ;
+            //append it to the ul
+            classList.appendChild(newListItem);
+        }
+    };
+
+    function changeToDay(date)
+    {
+        var weekday = new Array(8)
+        weekday[0] = "";
+        weekday[1] = "Sunday";
+        weekday[2] = "Monday";
+        weekday[3] = "Tuesday";
+        weekday[4] = "Wednesday";
+        weekday[5] = "Thursday";
+        weekday[6] = "Friday";
+        weekday[7] = "Saturday";
+
+        return weekday[date];
+        
+    }
+
+    function classInfo(name) {
+
+    }
+    </script>
 </body>
 </html>
