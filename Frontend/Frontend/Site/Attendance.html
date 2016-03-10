@@ -75,12 +75,15 @@
         <!-- /.container -->
     </nav>
     <div class="container">
-         <h3 style="margin-top:100px;">Check Your Classes Attendance</h3>
+        <h3 style="margin-top:70px;">Check Your Class's Attendance</h3>
         <div class="row" style="margin-top:10px;">
-            <div class='col-sm-5'>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <label for="datePicker">Step 1: Choose Week</label>
+            <div class='col-sm-4'>
+                <div style="margin-top:10px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Step 1: Choose Week</h3>
+                    </div>
+                    <div class="panel-body">
+
                         <div class="input-group">
                             <input id="datePicker" type="week" class="form-control" />
                             <span class="input-group-btn">
@@ -92,135 +95,204 @@
                         </div>
                     </div>
                 </div>
-                <label style="margin-top:10px" for="classList">Step 2: Choose Class</label>
-                <div id="classList" class="list-group" style="margin-top:10px;max-height: 310px;overflow-y:scroll; ">
+                <div style="margin-top:10px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Step 2: Choose Class</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="classList" class="list-group" style="margin-top:10px;max-height: 200px;overflow-y:scroll; ">
+                        </div>
+                    </div>
                 </div>
 
-
             </div>
-            <div class="col-lg-6">
-                <ul class="list-group" id="attendance">
-                </ul>
+            <div class="col-lg-4">
+                <div style="margin-top:10px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Step 3: Choose Student for more info</h3>
+                    </div>
+                    <div class="panel-body">
+                        <label style="margin-top:10px">Colour codes to show how long a student attended class:</label>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button class="btn btn-success" type="button">
+                                80% + <span class="badge"></span>
+                            </button>
+                            <button class="btn btn-info type=" button">
+                                40% + <span class="badge"></span>
+                            </button>
+                            <button class="btn btn-warning" type="button">
+                                40% - <span class="badge"></span>
+                            </button>
+                            <button class="btn btn-danger" type="button">
+                                Absent <span class="badge"></span>
+                            </button>
+                        </div>
+                        <div id="attendanceList" class="list-group" style="margin-top:10px;max-height: 310px;overflow-y:scroll; ">
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div style="margin-top:10px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Step 4: Student Info</h3>
+                    </div>
+                    <div class="panel-body">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <script></script>
-    <!-- jQuery -->
-    <script src="../Scripts/jquery-1.9.1.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../Scripts/bootstrap.min.js"></script>
-    <script>
+        <script></script>
+        <!-- jQuery -->
+        <script src="../Scripts/jquery-1.9.1.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../Scripts/bootstrap.min.js"></script>
+        <script>
 
-    function getLecturerWeek(idNum)
-    {
-        var str1 = "https://signmeinwebapi.azurewebsites.net/api/LecturerTimetable?lectID=";
-        var str3 = "&weekNum=";
-        var str4 = $('#datePicker').val();
-        var n = str4.lastIndexOf('W');
-        var result = str4.substring(n + 1);
-        var res = str1.concat(idNum, str3, result);
+            function getLecturerWeek(idNum) {
+                var str1 = "https://signmeinwebapi.azurewebsites.net/api/LecturerTimetable?lectID=";
+                var str3 = "&weekNum=";
+                var str4 = $('#datePicker').val();
+                var n = str4.lastIndexOf('W');
+                var result = str4.substring(n + 1);
+                var res = str1.concat(idNum, str3, result);
 
-        $.ajax({
-            url: res,
-            type: "GET",
-            headers: {
-                "Authorization": "bearer " + localStorage.getItem("authToken")
-            },
-            success: function (data) {
-                //alert(JSON.stringify(data));
-                //alert(data);
-                formatLecturerClasses(data);
-            },
-            error: function (jqXHR) {
-                alert('error');
+                $.ajax({
+                    url: res,
+                    type: "GET",
+                    headers: {
+                        "Authorization": "bearer " + localStorage.getItem("authToken")
+                    },
+                    success: function (data) {
+                        //alert(JSON.stringify(data));
+                        //alert(data);
+                        formatLecturerClasses(data);
+                    },
+                    error: function (jqXHR) {
+                        alert('error');
+                    }
+                });
             }
-        });
-    }
-    function lecturerId()
-    {
-        // Ajax request to get user info
-        $.ajax({
-            url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
-            type: "GET",
-            headers: {
-                "Authorization": "bearer " + localStorage.getItem("authToken")
-            },
-            success: function (data) {
-                getLecturerWeek(data.UserID);
 
-            },
-            error: function (jqXHR) {
-                alert('error');
+            function formatLecturerClasses(dataArray) {
+                //grab list
+
+                var classList = document.getElementById('classList');
+                while (classList.firstChild) {
+                    classList.removeChild(classList.firstChild);
+                }
+                //loops through all classes
+                for (i = 0; i < dataArray.length; i++) {
+                    var newListItem;
+                    //create new list item
+                    newListItem = document.createElement('button');
+                    newListItem.setAttribute('href', '#');
+                    newListItem.setAttribute('onclick', 'classInfo(this.text)');
+                    newListItem.setAttribute('type', 'button');
+                    newListItem.setAttribute('class', 'list-group-item');
+                    newListItem.text = dataArray[i].Id;
+                    //get weekDayNumber as a day in text
+                    var weekDay = changeToDay((dataArray[i].WeekDayNumber));
+                    //<span style="font-weight:bold;">9:00</span><span></span><span class="badge"></span>
+                    newListItem.innerHTML = '<span style="font-weight:bold">' + dataArray[i].Name + "</span><span>   " + dataArray[i].Code + "  " + (dataArray[i].DayBlock + 8) + ":00  " + weekDay;
+                    //append it to the ul
+                    classList.appendChild(newListItem);
+                }
+            };
+
+            function lecturerId() {
+                // Ajax request to get user info
+                $.ajax({
+                    url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
+                    type: "GET",
+                    headers: {
+                        "Authorization": "bearer " + localStorage.getItem("authToken")
+                    },
+                    success: function (data) {
+                        getLecturerWeek(data.UserID);
+
+                    },
+                    error: function (jqXHR) {
+                        alert('error');
+                    }
+                });
             }
-        });
-    }
 
-   
-    function getFreeRooms() {
-    // Ajax request to get all free rooms
 
-    $.ajax({
-    url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
-    type: "GET",
-    headers: {
-    "Authorization": "bearer " + localStorage.getItem("authToken")
-    },
-    success: function (data) {
-    formatFree(data);
+            function getFreeRooms() {
+                // Ajax request to get all free rooms
 
-    },
-    error: function (jqXHR) {
-    alert('error loading free rooms');
-    }
-    });
-    }
+                $.ajax({
+                    url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+                    type: "GET",
+                    headers: {
+                        "Authorization": "bearer " + localStorage.getItem("authToken")
+                    },
+                    success: function (data) {
+                        formatFree(data);
 
-    function formatLecturerClasses(dataArray) {
-        //grab list
-       
-        var classList = document.getElementById('classList');
-        while (classList.firstChild) {
-            classList.removeChild(classList.firstChild);
-        }
-        //loops through all classes
-        for (i = 0; i < dataArray.length; i++) {
-            var newListItem;
-            //create new list item
-            newListItem = document.createElement('button');
-            newListItem.setAttribute('href', '#');
-            newListItem.setAttribute('onclick', 'classInfo(this.text)');
-            newListItem.setAttribute('type', 'button');
-            newListItem.setAttribute('class', 'list-group-item');
-            newListItem.text = dataArray[i].Name;
-            //get weekDayNumber as a day in text
-            var weekDay = changeToDay((dataArray[i].WeekDayNumber));
-            //<span style="font-weight:bold;">9:00</span><span></span><span class="badge"></span>
-            newListItem.innerHTML = '<span style="font-weight:bold">' + dataArray[i].Name + "</span><span>   " + dataArray[i].Code + "  " + (dataArray[i].DayBlock + 8) + ":00  " + weekDay ;
-            //append it to the ul
-            classList.appendChild(newListItem);
-        }
-    };
+                    },
+                    error: function (jqXHR) {
+                        alert('error loading free rooms');
+                    }
+                });
+            }
 
-    function changeToDay(date)
-    {
-        var weekday = new Array(8)
-        weekday[0] = "";
-        weekday[1] = "Sunday";
-        weekday[2] = "Monday";
-        weekday[3] = "Tuesday";
-        weekday[4] = "Wednesday";
-        weekday[5] = "Thursday";
-        weekday[6] = "Friday";
-        weekday[7] = "Saturday";
 
-        return weekday[date];
-        
-    }
 
-    function classInfo(name) {
+            function changeToDay(date) {
+                var weekday = new Array(8)
+                weekday[0] = "";
+                weekday[1] = "Sunday";
+                weekday[2] = "Monday";
+                weekday[3] = "Tuesday";
+                weekday[4] = "Wednesday";
+                weekday[5] = "Thursday";
+                weekday[6] = "Friday";
+                weekday[7] = "Saturday";
 
-    }
-    </script>
+                return weekday[date];
+
+            }
+
+            function classInfo(ClassId) {
+                // GET //api/Attendance?dayModuleId={dayModuleId}
+                var str1 = "https://signmeinwebapi.azurewebsites.net/api/Attendance?dayModuleId=";
+                var res = str1.concat(ClassId);
+
+                $.ajax({
+                    url: res,
+                    type: "GET",
+                    headers: {
+                        "Authorization": "bearer " + localStorage.getItem("authToken")
+                    },
+                    success: function (data) {
+                        //alert(JSON.stringify(data));
+                        attendanceFormat(data);
+                    },
+                    error: function (jqXHR) {
+                        alert('error');
+                    }
+                });
+
+            }
+
+            function attendanceFormat(students) {
+                for (i = 0; i < students.length; i++) {
+                    //class is 1 hour long
+                    if (students[i].Length == 1) {
+
+                    }
+                    //class is 2 hours long
+                    else
+                    {
+                    
+                    }
+                }
+
+            }
+
+        </script>
 </body>
 </html>
