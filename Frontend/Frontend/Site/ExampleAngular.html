@@ -2,11 +2,16 @@
 <html>
 <head>
     <title></title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap Core CSS -->
     <link href="../Content/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
-    <link href="../css/business-frontpage.css" rel="stylesheet" />
+    <link href="../css/custom.css" rel="stylesheet" />
+
+    <!--jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -15,29 +20,450 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-</head>
-<body>
-    <div ng-app="myApp" ng-controller="customersCtrl">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"></script>
 
-        <ul>
-            <li ng-repeat="x in names">
-                {{ x.Name + ', ' + x.Room }}
-            </li>
-        </ul>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <!--Check if user should be here before loading page-->
+    <script>
+        if (localStorage.getItem("authToken"))
+        { }
+        else {
+            window.location = "401Error.html";
+        }
+    </script>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Sign Me In</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li>
+                        <a href="#">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="My Account.html">My Account</a>
+
+                    </li>
+                    <li>
+                        <a href="Attendance.html">Attendance</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="MyInfo" style="color:white;font-weight:bold;margin-top:15px;"></li>
+                    <li id="logoutIcon"><a><span id="logoutIcon" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <div class="container-fluid">
+        <div class="row" style="background-color:#FFCF3A;height:auto;margin-top:10px;margin-bottom:50px;">
+            <div class="col-lg-4">
+                <div style="margin-top:50px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">My Timetable Today</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group" id="timetableToday">
+                            <li class="list-group-item t1"><span style="font-weight:bold;">9:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">10:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">11:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">12:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">13:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">14:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">15:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">16:00</span><span></span><span class="badge"></span></li>
+                            <li class="list-group-item t1"><span style="font-weight:bold;">17:00</span><span></span><span class="badge"></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div style="margin-top:50px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Free Rooms Today</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="btn-group" role="group" aria-label="..." style="margin-left:10px;">
+                                <div class="btn-group" role="group">
+                                    <button type="button" onclick="getFreeRooms()" class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span>  All Rooms</button>
+                                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span><i class="fa fa-desktop"></i></span>  Type
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a onclick="typeSearch('Lab')">Lab</a></li>
+                                        <li><a onclick="typeSearch('Flat Classroom')" href="#">Flat Classroom</a></li>
+                                        <li><a onclick="typeSearch('Tiered Classroom')" href="#">Tiered Classroom</a></li>
+                                        <li><a onclick="typeSearch('Lecture Hall')" href="#">Lecture Hall</a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        Time
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a onclick="timeSearch('9')">9:00</a></li>
+                                        <li><a onclick="timeSearch('10')">10:00</a></li>
+                                        <li><a onclick="timeSearch('11')">11:00</a></li>
+                                        <li><a onclick="timeSearch('12')">12:00</a></li>
+                                        <li><a onclick="timeSearch('13')">13:00</a></li>
+                                        <li><a onclick="timeSearch('14')">14:00</a></li>
+                                        <li><a onclick="timeSearch('15')">15:00</a></li>
+                                        <li><a onclick="timeSearch('16')">16:00</a></li>
+                                        <li><a onclick="timeSearch('17')">17:00</a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span><i class="fa fa-puzzle-piece"></i></span>  Misc
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a onclick="miscSearch('Visual Studio')">Visual Studio</a></li>
+                                        <li><a onclick="miscSearch('Chrome')">Chrome</a></li>
+                                        <li><a onclick="miscSearch('Photoshop')">Photoshop</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-2"></div>
+                        </div>
+                        <div class="row">
+                            <div id="freeRoomsList" class="list-group" style="margin-top:10px;max-height: 310px;overflow-y:scroll; ">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <h3 style="text-align:center;margin-top:60px;">Room Info</h3>
+
+
+                <h4 style="text-align:center"><i style="color:#337BB7;" class="fa fa-info-circle"></i> Click on a room from the free rooms list</h4>
+                <ul style="margin-top:20px;" class="list-group" id="freeRoomInfo">
+                    <li class="list-group-item ">Room Number<span id="roomNum" class="pull-right"></span></li>
+                    <li class="list-group-item ">Room Size<span id="roomSize" class="pull-right"></span></li>
+                    <li class="list-group-item ">Room Count<span id="roomCount" class="pull-right"></span></li>
+                    <li class="list-group-item ">Room Type<span id="roomType" class="pull-right"></span></li>
+                    <li class="list-group-item "><button type="button" onclick="watchRoom((document.getElementById('roomNum')).innerHTML)" class="btn btn-primary btn-md "><span class="glyphicon glyphicon-eye-open"></span>  Watch Room</button></li>
+                </ul>
+
+            </div>
+        </div>
+
 
     </div>
+
+
+
     <!-- jQuery -->
     <script src="../Scripts/jquery-1.9.1.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
-var app = angular.module('myApp', []);
-app.controller('customersCtrl', function($scope, $http) {
-    $http.get("http://signmeinwebapi.azurewebsites.net/api/timetables/8?dayOfWeek=3")
-    .then(function(response) {$scope.names = response.data;});
-});
+        //organises the free rooms by type selected.
+        function filterType(freeRooms, type) {
+            //loops through all rooms
+            var freeRoomsList = document.getElementById('freeRoomsList');
+            while (freeRoomsList.firstChild) {
+                freeRoomsList.removeChild(freeRoomsList.firstChild);
+            }
+            for (i = 0; i < freeRooms.length; i++) {
+                if (freeRooms[i].RoomType == type) {
+                    //create new list item
+                    newListItem = document.createElement('button');
+                    // newListItem.setAttribute('data-toggle', 'modal');
+                    // newListItem.setAttribute('data-target', '#freeRoomModal');
+                    newListItem.setAttribute('href', '#');
+                    newListItem.setAttribute('onclick', 'freeRoomModal(this.text)');
+                    newListItem.setAttribute('type', 'button');
+                    newListItem.setAttribute('class', 'list-group-item l1');
+                    newListItem.text = freeRooms[i].Code;
+                    newListItem.innerHTML = freeRooms[i].Code;
+                    //append it to the ul
+                    freeRoomsList.appendChild(newListItem);
+                }
+            }
+        }
+
+        function watchRoom(roomCode){
+            alert(roomCode);
+           // POST api/WatchRooms?roomid={roomid}
+
+            // Ajax request to get users
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/Rooms" ,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].Code == roomCode)
+                        {
+                            setWatchRoom(data[i].Id);
+                        }
+                    }
+                },
+                error: function (jqXHR) {
+                    alert('error waqtchRoom');
+                }
+            });
+        }
+        function setWatchRoom(roomID)
+        {
+            var stri1 = "https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=";
+            var add = stri1.concat(roomID);
+            alert(add);
+            $.ajax({
+                url: add,
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                data: {
+                    "id": roomID,
+                },
+                success: function (data) {
+                    alert("watching");
+                },
+                error: function (jqXHR) {
+                    alert("error setwatchroom");
+                }
+            });
+        }
+
+        function formatFree(dataarray) {
+            //grab all rows of list for free rooms
+            var freeRoomsList = document.getElementById('freeRoomsList');
+            while (freeRoomsList.firstChild) {
+                freeRoomsList.removeChild(freeRoomsList.firstChild);
+            }
+            //loops through all rooms
+            for (i = 0; i < dataarray.length; i++) {
+                //create new list item
+                newListItem = document.createElement('button');
+                // newListItem.setAttribute('data-toggle', 'modal');
+                // newListItem.setAttribute('data-target', '#freeRoomModal');
+                newListItem.setAttribute('href', '#');
+                newListItem.setAttribute('onclick', 'freeRoomInfo(this.text)');
+                newListItem.setAttribute('type', 'button');
+                newListItem.setAttribute('class', 'list-group-item l1');
+                newListItem.text = dataarray[i].Code;
+                newListItem.innerHTML = dataarray[i].Code;
+                //append it to the ul
+                freeRoomsList.appendChild(newListItem);
+            }
+        };
+        function typeSearch(string) {
+            // Ajax request to get all free rooms
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data, string) {
+                    filterType(data, string);
+
+                },
+                error: function (jqXHR) {
+                    alert('error loading free rooms');
+                }
+            });
+        }
+        function freeRoomInfo(room) {
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].Code == room) {
+                            (document.getElementById('roomNum')).innerHTML = data[i].Code;
+                            (document.getElementById('roomSize')).innerHTML = data[i].Size;
+                            (document.getElementById('roomCount')).innerHTML = data[i].Count;
+                            (document.getElementById('roomType')).innerHTML = data[i].Type;
+                        }
+                    }
+
+                },
+                error: function (jqXHR) {
+                    alert('error loading free rooms');
+                }
+            });
+        }
+
+        function getRoomObject(MyRoom) {
+
+        }
+
+        function timeSearch(string) {
+
+
+            //get num of today and compare against weeks timetable
+            var day = new Date();
+            var weekDay = (day.getDay()) + 1;
+            //if sat/sun day is monday
+            if (weekDay == 7 || weekDay == 1) {
+                weekDay = 2;
+            }
+
+            var stri1 = "https://signmeinwebapi.azurewebsites.net/api/FreeRooms?weekDayNumber=";
+            var stri2 = weekDay;
+            var stri3 = "&dayBlock=";
+            var dayBlock = string - 8;
+            var add = stri1.concat(stri2, stri3, dayBlock);
+
+            $.ajax({
+
+                url: add,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data2) {
+
+                    formatFree(data2);
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+
+        }
+
+        function miscSearch(string) {
+            alert(string);
+        }
+
+
+        // $('.l1').on('click', '.l1', this.text, Modal() );
+
+        $("#logoutIcon").click(function () {
+            localStorage.setItem("authToken", "");
+            window.location = "../index.html";
+        });
+
+
+        //Populates the modal window that appears when you click a room
+        $(".l1").click(function () {
+            alert("hi");
+        });
+
+        //Populates a list with all rooms that are free now
+        function getFreeRooms() {
+            // Ajax request to get all free rooms
+
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    formatFree(data);
+
+                },
+                error: function (jqXHR) {
+                    alert('error loading free rooms');
+                }
+            });
+        }
+
+        //writes out todays timetable
+        function formatTimetable(Timetable) {
+            for (i = 0; i < Timetable.length; i++) {
+                //get num of today and compare against weeks timetable
+                var day = new Date();
+                var todayNum = (day.getDay()) + 1;
+                //if sat/sun day is monday
+                if (todayNum == 7 || todayNum == 1) {
+                    todayNum = 2;
+                }
+                //if class is on today
+                if (Timetable[i].WeekDayNumber == todayNum) {
+                    var time = Timetable[i].DayBlock;
+                    var length = Timetable[i].ClassLength;
+                    //grab all rows of table
+                    var Timetablerows = document.getElementsByClassName('t1');
+                    //if only an hour long class
+                    if (length == 1) {
+                        Timetablerows[(time - 1)].innerHTML = '<span style="font-weight:bold">' + ((time + 8) + ":00</span>") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
+                    }
+                        //if class 2 hours
+                    else if (length == 2) {
+                        Timetablerows[(time - 1)].innerHTML = '<span style="font-weight:bold">' + ((time + 8) + ":00</span>") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
+                        Timetablerows[(time)].innerHTML = '<span style="font-weight:bold">' + ((time + 9) + ":00</span>") + '<span>  ' + Timetable[i].ShortName + '</span><span class="badge">' + Timetable[i].Code + '</span>';
+                    }
+
+                }
+
+
+            }
+        }
+
+
+        $(document).ready(
+
+      function getTimetable() {
+
+          getFreeRooms();
+          var Timetablerows = document.getElementsByClassName('t1');
+
+          // Ajax request to get user info
+          var id = localStorage.getItem("UserID");
+          var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
+          var str2 = String(id);
+          var res = str1.concat(str2);
+
+          $.ajax({
+
+              url: res,
+              type: "GET",
+              headers: {
+                  "Authorization": "bearer " + localStorage.getItem("authToken")
+              },
+              success: function (data) {
+                  $("#test").html(JSON.stringify(data));
+                  formatTimetable(data);
+              },
+              error: function (jqXHR) {
+                  alert('error');
+              }
+          });
+      })
+
+
+
     </script>
-   
-  
+
+
 </body>
 </html>

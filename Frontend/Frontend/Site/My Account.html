@@ -2,7 +2,9 @@
 <html>
 <head>
     <title></title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap Core CSS -->
     <link href="../Content/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -42,12 +44,13 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    
                     <li>
-                        <a href="#">My Account</a>
+                        <a href="Timetable.html">Dashboard</a>
+                       
                     </li>
                     <li>
-                        <a href="Timetable.html">Timetable</a>
-                       
+                        <a href="#">My Account</a>
                     </li>
                     <li>
                         <a href="Attendance.html">Attendance</a>
@@ -62,88 +65,124 @@
         <!-- /.container -->
     </nav>
     <div class="container-fluid">
-        <div class="row" style="background-color:#3A78A4;height:550px;padding-top:70px;">
+        <div class="row" style="background-color:#FFCF3A;height:550px;padding-top:10px;">
             <div class="col-lg-1"></div>
-           <div style="background-color:white; border:2px solid white;border-radius:5px;" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                   <h2>My Info</h2>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <div style="margin-top:50px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">My Info</h3>
+                    </div>
+                    <div class="panel-body">
                    
-               <ul style="margin-top:20px;" class="list-group" id="MyInfo">
-                   <li class="list-group-item t1">First Name<span class="pull-right" id="fName"></span></li>
-                   <li class="list-group-item t1">Surname<span class="pull-right" id="sName"></span></li>
-                   <li class="list-group-item t1">Email<span class="pull-right" id="email"></span></li>
-                   <li class="list-group-item t1">ID Number<span class="pull-right" id="idNum"></span></li>
-                   <li class="list-group-item t1">Role<span id="role" class="pull-right"></span></li>
-                   <li class="list-group-item list-group-item-success">Change Password</li>
-                   <li class="list-group-item t1">Old <input type="password" placeholder="Old Password" class="input-sm pull-right" /></li>
-                   <li class="list-group-item t1">New <input type="password" placeholder="New Password" class="input-sm pull-right" /></li>
-                   <li class="list-group-item t1"><button class="btn btn-md btn-success"><span class="glyphicon glyphicon-pencil"></span>  Edit</button></li>
-                 
-               </ul>
-                         
-          
-           <div class="col-lg-6">
 
-           </div>
-        </div>
+                        <ul class="list-group" id="MyInfo">
+                            <li class="list-group-item t1">First Name<span class="pull-right" id="fName"></span></li>
+                            <li class="list-group-item t1">Surname<span class="pull-right" id="sName"></span></li>
+                            <li class="list-group-item t1">Email<span class="pull-right" id="email"></span></li>
+                            <li class="list-group-item t1">ID Number<span class="pull-right" id="idNum"></span></li>
+                            <li class="list-group-item t1">Role<span id="role" class="pull-right"></span></li>
+                            <li class="list-group-item list-group-item-success">Change Password</li>
+                            <li class="list-group-item t1">Old <input type="password" id="pwdOld" placeholder="Old Password" class="input-sm pull-right" /></li>
+                            <li class="list-group-item t1">New <input type="password" id="pwdNew" placeholder="New Password" class="input-sm pull-right" /></li>
+                            <li class="list-group-item t1"><button onclick="changePassword()" class="btn btn-md btn-success"><span class="glyphicon glyphicon-pencil"></span>  Edit</button></li>
+
+                        </ul>
+
+                        </div>
+                    </div>
+                </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <div style="margin-top:50px" class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">My Info</h3>
+                    </div>
+                    <div class="panel-body">
 
 
-</div>
-    <script>
-        $(document).ready(function getUserInfo() {
-      
+                        <ul class="list-group" id="MyInfo">
+                            <li class="list-group-item t1">First Name<span class="pull-right" id="fName"></span></li>
+                            <li class="list-group-item t1">Surname<span class="pull-right" id="sName"></span></li>
+                            <li class="list-group-item t1">Email<span class="pull-right" id="email"></span></li>
+                            <li class="list-group-item t1">ID Number<span class="pull-right" id="idNum"></span></li>
+                            <li class="list-group-item t1">Role<span id="role" class="pull-right"></span></li>
+                            <li class="list-group-item list-group-item-success">Change Password</li>
+                            <li class="list-group-item t1">Old <input type="password" id="pwdOld" placeholder="Old Password" class="input-sm pull-right" /></li>
+                            <li class="list-group-item t1">New <input type="password" id="pwdNew" placeholder="New Password" class="input-sm pull-right" /></li>
+                            <li class="list-group-item t1"><button onclick="changePassword()" class="btn btn-md btn-success"><span class="glyphicon glyphicon-pencil"></span>  Edit</button></li>
 
-            // Ajax request to get user info
-            $.ajax({
-                url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
-                type: "GET",
-                headers: {
-                    "Authorization": "bearer " + localStorage.getItem("authToken")
-                },
-                success: function (data) {
-                    localStorage.setItem("UserID", data['UserID']);
-                    (document.getElementById('fName')).innerHTML = data.FirstName;
-                    (document.getElementById('sName')).innerHTML = data.LastName;
-                    (document.getElementById('email')).innerHTML = data.Email;
-                    (document.getElementById('idNum')).innerHTML = data.StudentID;
-                    var roleString ="";
-                    for (i = 0; i < (data.Roles).length; i++) {             
-                        roleString += (data.Roles)[i] + " ";
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+                    </div>
+
+
+                </div>
+    <!-- jQuery -->
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../Scripts/bootstrap.min.js"></script>
+                <script>
+                    $(document).ready(function getUserInfo() {
+
+
+                        // Ajax request to get user info
+                        $.ajax({
+                            url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
+                            type: "GET",
+                            headers: {
+                                "Authorization": "bearer " + localStorage.getItem("authToken")
+                            },
+                            success: function (data) {
+                                localStorage.setItem("UserID", data['UserID']);
+                                (document.getElementById('fName')).innerHTML = data.FirstName;
+                                (document.getElementById('sName')).innerHTML = data.LastName;
+                                (document.getElementById('email')).innerHTML = data.Email;
+                                (document.getElementById('idNum')).innerHTML = data.StudentID;
+                                var roleString = "";
+                                for (i = 0; i < (data.Roles).length; i++) {
+                                    roleString += (data.Roles)[i] + " ";
+                                }
+                                (document.getElementById('role')).innerHTML = roleString;
+
+
+                            },
+                            error: function (jqXHR) {
+                                alert('error');
+                            }
+                        });
                     }
-                    (document.getElementById('role')).innerHTML = roleString;
-                   
-
-                },
-                error: function (jqXHR) {
-                    alert('error');
-                }
-            });
-        }
-        )
+                    )
 
 
-        function changePassword() {
+                    function changePassword() {
 
-            // Ajax request to change password
+                        // Ajax request to change password
+                        alert($('#pwdOld').val());
+                        alert($('#pwdNew').val());
+                        $.ajax({
 
-            $.ajax({
+                            url: "https://signmeinwebapi.azurewebsites.net/api/ChangePassword",
+                            type: "POST",
+                            headers: {
+                                "Authorization": "bearer " + localStorage.getItem("authToken")
+                            },
+                            data: {
+                                "currentPassword": $('#pwdOld').val(),
+                                "newPassword": $('#pwdNew').val(),
+                            },
+                            success: function (data) {
+                                alert("passwordChanged");
+                            },
+                            error: function (jqXHR) {
+                                alert('error');
+                            }
+                        });
+                    }
+                </script>
 
-                url: "https://signmeinwebapi.azurewebsites.net/api/ChangePassword",
-                type: "POST",
-                headers: {
-                    "Authorization": "bearer " + localStorage.getItem("authToken")
-                },
-                data: {
-                    "currentPassword": "Password",
-                    "newPassword": "chickensalad",
-                },
-                success: function (data) {
-                    $("#test").html(JSON.stringify(data));
-                },
-                error: function (jqXHR) {
-                    alert('error');
-                }
-            });
-        }
-    </script>
+
 </body>
 </html>

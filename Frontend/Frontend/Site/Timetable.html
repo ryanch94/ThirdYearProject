@@ -2,7 +2,9 @@
 <html>
 <head>
     <title></title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap Core CSS -->
     <link href="../Content/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -26,28 +28,14 @@
 </head>
 
 <body>
-    <!--Free Rooms Modal-->
-    <div id="freeRoomModal" class="modal fade " role="dialog">
-        <div class="modal-dialog modal-sm">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header ">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Room Details <i id="watchStar" style="float:right;margin-right:30px;color:red" title="Click me to watch this room!" class="fa fa-star fa-2x"></i></h4>
-                </div>
-                <div id="modalBodyFreeRoom" class="modal-body">
-                    <!--<p style="border:1px red solid;border-radius:3px;padding:10px;">Click the star if you would like to watch this room </p>-->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-link btn-group" data-toggle="modal" data-dismiss="modal" data-target="#login">Already a member?</button>
-                    <button type="button" class="btn btn-default btn-group" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success btn-group" onclick="newUser()" data-dismiss="modal">Register</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    <!--Check if user should be here before loading page-->
+    <script>
+        if (localStorage.getItem("authToken"))
+        { }
+        else {
+            window.location = "401Error.html";
+        }
+    </script>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -64,12 +52,13 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    
+                    <li>
+                        <a href="#">Dashboard</a>
+                    </li>
                     <li>
                         <a href="My Account.html">My Account</a>
 
-                    </li>
-                    <li>
-                        <a href="#">Timetable</a>
                     </li>
                     <li>
                         <a href="Attendance.html">Attendance</a>
@@ -222,7 +211,50 @@
 
         function watchRoom(roomCode){
             alert(roomCode);
+           // POST api/WatchRooms?roomid={roomid}
 
+            // Ajax request to get users 
+            $.ajax({
+
+                url: "https://signmeinwebapi.azurewebsites.net/api/Rooms" ,
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].Code == roomCode)
+                        {
+                            setWatchRoom(data[i].Id);
+                        }
+                    }
+                },
+                error: function (jqXHR) {
+                    alert('error waqtchRoom');
+                }
+            });
+        }
+        function setWatchRoom(roomID)
+        {
+            var stri1 = "https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=";
+            var add = stri1.concat(roomID);
+            alert(add);
+            $.ajax({
+                url: add,
+                type: "POST",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                data: {
+                    "id": roomID,
+                },
+                success: function (data) {
+                    alert("watching");
+                },
+                error: function (jqXHR) {
+                    alert("error setwatchroom");
+                }
+            });
         }
 
         function formatFree(dataarray) {
@@ -402,14 +434,6 @@
 
       function getTimetable() {
 
-          // $("#watchStar").hover(function () {
-          //     $(this).removeClass("fa-2x");
-          //     $(this).addClass("fa-3x");
-          // }, function () {
-          //     $(this).removeClass("fa-3x");
-          //     $(this).addClass("fa-2x");
-          // })
-
           getFreeRooms();
           var Timetablerows = document.getElementsByClassName('t1');
 
@@ -439,71 +463,7 @@
 
 
     </script>
-    <!--<script>
-            //grabs the JSON file from WebAPI and puts it in scope.names
-    var app = angular.module('myApp', []);
-    app.controller('customersCtrl', function($scope, $http) {
-        $http.get("http://signmeinwebapi.azurewebsites.net/api/timetables/8?dayOfWeek=3")
-        .then(function (response) {
-            $scope.names = response.data;
-            //function to take a class and enter it in its particular row.
-            function fillDays(element, index, array) {
-                var time = $scope.names[index].DayBlock;
-                var length = 2;
-                //grab all rows of table
-                var rows = document.getElementsByClassName('trow');
-                //if only an hour long class
-                if (length == 1) {
-                    rows[(time - 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 8 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
-                }
-                //if class 2 hours
-                else if (length == 2) {
-                    rows[(time - 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 8 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
-                    rows[(time)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 9 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
-                }
-                //if class 3 hours
-                else if (length == 3) {
-                    rows[(time - 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 8 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
-                    rows[(time)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 9 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
-                    rows[(time + 1)].innerHTML = '<div class="col-lg-4 col-xs-2">' + (time + 10 + ":00") + '</div><div class="col-lg-4 col-xs-6">' + element.Name + '</div><div class="col-lg-4 col-xs-4">' + element.Code + "</div>";
-                }
-
-
-            }
-            ($scope.names).forEach(fillDays);
-
-
-        });
-
-    });
-
-
-        </script>-->
-    <script>
-        $(document).ready(function () {
-            //var data = {};
-            var data = [
-
-                { "Name": "Maths", "Room": "b1041", "Length": "1", "Starts": "9" },
-                { "Name": "RAD", "Room": "B1042", "Length": "2", "Starts": "10" },
-                { "Name": "Web Prog", "Room": "C1003", "Length": "1", "Starts": "12" },
-                { "Name": "Maths", "Room": "b1041", "Length": "1", "Starts": "2" },
-                { "Name": "RAD", "Room": "B1042", "Length": "1", "Starts": "3" },
-                { "Name": "Web Prog", "Room": "C1003", "Length": "2", "Starts": "4" },
-
-            ];
-            //var id = 8;
-            //var str1 = '"';
-            //var str2 = "http://signmeinwebapi.azurewebsites.net/api/timetables/";
-            //var str3 = String(id);
-            //var str4 = "?dayOfWeek=2";
-            //var str5 = '"';
-            //var res = str1.concat(str2,str3,str4,str5);
-            //alert(res);
-            //$.getJSON(res).done(function (data2) {
-            //    data = data2;
-        });
-
-    </script>
+   
+    
 </body>
 </html>

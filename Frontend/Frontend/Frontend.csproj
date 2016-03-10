@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\custom.css" />
+    <Content Include="images\401.gif" />
     <Content Include="images\studentZebra-01.jpg" />
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
