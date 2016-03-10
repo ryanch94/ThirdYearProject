@@ -26,6 +26,8 @@ namespace GroupProjectApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        #region Lists for each individual days classes 
+
         // lists to hold each days classes
         List<DailyClass> MondayClasses = new List<DailyClass>();
         List<DailyClass> TuesdayClasses = new List<DailyClass>();
@@ -33,8 +35,7 @@ namespace GroupProjectApp
         List<DailyClass> ThursdayClasses = new List<DailyClass>();
         List<DailyClass> FridayClasses = new List<DailyClass>();
 
-        public static List<Room> _AllRooms = new List<Room>();
-        public static List<Room> _WatchedRooms = new List<Room>();
+        #endregion
 
         private string rawJSON;
 
@@ -42,37 +43,26 @@ namespace GroupProjectApp
         {
             this.InitializeComponent();
 
-            // Call to data methods to populate day lists
-            // Day numbering set to match sql server format
-            data(MondayClasses, 2);
-            data(TuesdayClasses, 3);
-            data(WednesdayClasses, 4);
-            data(ThursdayClasses, 5);
-            data(FridayClasses, 6);
-
-            GetAllRooms();
-            GetWatchedRooms();
-
-        }
-
-        private void GetWatchedRooms()
-        {
-            _WatchedRooms = WatchList._watchedRoomsList;
-        }
-
-        public async void GetAllRooms()
-        {
-            // get all rooms in database
-            string AllRoomsAPI = string.Format("https://signmeinwebapi.azurewebsites.net/api/Rooms");
-
-            var rawData = await App.LoadDataFromAPI(AllRoomsAPI);
-
-            var DataArray = JsonConvert.DeserializeObject<Room[]>(rawData);
-
-            foreach (var item in DataArray)
+            if (App.InternetConnected() == true)
             {
-                _AllRooms.Add(item);
+                // Call to data methods to populate day lists
+                // Day numbering set to match sql server format
+
+                #region Methods to populate each day list
+
+                data(MondayClasses, 2);
+                data(TuesdayClasses, 3);
+                data(WednesdayClasses, 4);
+                data(ThursdayClasses, 5);
+                data(FridayClasses, 6);
+
+                #endregion
             }
+            else {
+                tbkErrorMessage.Text = "No internet connection";
+                btnRefresh.Visibility = Visibility.Visible;
+            }
+
         }
 
         private async void data(List<DailyClass> dayClasses, int dayNumber)
@@ -81,9 +71,24 @@ namespace GroupProjectApp
 
             rawJSON = await App.LoadDataFromAPI(timetableAPI);
 
-            dayClasses = App.ConvertJsonToArray(rawJSON, dayNumber);
+            if (rawJSON != "AuthInvalid")
+            {
+                dayClasses = App.ConvertJsonToArray(rawJSON, dayNumber);
 
-            PopulateList(dayClasses, dayNumber);
+                PopulateList(dayClasses, dayNumber);
+            }
+            else if (rawJSON == "AuthInvalid") { DisableButtons(); }
+        }
+
+        private void DisableButtons()
+        {
+            tbkErrorMessage.Text = "Session expired. Log out";
+            btnHome.IsEnabled = false;
+            btnWatch.IsEnabled = false;
+            btnSearch.IsEnabled = false;
+            btnDayAndBlock.IsEnabled = false;
+            btnMyDetails.IsEnabled = false;
+
         }
 
         private void PopulateList(List<DailyClass> daysClasses, int dayNumber)
@@ -116,8 +121,14 @@ namespace GroupProjectApp
             #endregion
         }
 
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(MainPage), null);
+        }
 
-        #region Navigation
+
+        #region Sidebar Navigation
+
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
             App.RootFrame.Navigate(typeof(MainPage), null);
@@ -143,11 +154,16 @@ namespace GroupProjectApp
         {
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
-        #endregion
 
         private void btnMyDetails_Click(object sender, RoutedEventArgs e)
         {
             App.RootFrame.Navigate(typeof(ClientDetails), null);
         }
+        private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
+        }
+
+        #endregion
     }
 }

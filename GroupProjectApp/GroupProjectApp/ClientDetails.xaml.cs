@@ -47,7 +47,7 @@ namespace GroupProjectApp.Models
             tbkRoles.Text = roles.Remove(roles.Length - 2);
         }
 
-        #region nav
+        #region Sidebar navigation
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
@@ -74,8 +74,10 @@ namespace GroupProjectApp.Models
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
 
-
-
+        private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
+        }
 
         #endregion
 

@@ -18,7 +18,7 @@ namespace GroupProjectApp.Models
         }
         public string test
         {
-            get { return Id + Description ; }
+            get { return Id + Description; }
         }
 
     }
@@ -42,13 +42,35 @@ namespace GroupProjectApp.Models
             get { return Type + Id; }
 
         }
+    }
 
-        //public override string ToString()
-        //{
-        //    return Type + Id;
-        //}
+    public class WeekDay
+    {
+        public string DayName { get; set; }
+        public byte DayNumber { get; set; }
+
+        public WeekDay() { }
+
+        public WeekDay(string day, byte num)
+        {
+            DayName = day;
+            DayNumber = num;
+        }
+    }
+
+    public class DayBlockTime
+    {
+        public string DayTime { get; set; }
+        public byte BlockNum { get; set; }
+
+        public DayBlockTime() { }
+
+        public DayBlockTime(string time, byte block)
+        {           
+            DayTime = time;
+            BlockNum = block;
+        }
     }
 
 
-   
 }
