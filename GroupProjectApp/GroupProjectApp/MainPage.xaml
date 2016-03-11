@@ -7,35 +7,41 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" >
 
-    <SplitView  x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="180"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <SplitView  x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView.Pane>
             <StackPanel Background="Gray">
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"></Button>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnHome" FontFamily="Segoe MDL2 Assets" Content="&#xE80F;"
-         Width="50" Height="50" Background="Transparent" Click="btnHome_Click"/>
+                   Width="50" Height="50" Background="Transparent" Click="btnHome_Click"/>
                     <TextBlock Text="Home" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE718;"
+                    <Button x:Name="btnWatch" FontFamily="Segoe MDL2 Assets" Content="&#xE734;"
              Width="50" Height="50" Background="Transparent" Click="btnWatch_Click"/>
                     <TextBlock Text="Watching" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnSearch" FontFamily="Segoe MDL2 Assets" Content="&#xE71C;"
-             Width="50" Height="50" Background="Transparent" Click="btnSearch_Click"/>
-                    <TextBlock Text="Search" FontSize="18" VerticalAlignment="Center" />
+                    <Button x:Name="btnSearch" FontFamily="Segoe MDL2 Assets" Content="&#xE71E;"
+                       Width="50" Height="50" Background="Transparent" Click="btnSearch_Click"/>
+                    <TextBlock Text="Search free rooms" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnDayAndBlock" FontFamily="Segoe MDL2 Assets" Content="&#xE787;"
+                       Width="50" Height="50" Background="Transparent" Click="btnDayAndBlock_Click"/>
+                    <TextBlock Text="Search by day" FontSize="18" VerticalAlignment="Center" TextWrapping="WrapWholeWords"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnMyDetails" FontFamily="Segoe MDL2 Assets" Content="&#xE77B;"
-             Width="50" Height="50" Background="Transparent" Click="btnMyDetails_Click"/>
+                       Width="50" Height="50" Background="Transparent"/>
                     <TextBlock Text="My details" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnLogout" FontFamily="Segoe MDL2 Assets" Content="&#xE711;"
-             Width="50" Height="50" Background="Transparent" Click="btnLogout_Click"/>
+                       Width="50" Height="50" Background="Transparent" Click="btnLogout_Click"/>
                     <TextBlock Text="Log out" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
+
             </StackPanel>
         </SplitView.Pane>
 
@@ -46,6 +52,8 @@
                     <RowDefinition Height="8*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
+
+
                 <TextBlock Grid.Row="0"></TextBlock>
                 <StackPanel Grid.Row="1">
 
@@ -81,7 +89,17 @@
                         </PivotItem>
                     </Pivot>
                 </StackPanel>
-                <TextBlock Name="tbkErrorMessage" Grid.Row="2" Height="20" TextAlignment="Center" Margin="0,5"/>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1.5*"/>
+
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Name="tbkErrorMessage" Grid.Column="0" Height="20" TextAlignment="Center" Margin="0,22" Grid.ColumnSpan="2"/>
+                    <Button Name="btnRefresh" Grid.Column="1" HorizontalAlignment="Center" Visibility="Collapsed" Click="btnRefresh_Click">Refresh</Button>
+                </Grid>
             </Grid>
         </SplitView.Content>
     </SplitView>

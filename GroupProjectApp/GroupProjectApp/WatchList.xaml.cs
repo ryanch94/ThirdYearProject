@@ -32,28 +32,23 @@ namespace GroupProjectApp
         public WatchList()
         {
             this.InitializeComponent();
-            init();
+
+            if (App.InternetConnected() == true)
+            {
+                GetWatchedRooms();
+            }
+            else
+            {
+
+                btnRefresh.Visibility = Visibility.Visible;
+            }
 
         }
 
-        public async void init()
+        public async void GetWatchedRooms()
         {
-            var rawData = await App.LoadDataFromAPI("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
-
-            var watchedRooms = JsonConvert.DeserializeObject<Room[]>(rawData);
-
-            _watchedRoomsList.Clear();
-
-            foreach (var item in watchedRooms)
-            {
-                //WatchedRoom room = new WatchedRoom();
-                //room.Code = item;
-
-                _watchedRoomsList.Add(item);
-            }
-
+            _watchedRoomsList = await App.GetWatchedRoomsList();
             lbxWatchedRooms.ItemsSource = _watchedRoomsList;
-
         }
 
         private void lbxWatchedRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,9 +62,15 @@ namespace GroupProjectApp
         {
             Room room = (Room)lbxWatchedRooms.SelectedItem;
             var response = await App.AddOrRemoveFromWatchList(room.Id);
-
+            GetWatchedRooms();
         }
 
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(WatchList), null);
+        }
+
+        #region nav
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
@@ -80,6 +81,7 @@ namespace GroupProjectApp
         {
             App.RootFrame.Navigate(typeof(WatchList), null);
         }
+
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             App.RootFrame.Navigate(typeof(Search), null);
@@ -95,7 +97,12 @@ namespace GroupProjectApp
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
 
-     
+        private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
+        }
+
+        #endregion
     }
 }
 

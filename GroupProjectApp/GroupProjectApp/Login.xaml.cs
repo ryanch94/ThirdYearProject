@@ -57,10 +57,11 @@ namespace GroupProjectApp
 
                         App.validUserDetails = userDetailsRaw;
 
-                        var userDetailArray = JsonConvert.DeserializeObject<UserDetails>(userDetailsRaw);
+                        var userDetailsProccessed = JsonConvert.DeserializeObject<UserDetails>(userDetailsRaw);
 
-                        // pass student number got back from the Oauth and db calls to the API on the main page 
-                        App.userID = userDetailArray.UserID;
+                        // save to app page for use in timetable sorting
+                        App.userID = userDetailsProccessed.UserID;
+                        App.userEmail = userDetailsProccessed.Email;
 
                         App.RootFrame.Navigate(typeof(MainPage));
                     }

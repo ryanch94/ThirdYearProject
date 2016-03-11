@@ -23,94 +23,205 @@ using Windows.UI.Xaml.Navigation;
 namespace GroupProjectApp
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Search Page - Holds all the methods  for using the search functions
+    /// Note: Most APIs are sent to a method on the App page for processing - Cuts down on duplicate code
     /// </summary>
+
     public sealed partial class Search : Page
     {
-        // Api addresses to use 
-        static string FreeRoomsApi = "https://signmeinwebapi.azurewebsites.net/api/FreeRooms";
-        static string RoomTypeApi = "https://signmeinwebapi.azurewebsites.net/api/RoomTypes";
-        static string ProgramTypeApi = "https://signmeinwebapi.azurewebsites.net/api/Programs";
+        #region API Urls
 
+        // Api addresses to use for each search function
+        // These ones don't require parameters sent with them except be authenticated
+        static string currentFreeRoomsAPI = "https://signmeinwebapi.azurewebsites.net/api/FreeRooms";
+        static string roomTypeAPI = "https://signmeinwebapi.azurewebsites.net/api/RoomTypes";
+        static string programTypeAPI = "https://signmeinwebapi.azurewebsites.net/api/Programs";
+        static string allRoomsAPI = "https://signmeinwebapi.azurewebsites.net/api/Rooms";
 
-        // list for searching 
-        List<FreeRoom> _roomsCurrentlyFree = new List<FreeRoom>();
-        List<RoomType> _roomTypesList = new List<RoomType>();
-        List<ProgramType> _programList = new List<ProgramType>();
+        #endregion
 
+        #region Lists declared
+
+        // lists to populate comboboxs 
+        List<FreeRoom> _lstRoomsCurrentlyFree = new List<FreeRoom>();
+        List<RoomType> _lstRoomTypes = new List<RoomType>();
+        List<ProgramType> _lstProgramTypes = new List<ProgramType>();
+        List<Room> _lstAllRooms = new List<Room>();
+
+        // list to compare off of
+        List<Room> _lstWatchedRooms = new List<Room>();
+
+        #endregion
 
         public Search()
         {
             this.InitializeComponent();
 
-            //Get and proccess data to populate currently free rooms listbox - send freeRooms for sort
-            PopulateFreeRoomsList();
-            PopulateProgramsCombo();
-            PropulateRoomType();
+            #region method calls to populate combobox data
+
+            //Get and proccess data to populate comboboxs 
+            //GetAllRooms();
+            GetWatchedRooms();
+            PopulateCurrentFreeLst();
+            PopulateRoomTypeCbx();
+            PopulateProgramTypeCbx();
+            //PopulateDayCbx();
+            //PopulateBlockTimesCbx();
+
+            #endregion
         }
 
-        private async void PropulateRoomType()
+        #region Methods to populate comboboxes and lists
+
+        public async void GetAllRooms()
         {
-            var rawData = await App.LoadDataFromAPI(RoomTypeApi);
-            var DataArray = JsonConvert.DeserializeObject<RoomType[]>(rawData);
+            // get all rooms in database
 
-            foreach (var item in DataArray)
+
+            var rawData = await App.LoadDataFromAPI(allRoomsAPI);
+
+            if (rawData != "AuthInvalid")
             {
-                _roomTypesList.Add(new RoomType { Id = item.Id, Type = item.Type });
-            }
-            cbxRoomType.ItemsSource = _roomTypesList;
-
-            if (_roomTypesList.Count() != 0)
-            {
-                cbxRoomType.SelectedIndex = 0;
-            }
-        }
-
-        private async void PopulateProgramsCombo()
-        {
-            var rawData = await App.LoadDataFromAPI(ProgramTypeApi);
-
-            if (rawData != null)
-            {
-                var DataArray = JsonConvert.DeserializeObject<ProgramType[]>(rawData);
+                var DataArray = JsonConvert.DeserializeObject<Room[]>(rawData);
 
                 foreach (var item in DataArray)
                 {
-                    _programList.Add(item);
-                }
-
-                cbxPrograms.ItemsSource = _programList;
-
-                if (_programList.Count() != 0)
-                {
-                    cbxPrograms.SelectedIndex = 0;
+                    _lstAllRooms.Add(item);
                 }
             }
-            else {  }
+            else if (rawData == "AuthInvalid") { DisableButtons(); }
         }
-        private async void PopulateFreeRoomsList()
+
+
+
+
+
+        public async void GetWatchedRooms()
+        {
+            var s = await App.GetWatchedRoomsList();
+
+            foreach (var item in s)
+            {
+                _lstWatchedRooms.Add(item);
+            }
+
+        }
+
+        private async void PopulateCurrentFreeLst()
         {
 
-            var rawData = await App.LoadDataFromAPI(FreeRoomsApi);
-            var DataArray = JsonConvert.DeserializeObject<FreeRoom[]>(rawData);
+            var rawData = await App.LoadDataFromAPI(currentFreeRoomsAPI);
 
-            foreach (var item in DataArray)
+            if (rawData != "AuthInvalid")
             {
+                var DataArray = JsonConvert.DeserializeObject<FreeRoom[]>(rawData);
 
-                _roomsCurrentlyFree.Add(item);
+                foreach (var item in DataArray)
+                {
+
+                    _lstRoomsCurrentlyFree.Add(item);
+                }
+
+                lbxCurrentlyFreeRooms.ItemsSource = _lstRoomsCurrentlyFree;
+            }
+            else if (rawData == "AuthInvalid")
+            {
+                DisableButtons();
+            }
+        }
+
+        private async void PopulateRoomTypeCbx()
+        {
+            var rawData = await App.LoadDataFromAPI(roomTypeAPI);
+
+            if (rawData != "AuthInvalid")
+            {
+                var DataArray = JsonConvert.DeserializeObject<RoomType[]>(rawData);
+
+                foreach (var item in DataArray)
+                {
+                    _lstRoomTypes.Add(new RoomType { Id = item.Id, Type = item.Type });
+                }
+                cbxRoomType.ItemsSource = _lstRoomTypes;
+
+                if (_lstRoomTypes.Count() != 0)
+                {
+                    cbxRoomType.SelectedIndex = 0;
+                }
+            }
+            else if (rawData == "AuthInvalid")
+            {
+                DisableButtons();
+            }
+        }
+
+        private async void PopulateProgramTypeCbx()
+        {
+            var rawData = await App.LoadDataFromAPI(programTypeAPI);
+            if (rawData != "AuthInvalid")
+            {
+                if (rawData != null)
+                {
+                    var DataArray = JsonConvert.DeserializeObject<ProgramType[]>(rawData);
+
+                    foreach (var item in DataArray)
+                    {
+                        _lstProgramTypes.Add(item);
+                    }
+
+                    cbxProgramTypes.ItemsSource = _lstProgramTypes;
+
+                    if (_lstProgramTypes.Count() != 0)
+                    {
+                        cbxProgramTypes.SelectedIndex = 0;
+                    }
+                }
+            }
+            else if (rawData == "AuthInvalid")
+            {
+                DisableButtons();
             }
 
-            lbxCurrentlyFreeRooms.ItemsSource = _roomsCurrentlyFree;
         }
+
+
+
+        #endregion
+
+        #region currently free methods (listbox selection, watch roomtype button)
+
+        private void lbxCurrentlyFreeRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FreeRoom selected = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
+
+            foreach (var room in _lstWatchedRooms)
+            {
+                if (room.Id == selected.Id)
+                {
+                    btnWatchCF.IsEnabled = false;
+                }
+                else { btnWatchCF.IsEnabled = true; }
+            }
+        }
+
+        private void btnWatchCF_Click(object sender, RoutedEventArgs e)
+        {
+            FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
+            var rawData = App.AddOrRemoveFromWatchList(room.Id);
+            btnWatchCF.IsEnabled = false;
+        }
+
+        #endregion
+
+        #region Search by Room type methods (combobox selection change, listbox selection, watch roomtype button)
 
         private void cbxRoomType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             List<FreeRoom> _RoomTypeAvail = new List<FreeRoom>();
 
             RoomType selected = (RoomType)cbxRoomType.SelectedValue;
 
-            foreach (var freeRoom in _roomsCurrentlyFree)
+            foreach (var freeRoom in _lstRoomsCurrentlyFree)
             {
 
                 if (freeRoom.Type == selected.Type)
@@ -122,78 +233,43 @@ namespace GroupProjectApp
             lbxRoomType.ItemsSource = _RoomTypeAvail;
         }
 
-        // BUTTON CLICK ACTIONS
-        private void btnWatchCF_Click(object sender, RoutedEventArgs e)
+        private void lbxRoomType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
-            var rawData = App.AddOrRemoveFromWatchList(room.Id);
+            FreeRoom selected = (FreeRoom)lbxRoomType.SelectedItem;
+
+            foreach (var room in _lstRoomTypes)
+            {
+                if (room.Id == selected.Id)
+                {
+                    btnWatchRT.IsEnabled = false;
+                }
+                else { btnWatchRT.IsEnabled = true; }
+            }
         }
 
         private void btnWatchRT_Click(object sender, RoutedEventArgs e)
         {
             FreeRoom room = (FreeRoom)lbxRoomType.SelectedItem;
-            var rawData =  App.AddOrRemoveFromWatchList(room.Id);
-        }
-
-        private void btnWatchPT_Click(object sender, RoutedEventArgs e)
-        {
-
-            FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
             var rawData = App.AddOrRemoveFromWatchList(room.Id);
-            //EnableDisableButton(selected, buttonName);
-
+            btnWatchRT.IsEnabled = false;
         }
 
-        //private void EnableDisableButton(FreeRoom selected, string buttonName)
-        //{
-        //    foreach (var room in MainPage._WatchedRooms)
-        //    {
-        //        if (room.Code == selected.Code)
-        //        {
-        //            Button button = new Button();
-        //            button.Name = buttonName;
-        //            button.IsEnabled = false;
+        #endregion
 
-        //        }
-        //        else
-        //        {
-        //            Button button = new Button();
-        //            button.Name = buttonName;
+        #region Search by Program type methods (combobox selection change, listbox selection, watch roomtype button)
 
-        //            button.IsEnabled = true;
-        //        }
-
-        //    }
-        //}
-
-        private void btnWDayAndTime_Click(object sender, RoutedEventArgs e)
+        private void cbxProgramTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
-        }
-        private void lbxCurrentlyFreeRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            FreeRoom selected = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
-
-
-            foreach (var room in MainPage._WatchedRooms)
-            {
-                if (room.Code == selected.Code)
-                {
-                    btnWatchCF.IsEnabled = false;
-                }
-                else { btnWatchCF.IsEnabled = true; }
-            }
-        }
-
-        private void cbxPrograms_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            // List created to populate the program type listbox
             List<FreeRoom> _ProgramRoomAvail = new List<FreeRoom>();
-            ProgramType program = (ProgramType)cbxPrograms.SelectedItem;
 
-            foreach (var freeRoom in _roomsCurrentlyFree)
+            ProgramType program = (ProgramType)cbxProgramTypes.SelectedItem;
+
+            // If room description is not empty(null)
+            // check each room description to check if it has the required program installed 
+            // add to availablity list if it does
+            foreach (var freeRoom in _lstRoomsCurrentlyFree)
             {
-
                 if (freeRoom.Description != null && freeRoom.Description.Contains(program.Description) == true)
                 {
                     _ProgramRoomAvail.Add(freeRoom);
@@ -201,8 +277,30 @@ namespace GroupProjectApp
             }
 
             lbxPrograms.ItemsSource = _ProgramRoomAvail;
-
         }
+
+        private void lbxPrograms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FreeRoom selected = (FreeRoom)lbxPrograms.SelectedItem;
+
+            foreach (var room in _lstWatchedRooms)
+            {
+                if (room.Id == selected.Id)
+                {
+                    btnWatchPT.IsEnabled = false;
+                }
+                else { btnWatchPT.IsEnabled = true; }
+            }
+        }
+
+        private void btnWatchPT_Click(object sender, RoutedEventArgs e)
+        {
+            FreeRoom room = (FreeRoom)lbxPrograms.SelectedItem;
+            var rawData = App.AddOrRemoveFromWatchList(room.Id);
+            btnWatchPT.IsEnabled = false;
+        }
+
+        #endregion
 
         #region nav
 
@@ -231,13 +329,22 @@ namespace GroupProjectApp
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
 
-
-
-
+        private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
+        }
 
         #endregion
 
-       
+        private void DisableButtons()
+        {
+            btnHome.IsEnabled = false;
+            btnWatch.IsEnabled = false;
+            btnSearch.IsEnabled = false;
+            btnDayAndBlock.IsEnabled = false;
+            btnMyDetails.IsEnabled = false;
+
+        }
     }
 }
 

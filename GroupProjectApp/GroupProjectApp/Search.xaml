@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="220"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <!-- Spitview pane contents - hold sidebar nav information and controls -->
         <SplitView.Pane>
             <StackPanel Background="Gray">
@@ -25,7 +25,12 @@
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnSearch" FontFamily="Segoe MDL2 Assets" Content="&#xE71E;"
                        Width="50" Height="50" Background="Transparent" Click="btnSearch_Click"/>
-                    <TextBlock Text="Search" FontSize="18" VerticalAlignment="Center" />
+                    <TextBlock Text="Search free rooms" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnDayAndBlock" FontFamily="Segoe MDL2 Assets" Content="&#xE787;"
+                       Width="50" Height="50" Background="Transparent" Click="btnDayAndBlock_Click"/>
+                    <TextBlock Text="Search by day" FontSize="18" VerticalAlignment="Center" TextWrapping="WrapWholeWords"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnMyDetails" FontFamily="Segoe MDL2 Assets" Content="&#xE77B;"
@@ -37,7 +42,9 @@
                        Width="50" Height="50" Background="Transparent" Click="btnLogout_Click"/>
                     <TextBlock Text="Log out" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
+                
             </StackPanel>
+
         </SplitView.Pane>
 
         <SplitView.Content>
@@ -47,9 +54,11 @@
                     <RowDefinition Height="8*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
+
                 <Grid Grid.Row="1">
                     <!--Pivot control enables individual day view-->
                     <Pivot Title="Search by..">
+
                         <PivotItem Header="Currently Free">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -58,10 +67,11 @@
                                     <RowDefinition Height="1.5*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="All rooms available now" FontSize="20" Padding="5" Grid.Row="0"></TextBlock>
-                                <ListBox Name="lbxCurrentlyFreeRooms"  Margin="10"  Grid.Row="1" ItemTemplate="{StaticResource FreeRoomslbxItem}" SelectionChanged="lbxCurrentlyFreeRooms_SelectionChanged"></ListBox>
+                                <ListBox Name="lbxCurrentlyFreeRooms"  Margin="5"  Grid.Row="1" ItemTemplate="{StaticResource FreeRoomslbxItem}" SelectionChanged="lbxCurrentlyFreeRooms_SelectionChanged"></ListBox>
                                 <Button Name="btnWatchCF" Grid.Row="2" Height="35" HorizontalAlignment="Center" Click="btnWatchCF_Click">Add to watch list</Button>
                             </Grid>
                         </PivotItem>
+
                         <PivotItem Header="Room type">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -69,12 +79,16 @@
                                     <RowDefinition Height="8*"/>
                                     <RowDefinition Height="1.5*"/>
                                 </Grid.RowDefinitions>
+
                                 <ComboBox Name="cbxRoomType" HorizontalAlignment="Stretch" Grid.Row="0"  DisplayMemberPath="Type" SelectionChanged="cbxRoomType_SelectionChanged"></ComboBox>
-                                <ListBox Name="lbxRoomType" Grid.Row="1" Margin="5" ItemTemplate="{StaticResource FreeRoomslbxItem}" Height="400" />
+                                <ListBox Name="lbxRoomType" Grid.Row="1" Margin="5" ItemTemplate="{StaticResource FreeRoomslbxItem}" SelectionChanged="lbxRoomType_SelectionChanged" />
                                 <!-- button to watch room from lbxRoomType -->
+
                                 <Button Name="btnWatchRT" Grid.Row="2" Height="30" HorizontalAlignment="Center" Click="btnWatchRT_Click">Add to watch list</Button>
                             </Grid>
+
                         </PivotItem>
+
                         <PivotItem Header="Program">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -82,27 +96,17 @@
                                     <RowDefinition Height="8*"/>
                                     <RowDefinition Height="1.5*"/>
                                 </Grid.RowDefinitions>
-                                <ComboBox Name="cbxPrograms" HorizontalAlignment="Stretch" DisplayMemberPath="Description" SelectionChanged="cbxPrograms_SelectionChanged"></ComboBox>
-                                <ListBox Name="lbxPrograms" Grid.Row="1" Margin="5" Height="400" ItemTemplate="{StaticResource FreeRoomslbxItem}"/>
+
+                                <ComboBox Name="cbxProgramTypes" HorizontalAlignment="Stretch" DisplayMemberPath="Description" SelectionChanged="cbxProgramTypes_SelectionChanged"></ComboBox>
+                                <ListBox Name="lbxPrograms" Grid.Row="1" Margin="5" ItemTemplate="{StaticResource FreeRoomslbxItem}" SelectionChanged="lbxPrograms_SelectionChanged"/>
                                 <Button Name="btnWatchPT" Grid.Row="2" Height="30" HorizontalAlignment="Center" Click="btnWatchPT_Click">Add to watch list</Button>
-                            </Grid>
-                        </PivotItem>
-                        <PivotItem Header="Day and Time">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="1.2*"/>
-                                    <RowDefinition Height="1.2*"/>
-                                    <RowDefinition Height="8*"/>
-                                    <RowDefinition Height="1.5*"/>
-                                </Grid.RowDefinitions>
-                                <ComboBox Name="cbxDay" Grid.Row="0"  HorizontalAlignment="Stretch" DisplayMemberPath="Description"></ComboBox>
-                                <ComboBox Name="cbxTimes" Grid.Row="1" HorizontalAlignment="Stretch" DisplayMemberPath="Description"></ComboBox>
-                                <ListBox Name="lbxDayTimes" Grid.Row="2" Margin="5" Height="400"/>
-                                <Button Name="btnWDayAndTime" Grid.Row="3" Height="30" HorizontalAlignment="Center" Click="btnWDayAndTime_Click">Add to watch list</Button>
+
                             </Grid>
                         </PivotItem>
                     </Pivot>
+
                 </Grid>
+               
             </Grid>
         </SplitView.Content>
     </SplitView>

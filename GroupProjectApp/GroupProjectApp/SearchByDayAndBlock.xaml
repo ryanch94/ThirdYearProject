@@ -1,13 +1,14 @@
 ﻿<Page
-    x:Class="GroupProjectApp.Models.ClientDetails"
+    x:Class="GroupProjectApp.SearchByDayAndBlock"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:GroupProjectApp.Models"
+    xmlns:local="using:GroupProjectApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="200"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!-- Spitview pane contents - hold sidebar nav information and controls -->
         <SplitView.Pane>
             <StackPanel Background="Gray">
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"></Button>
@@ -29,7 +30,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnDayAndBlock" FontFamily="Segoe MDL2 Assets" Content="&#xE787;"
                        Width="50" Height="50" Background="Transparent" Click="btnDayAndBlock_Click"/>
-                    <TextBlock Text="Search by day" FontSize="18" VerticalAlignment="Center"/>
+                    <TextBlock Text="Search by day" FontSize="18" VerticalAlignment="Center" TextWrapping="WrapWholeWords"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnMyDetails" FontFamily="Segoe MDL2 Assets" Content="&#xE77B;"
@@ -43,6 +44,7 @@
                 </StackPanel>
             </StackPanel>
         </SplitView.Pane>
+
         <SplitView.Content>
             <Grid>
                 <Grid.RowDefinitions>
@@ -50,45 +52,37 @@
                     <RowDefinition Height="8*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-
                 <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1.2*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Style="{StaticResource TitleTextBlockStyle}">Account details</TextBlock>
-                    <StackPanel Grid.Row="1">
-                        <TextBlock Style="{StaticResource DetailsTbk}">Name</TextBlock>
-                        <TextBlock Name="tbkName" Style="{StaticResource UserDetailstbk}"></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Row="2">
-                        <TextBlock Style="{StaticResource DetailsTbk}">College ID</TextBlock>
-                        <TextBlock Name="tbkCollegeID" Style="{StaticResource UserDetailstbk}"></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Row="3">
-                        <TextBlock Style="{StaticResource DetailsTbk}">Email</TextBlock>
-                        <TextBlock Name="tbkEmail" Style="{StaticResource UserDetailstbk}"></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Row="4">
-                        <TextBlock Style="{StaticResource DetailsTbk}">Notifications</TextBlock>
-                        <TextBlock Name="tbkNotifications" Style="{StaticResource UserDetailstbk}"></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Row="5">
-                        <TextBlock Style="{StaticResource DetailsTbk}">Privacy level</TextBlock>
-                        <TextBlock Name="tbkPrivacyLevel" Style="{StaticResource UserDetailstbk}"></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Row="6">
-                        <TextBlock Style="{StaticResource DetailsTbk}">Roles</TextBlock>
-                        <TextBlock Name="tbkRoles" Style="{StaticResource UserDetailstbk}"></TextBlock>
-                    </StackPanel>
-                </Grid>
+                    <!--Pivot control enables individual day view-->
 
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+
+                        <ComboBox Name="cbxWeekdays" Grid.Row="0"  HorizontalAlignment="Stretch" DisplayMemberPath="Description" SelectionChanged="cbxWeekdays_SelectionChanged"></ComboBox>
+                        <ComboBox Name="cbxDayTimes" Grid.Row="1" HorizontalAlignment="Stretch" DisplayMemberPath="Description" SelectionChanged="cbxDayTimes_SelectionChanged"></ComboBox>
+                        <ListBox Name="lbxDayTimes" Grid.Row="2" ItemTemplate="{StaticResource FreeRoomslbxItem}" Margin="5" SelectionChanged="lbxDayTimes_SelectionChanged"/>
+                        <Button Name="btnWdayAndTime" Grid.Row="3" Height="30" HorizontalAlignment="Center" Click="btnWdayAndTime_Click">Add to watch list</Button>
+                    </Grid>
+
+
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1.5*"/>
+
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Name="tbkErrorMessage" Grid.Column="0" Height="20" TextAlignment="Center" Margin="0,22" Grid.ColumnSpan="2"/>
+                    <Button Name="btnRefresh" Grid.Column="1" HorizontalAlignment="Center" Visibility="Collapsed" Click="btnRefresh_Click">Refresh</Button>
+                </Grid>
             </Grid>
         </SplitView.Content>
     </SplitView>
