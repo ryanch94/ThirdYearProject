@@ -138,7 +138,7 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a onclick="typeSearch('Computer Lab')">Lab</a></li>
+                                        <li><a onclick="typeSearch('Computer Lab')" href="#">Lab</a></li>
                                         <li><a onclick="typeSearch('Flat Classrooms')" href="#">Flat Classroom</a></li>
                                         <li><a onclick="typeSearch('Tiered Classroom')" href="#">Tiered Classroom</a></li>
                                         <li><a onclick="typeSearch('Lecture Hall')" href="#">Lecture Hall</a></li>
@@ -162,17 +162,17 @@
                                         <li><a onclick="timeSearch('17')">17:00</a></li>
                                     </ul>
                                 </div>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span><i class="fa fa-puzzle-piece"></i></span>  Misc
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a onclick="miscSearch('Visual Studio')">Visual Studio</a></li>
-                                        <li><a onclick="miscSearch('Chrome')">Chrome</a></li>
-                                        <li><a onclick="miscSearch('Photoshop')">Photoshop</a></li>
-                                    </ul>
-                                </div>
+                                <!--<div class="btn-group" role="group">
+                                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><i class="fa fa-puzzle-piece"></i></span>  Misc
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a onclick="miscSearch('Visual Studio')" href="#">Visual Studio</a></li>
+                                    <li><a onclick="miscSearch('Chrome')"  href="#">Chrome</a></li>
+                                    <li><a onclick="miscSearch('Photoshop')"  href="#">Photoshop</a></li>
+                                </ul>
+                            </div>-->
                             </div>
                             <div class="col-lg-2"></div>
                         </div>
@@ -196,10 +196,8 @@
                     <li class="list-group-item ">Room Size<span id="roomSize" class="pull-right"></span></li>
                     <li class="list-group-item ">Room Count<span id="roomCount" class="pull-right"></span></li>
                     <li class="list-group-item ">Room Type<span id="roomType" class="pull-right"></span></li>
-                    <li id="listWatchBtns" class="list-group-item "><button id="addWatchBtn" type="button" onclick="watchRoom((document.getElementById('roomNum')).innerHTML)" class="btn btn-primary btn-md "><span class="glyphicon glyphicon-eye-open"></span>  Watch Room</button></li>
-                </ul>
-
-            </div>
+            <li id="listWatchBtns" class="list-group-item "><button id="addWatchBtn" type="button" onclick="watchRoom((document.getElementById('roomNum')).innerHTML)" class="btn btn-primary btn-md "><span class="glyphicon glyphicon-eye-open"></span> Toggle Watch Room</button></li>
+            </ul>
         </div>
 
 
@@ -214,7 +212,7 @@
     <script>
         //organises the free rooms by type selected.
         function filterType(freeRooms, type) {
-            removeDeleteBtn();
+            //removeDeleteBtn();
             //loops through all rooms
             var freeRoomsList = document.getElementById('freeRoomsList');
             while (freeRoomsList.firstChild) {
@@ -239,7 +237,7 @@
         }
 
         function watchRoom(roomCode){
-            alert(roomCode);
+            
            // POST api/WatchRooms?roomid={roomid}
 
             // Ajax request to get users 
@@ -281,7 +279,7 @@
                     "RoomID": roomID,
                 },
                 success: function (data) {
-                    alert("watching");
+                   
                 },
                 error: function (jqXHR) {
                     alert("error setwatchroom");
@@ -313,12 +311,14 @@
             }
         };
         function removeDeleteBtn() {
-            $("#removeWatchBtn").remove();
+            //$("#removeWatchBtn").remove();
         }
 
         //get watched rooms
         function getWatchedRooms() {
-            $("<button style='margin-left:10px;' id='removeWatchBtn' type='button' onclick='removeWatchRoom((document.getElementById('roomNum')).innerHTML)' class='btn btn-danger btn-md '><span class='glyphicon glyphicon-eye-close'></span>  Remove Room</button>").insertAfter("#addWatchBtn");
+            //couldnt get unwatch button to work
+            //$("#removeWatchBtn").remove();
+            //$("<button id='removeWatchBtn' type='button' onclick='watchRoom((document.getElementById('roomNum')).innerHTML)' class='btn btn-primary btn-md '><span class='glyphicon glyphicon-eye-open'></span>  Unwatch Room</button>").insertAfter("#addWatchBtn");
 
             // Ajax request to get all free rooms
             $.ajax({
@@ -423,31 +423,36 @@
 
         }
 
-        function miscSearch(string) {
-            removeDeleteBtn();
+        //function miscSearch(miscString) {
+        //    removeDeleteBtn();
 
            
-                $.ajax({
-                    url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
-                    type: "GET",
-                    headers: {
-                        "Authorization": "bearer " + localStorage.getItem("authToken")
-                    },
-                    success: function (data) {
-                        var typeArray = [];
-                        for (i = 0; i < data.length; i++) {
-                            if ((data[i].Description).indexOf(string) >= 0) {
-                                typeArray.push(data[i]);
-                            }
-                        }
-                        formatFree(typeArray);
+        //        $.ajax({
+        //            url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+        //            type: "GET",
+        //            headers: {
+        //                "Authorization": "bearer " + localStorage.getItem("authToken")
+        //            },
+        //            success: function (data) {
+        //                var typeArray = [];
+        //                alert(miscString);
+        //                for (i = 0; i < data.length; i++) {
+                            
+        //                    if ((data[i].Description).indexOf(miscString) >= 0) {
+        //                        alert(data[i].Description);
+        //                        typeArray.push(data[i]);
 
-                    },
-                    error: function (jqXHR) {
-                        alert('error loading free rooms');
-                    }
-                });
-        }
+        //                    }
+        //                }
+        //                alert(typeArray +"array");
+        //                formatFree(typeArray);
+
+        //            },
+        //            error: function (jqXHR) {
+        //                alert('error loading free rooms');
+        //            }
+        //        });
+        //}
 
 
         // $('.l1').on('click', '.l1', this.text, Modal() );
