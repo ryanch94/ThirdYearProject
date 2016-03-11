@@ -31,7 +31,34 @@
     <!--Check if user should be here before loading page-->
     <script>
         if (localStorage.getItem("authToken"))
-        { }
+        {
+            // Ajax request to get user info
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    var n = (data.Email).lastIndexOf('@');
+                    var result = (data.Email).substring(n + 1);
+                        if (result == "itsligo.ie")
+                        {
+                            getLecturerTimetable(data.UserID);
+                        }
+                        else if(result == "mail.itsligo.ie")
+                        {
+                            getTimetable(data.UserID);
+                            //gets rid of option to look at attendance if student
+                            removeAttendanceMenu();
+                        }
+                    
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
         else {
             window.location = "401Error.html";
         }
@@ -61,7 +88,7 @@
 
                     </li>
                     <li>
-                        <a href="Attendance.html">Attendance</a>
+                        <a id="attendanceMenu" href="Attendance.html">Attendance</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -98,20 +125,21 @@
             <div class="col-lg-4">
                 <div style="margin-top:50px" class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Free Rooms Today</h3>
+                        <h3 class="panel-title">Free Rooms Today and Watched Rooms</h3>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="..." style="margin-left:10px;">
                                 <div class="btn-group" role="group">
                                     <button type="button" onclick="getFreeRooms()" class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span>  All Rooms</button>
+                                    <button type="button" onclick="getWatchedRooms()" class="btn btn-danger"><span class="glyphicon glyphicon-eye-open"></span>  Watched Rooms</button>
                                     <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span><i class="fa fa-desktop"></i></span>  Type
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a onclick="typeSearch('Lab')">Lab</a></li>
-                                        <li><a onclick="typeSearch('Flat Classroom')" href="#">Flat Classroom</a></li>
+                                        <li><a onclick="typeSearch('Computer Lab')">Lab</a></li>
+                                        <li><a onclick="typeSearch('Flat Classrooms')" href="#">Flat Classroom</a></li>
                                         <li><a onclick="typeSearch('Tiered Classroom')" href="#">Tiered Classroom</a></li>
                                         <li><a onclick="typeSearch('Lecture Hall')" href="#">Lecture Hall</a></li>
                                     </ul>
@@ -168,7 +196,7 @@
                     <li class="list-group-item ">Room Size<span id="roomSize" class="pull-right"></span></li>
                     <li class="list-group-item ">Room Count<span id="roomCount" class="pull-right"></span></li>
                     <li class="list-group-item ">Room Type<span id="roomType" class="pull-right"></span></li>
-                    <li class="list-group-item "><button type="button" onclick="watchRoom((document.getElementById('roomNum')).innerHTML)" class="btn btn-primary btn-md "><span class="glyphicon glyphicon-eye-open"></span>  Watch Room</button></li>
+                    <li id="listWatchBtns" class="list-group-item "><button id="addWatchBtn" type="button" onclick="watchRoom((document.getElementById('roomNum')).innerHTML)" class="btn btn-primary btn-md "><span class="glyphicon glyphicon-eye-open"></span>  Watch Room</button></li>
                 </ul>
 
             </div>
@@ -186,6 +214,7 @@
     <script>
         //organises the free rooms by type selected.
         function filterType(freeRooms, type) {
+            removeDeleteBtn();
             //loops through all rooms
             var freeRoomsList = document.getElementById('freeRoomsList');
             while (freeRoomsList.firstChild) {
@@ -234,8 +263,11 @@
                 }
             });
         }
+
+       
         function setWatchRoom(roomID)
         {
+           
             var stri1 = "https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=";
             var add = stri1.concat(roomID);
             alert(add);
@@ -246,7 +278,7 @@
                     "Authorization": "bearer " + localStorage.getItem("authToken")
                 },
                 data: {
-                    "id": roomID,
+                    "RoomID": roomID,
                 },
                 success: function (data) {
                     alert("watching");
@@ -258,6 +290,7 @@
         }
 
         function formatFree(dataarray) {
+            
             //grab all rows of list for free rooms
             var freeRoomsList = document.getElementById('freeRoomsList');
             while (freeRoomsList.firstChild) {
@@ -279,7 +312,33 @@
                 freeRoomsList.appendChild(newListItem);
             }
         };
+        function removeDeleteBtn() {
+            $("#removeWatchBtn").remove();
+        }
+
+        //get watched rooms
+        function getWatchedRooms() {
+            $("<button style='margin-left:10px;' id='removeWatchBtn' type='button' onclick='removeWatchRoom((document.getElementById('roomNum')).innerHTML)' class='btn btn-danger btn-md '><span class='glyphicon glyphicon-eye-close'></span>  Remove Room</button>").insertAfter("#addWatchBtn");
+
+            // Ajax request to get all free rooms
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/watchRooms",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data, string) {
+                    formatFree(data);
+
+                },
+                error: function (jqXHR) {
+                    alert('error loading free rooms');
+                }
+            });
+        }
+
         function typeSearch(string) {
+            removeDeleteBtn();
             // Ajax request to get all free rooms
             $.ajax({
                 url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
@@ -287,8 +346,15 @@
                 headers: {
                     "Authorization": "bearer " + localStorage.getItem("authToken")
                 },
-                success: function (data, string) {
-                    filterType(data, string);
+                success: function (data) {
+                    var typeArray =[];
+                    for (i = 0; i < data.length; i++){
+                        if (data[i].Type == string)
+                        {
+                            typeArray.push(data[i]);
+                        }
+                    }
+                    formatFree(typeArray);
 
                 },
                 error: function (jqXHR) {
@@ -320,13 +386,11 @@
             });
         }
 
-        function getRoomObject(MyRoom) {
-           
-        }
+
 
         function timeSearch(string) {
 
-
+            removeDeleteBtn();
             //get num of today and compare against weeks timetable
             var day = new Date();
             var weekDay = (day.getDay()) + 1;
@@ -360,7 +424,29 @@
         }
 
         function miscSearch(string) {
-            alert(string);
+            removeDeleteBtn();
+
+           
+                $.ajax({
+                    url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
+                    type: "GET",
+                    headers: {
+                        "Authorization": "bearer " + localStorage.getItem("authToken")
+                    },
+                    success: function (data) {
+                        var typeArray = [];
+                        for (i = 0; i < data.length; i++) {
+                            if ((data[i].Description).indexOf(string) >= 0) {
+                                typeArray.push(data[i]);
+                            }
+                        }
+                        formatFree(typeArray);
+
+                    },
+                    error: function (jqXHR) {
+                        alert('error loading free rooms');
+                    }
+                });
         }
 
 
@@ -372,13 +458,10 @@
         });
 
 
-        //Populates the modal window that appears when you click a room
-        $(".l1").click(function () {
-            alert("hi");
-        });
 
         //Populates a list with all rooms that are free now
         function getFreeRooms() {
+            removeDeleteBtn();
             // Ajax request to get all free rooms
 
             $.ajax({
@@ -402,11 +485,12 @@
             for (i = 0; i < Timetable.length; i++) {
                 //get num of today and compare against weeks timetable
                 var day = new Date();
-                var todayNum = (day.getDay()) + 1;
-                //if sat/sun day is monday
-                if (todayNum == 7 || todayNum == 1) {
-                    todayNum = 2;
-                }
+                //var todayNum = (day.getDay()) + 1;
+                ////if sat/sun day is monday
+                //if (todayNum == 7 || todayNum == 1) {
+                //    todayNum = 2;
+                //}
+                todayNum = 4;
                 //if class is on today
                 if (Timetable[i].WeekDayNumber == todayNum) {
                     var time = Timetable[i].DayBlock;
@@ -430,18 +514,15 @@
         }
 
 
-        $(document).ready(
+       // $(document).ready(
 
-      function getTimetable() {
-
+      function getTimetable(id) {
           getFreeRooms();
           var Timetablerows = document.getElementsByClassName('t1');
 
           // Ajax request to get user info
-          var id = localStorage.getItem("UserID");
           var str1 = "https://signmeinwebapi.azurewebsites.net/api/timetables/";
-          var str2 = String(id);
-          var res = str1.concat(str2);
+          var res = str1.concat(id);
 
           $.ajax({
 
@@ -458,7 +539,43 @@
                   alert('error');
               }
           });
-      })
+      }//)
+
+      function removeAttendanceMenu()
+      {
+          var menuItem = document.getElementById('attendanceMenu');
+          menuItem.parentElement.removeChild(menuItem);
+      }
+      function getLecturerTimetable(id) {
+          getFreeRooms();
+          
+          Date.prototype.getWeek = function () {
+              var onejan = new Date(this.getFullYear(), 0, 1);
+              return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+          }
+
+          var weekNumber = (new Date()).getWeek();
+
+          var str1 = "https://signmeinwebapi.azurewebsites.net/api/LecturerTimetable?lectID=";
+          var str3 = "&weekNum=";
+          var res = str1.concat(id, str3, weekNumber);
+
+          $.ajax({
+              url: res,
+              type: "GET",
+              headers: {
+                  "Authorization": "bearer " + localStorage.getItem("authToken")
+              },
+              success: function (data) {
+                  //alert(JSON.stringify(data));
+                  //alert(data);
+                  formatTimetable(data);
+              },
+              error: function (jqXHR) {
+                  alert('error');
+              }
+          });
+      }//)
 
 
 

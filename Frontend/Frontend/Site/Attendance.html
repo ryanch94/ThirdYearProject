@@ -77,7 +77,7 @@
     <div class="container">
         <h3 style="margin-top:70px;">Check Your Class's Attendance</h3>
         <div class="row" style="margin-top:10px;">
-            <div class='col-sm-4'>
+            <div class='col-lg-6'>
                 <div style="margin-top:10px" class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Step 1: Choose Week</h3>
@@ -106,7 +106,7 @@
                 </div>
 
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div style="margin-top:10px" class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Step 3: Choose Student for more info</h3>
@@ -133,15 +133,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div style="margin-top:10px" class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Step 4: Student Info</h3>
-                    </div>
-                    <div class="panel-body">
-                    </div>
-                </div>
-            </div>
+           
         </div>
         <script></script>
         <!-- jQuery -->
@@ -269,7 +261,7 @@
                     },
                     success: function (data) {
                         //alert(JSON.stringify(data));
-                        attendanceFormat(data);
+                        checkTimeInClass(data);
                     },
                     error: function (jqXHR) {
                         alert('error');
@@ -278,19 +270,97 @@
 
             }
 
-            function attendanceFormat(students) {
-                for (i = 0; i < students.length; i++) {
-                    //class is 1 hour long
-                    if (students[i].Length == 1) {
+            function checkTimeInClass(students) {
 
-                    }
-                    //class is 2 hours long
-                    else
-                    {
-                    
-                    }
+                var percent;
+                
+                //get rid of old info
+                var List = document.getElementById('attendanceList');
+                while (List.firstChild) {
+                    List.removeChild(List.firstChild);
                 }
+                for (i = 0; i < students.length; i++) {
 
+                    //if student was absent
+                    if (students[i].LogOutBeforeEndofClass == null) {
+                        var newListItem;
+                        //create new list item
+                        newListItem = document.createElement('button');
+                        newListItem.setAttribute('href', '#');
+                        newListItem.setAttribute('type', 'button');
+                        newListItem.setAttribute('class', 'list-group-item list-group-item-danger');
+                        newListItem.innerHTML = students[i].FirstName + " " + students[i].LastName + '  <span style="font-weight:bold" class="pull-right">' + students[i].StudentId + "</span>";
+                        //append it to the section for attendance
+                        List.appendChild(newListItem);
+                    }
+                    else {
+                        //class is 1 hour long
+                        if (students[i].Length == 60) {
+                            var logIn = students[i].LoginAfterStartofClass;
+                            
+                            var logOut = students[i].LogOutBeforeEndofClass;
+                            var timeAttended = 60 - (logIn + logOut);
+                            
+                            percent = (timeAttended / 60) * 100;
+                            if (percent >= 80) {
+                                color = "list-group-item list-group-item-success";
+                            }
+                            else if (percent >= 40 && percent < 80) {
+                                color = "list-group-item list-group-item-info";
+                            }
+                            else if (percent < 40) {
+                                color = "list-group-item list-group-item-warning";
+                            }
+                            var newListItem;
+                            //create new list item
+                            newListItem = document.createElement('button');
+                            newListItem.setAttribute('href', '#');
+                            newListItem.setAttribute('onclick', 'studentInfo(this.text)');
+                            newListItem.setAttribute('type', 'button');
+                            newListItem.setAttribute('class', color);
+                            newListItem.text = students[i].StudentId;
+                            newListItem.innerHTML = students[i].FirstName + " " + students[i].LastName + '  <span style="font-weight:bold" class="pull-right">' + students[i].StudentId + "</span>";
+                            //append it to the section for attendance
+                            List.appendChild(newListItem);
+
+
+                        }
+                            //class is 2 hours long
+                        else {
+                            var logIn = students[i].LoginAfterStartofClass;
+                            
+                            var logOut = students[i].LogOutBeforeEndofClass;
+                            var timeAttended = 120 - (logIn + logOut);
+                            var color;
+                            percent = (timeAttended / 120) * 100;
+                            
+                            if (percent >= 80) {
+                                color = "list-group-item list-group-item-success";
+                            }
+                            else if (percent >= 40 && percent < 80) {
+                                color = "list-group-item list-group-item-info";
+                            }
+                            else if (percent < 40) {
+                                color = "list-group-item list-group-item-warning";
+                            }
+                            var newListItem;
+                            //create new list item
+                            newListItem = document.createElement('button');
+                            newListItem.setAttribute('href', '#');
+                            newListItem.setAttribute('onclick', 'studentInfo(this.text)');
+                            newListItem.setAttribute('type', 'button');
+                            newListItem.setAttribute('class', color);
+                            newListItem.text = students[i].StudentId;
+                            newListItem.innerHTML = students[i].FirstName + " " + students[i].LastName + '  <span style="font-weight:bold" class="pull-right">' + students[i].StudentId + "</span>";
+                            //append it to the section for attendance
+                            List.appendChild(newListItem);
+                        }
+                    }
+                }//end of students for loop
+
+            }//end of function
+            function studentInfo(studentId) {
+                alert(studentId);
             }
 
         </script>

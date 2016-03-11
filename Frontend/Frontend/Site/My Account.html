@@ -28,6 +28,41 @@
 </head>
 
 <body>
+    <script>
+        if (localStorage.getItem("authToken"))
+        {
+            // Ajax request to get user info
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    var n = (data.Email).lastIndexOf('@');
+                    var result = (data.Email).substring(n + 1);
+                        if (result == "itsligo.ie")
+                        {
+                            //getLecturerTimetable(data.UserID);
+                        }
+                        else if(result == "mail.itsligo.ie")
+                        {
+                            //getTimetable(data.UserID);
+                            //gets rid of option to look at attendance if student
+                        
+                            removeAttendanceMenu();
+                        }
+
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        else {
+            window.location = "401Error.html";
+        }
+    </script>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -53,7 +88,7 @@
                         <a href="#">My Account</a>
                     </li>
                     <li>
-                        <a href="Attendance.html">Attendance</a>
+                        <a id="attendanceMenu" href="Attendance.html">Attendance</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -110,7 +145,6 @@
                             <li class="list-group-item t1">Old <input type="password" id="pwdOld" placeholder="Old Password" class="input-sm pull-right" /></li>
                             <li class="list-group-item t1">New <input type="password" id="pwdNew" placeholder="New Password" class="input-sm pull-right" /></li>
                             <li class="list-group-item t1"><button onclick="changePassword()" class="btn btn-md btn-success"><span class="glyphicon glyphicon-pencil"></span>  Edit</button></li>
-
                         </ul>
 
                     </div>
@@ -180,6 +214,11 @@
                                 alert('error');
                             }
                         });
+                    }
+
+                    function removeAttendanceMenu() {
+                        var menuItem = document.getElementById('attendanceMenu');
+                        menuItem.parentElement.removeChild(menuItem);
                     }
                 </script>
 
