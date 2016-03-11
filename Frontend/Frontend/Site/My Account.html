@@ -28,6 +28,41 @@
 </head>
 
 <body>
+    <script>
+        if (localStorage.getItem("authToken"))
+        {
+            // Ajax request to get user info
+            $.ajax({
+                url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",
+                type: "GET",
+                headers: {
+                    "Authorization": "bearer " + localStorage.getItem("authToken")
+                },
+                success: function (data) {
+                    var n = (data.Email).lastIndexOf('@');
+                    var result = (data.Email).substring(n + 1);
+                        if (result == "itsligo.ie")
+                        {
+                            //getLecturerTimetable(data.UserID);
+                        }
+                        else if(result == "mail.itsligo.ie")
+                        {
+                            //getTimetable(data.UserID);
+                            //gets rid of option to look at attendance if student
+                        
+                            removeAttendanceMenu();
+                        }
+
+                },
+                error: function (jqXHR) {
+                    alert('error');
+                }
+            });
+        }
+        else {
+            window.location = "401Error.html";
+        }
+    </script>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -53,7 +88,7 @@
                         <a href="#">My Account</a>
                     </li>
                     <li>
-                        <a href="Attendance.html">Attendance</a>
+                        <a id="attendanceMenu" href="Attendance.html">Attendance</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -66,8 +101,8 @@
     </nav>
     <div class="container-fluid">
         <div class="row" style="background-color:#FFCF3A;height:550px;padding-top:10px;">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            
+            <div class="col-sm-8 col-lg-offset-2 col-xs-12">
                 <div style="margin-top:50px" class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">My Info</h3>
@@ -91,31 +126,7 @@
                         </div>
                     </div>
                 </div>
-            <div class="col-lg-2"></div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div style="margin-top:50px" class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">My Info</h3>
-                    </div>
-                    <div class="panel-body">
-
-
-                        <ul class="list-group" id="MyInfo">
-                            <li class="list-group-item t1">First Name<span class="pull-right" id="fName"></span></li>
-                            <li class="list-group-item t1">Surname<span class="pull-right" id="sName"></span></li>
-                            <li class="list-group-item t1">Email<span class="pull-right" id="email"></span></li>
-                            <li class="list-group-item t1">ID Number<span class="pull-right" id="idNum"></span></li>
-                            <li class="list-group-item t1">Role<span id="role" class="pull-right"></span></li>
-                            <li class="list-group-item list-group-item-success">Change Password</li>
-                            <li class="list-group-item t1">Old <input type="password" id="pwdOld" placeholder="Old Password" class="input-sm pull-right" /></li>
-                            <li class="list-group-item t1">New <input type="password" id="pwdNew" placeholder="New Password" class="input-sm pull-right" /></li>
-                            <li class="list-group-item t1"><button onclick="changePassword()" class="btn btn-md btn-success"><span class="glyphicon glyphicon-pencil"></span>  Edit</button></li>
-
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
+           
                     </div>
 
 
@@ -160,8 +171,6 @@
                     function changePassword() {
 
                         // Ajax request to change password
-                        alert($('#pwdOld').val());
-                        alert($('#pwdNew').val());
                         $.ajax({
 
                             url: "https://signmeinwebapi.azurewebsites.net/api/ChangePassword",
@@ -174,12 +183,17 @@
                                 "newPassword": $('#pwdNew').val(),
                             },
                             success: function (data) {
-                                alert("passwordChanged");
+                                alert("Success! Password Changed!");
                             },
                             error: function (jqXHR) {
                                 alert('error');
                             }
                         });
+                    }
+
+                    function removeAttendanceMenu() {
+                        var menuItem = document.getElementById('attendanceMenu');
+                        menuItem.parentElement.removeChild(menuItem);
                     }
                 </script>
 
