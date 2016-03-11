@@ -138,7 +138,10 @@
                 <script>
                     $(document).ready(function getUserInfo() {
 
-
+                        $("#logoutIcon").click(function () {
+                            localStorage.setItem("authToken", "");
+                            window.location = "../index.html";
+                        });
                         // Ajax request to get user info
                         $.ajax({
                             url: "https://signmeinwebapi.azurewebsites.net/api/users/UserInfo",

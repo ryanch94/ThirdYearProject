@@ -35,6 +35,10 @@
         else {
             window.location = "401Error.html";
         }
+        $("#logoutIcon").click(function () {
+            localStorage.setItem("authToken", "");
+            window.location = "../index.html";
+        });
     </script>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -141,6 +145,13 @@
         <!-- Bootstrap Core JavaScript -->
         <script src="../Scripts/bootstrap.min.js"></script>
         <script>
+            $(document).ready(function () {
+
+                $("#logoutIcon").click(function () {
+                    localStorage.setItem("authToken", "");
+                    window.location = "../index.html";
+                });
+            });
 
             function getLecturerWeek(idNum) {
                 var str1 = "https://signmeinwebapi.azurewebsites.net/api/LecturerTimetable?lectID=";

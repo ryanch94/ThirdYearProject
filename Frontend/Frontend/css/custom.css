@@ -1,3 +1,20 @@
 ﻿body {
 }
 
+.timetableTodaySpan {
+    font-weight:bold;
+}
+.margin50top {
+    margin-top:50px;
+}
+
+.margin10left {
+    margin-left:10px;
+}
+#roomInfoHeading {
+    text-align:center;
+    margin-top:60px;
+}
+#textCenter {
+   text-align:center;
+}
