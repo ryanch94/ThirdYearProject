@@ -92,10 +92,6 @@ namespace GroupProjectApp
             else if (rawData == "AuthInvalid") { DisableButtons(); }
         }
 
-
-
-
-
         public async void GetWatchedRooms()
         {
             var s = await App.GetWatchedRoomsList();
@@ -104,12 +100,10 @@ namespace GroupProjectApp
             {
                 _lstWatchedRooms.Add(item);
             }
-
         }
 
         private async void PopulateCurrentFreeLst()
         {
-
             var rawData = await App.LoadDataFromAPI(currentFreeRoomsAPI);
 
             if (rawData != "AuthInvalid")
@@ -181,10 +175,7 @@ namespace GroupProjectApp
             {
                 DisableButtons();
             }
-
         }
-
-
 
         #endregion
 
@@ -192,6 +183,7 @@ namespace GroupProjectApp
 
         private void lbxCurrentlyFreeRooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            GetWatchedRooms();
             FreeRoom selected = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
 
             foreach (var room in _lstWatchedRooms)
@@ -201,14 +193,17 @@ namespace GroupProjectApp
                     btnWatchCF.IsEnabled = false;
                 }
                 else { btnWatchCF.IsEnabled = true; }
+                GetWatchedRooms();
             }
         }
 
         private void btnWatchCF_Click(object sender, RoutedEventArgs e)
         {
+            GetWatchedRooms();
             FreeRoom room = (FreeRoom)lbxCurrentlyFreeRooms.SelectedItem;
             var rawData = App.AddOrRemoveFromWatchList(room.Id);
             btnWatchCF.IsEnabled = false;
+            GetWatchedRooms();
         }
 
         #endregion
@@ -217,6 +212,7 @@ namespace GroupProjectApp
 
         private void cbxRoomType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            GetWatchedRooms();
             List<FreeRoom> _RoomTypeAvail = new List<FreeRoom>();
 
             RoomType selected = (RoomType)cbxRoomType.SelectedValue;
@@ -235,6 +231,7 @@ namespace GroupProjectApp
 
         private void lbxRoomType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            GetWatchedRooms();
             FreeRoom selected = (FreeRoom)lbxRoomType.SelectedItem;
 
             foreach (var room in _lstRoomTypes)
@@ -244,14 +241,17 @@ namespace GroupProjectApp
                     btnWatchRT.IsEnabled = false;
                 }
                 else { btnWatchRT.IsEnabled = true; }
+                GetWatchedRooms();
             }
         }
 
         private void btnWatchRT_Click(object sender, RoutedEventArgs e)
         {
+            GetWatchedRooms();
             FreeRoom room = (FreeRoom)lbxRoomType.SelectedItem;
             var rawData = App.AddOrRemoveFromWatchList(room.Id);
             btnWatchRT.IsEnabled = false;
+            GetWatchedRooms();
         }
 
         #endregion
@@ -260,6 +260,7 @@ namespace GroupProjectApp
 
         private void cbxProgramTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            GetWatchedRooms();
             // List created to populate the program type listbox
             List<FreeRoom> _ProgramRoomAvail = new List<FreeRoom>();
 
@@ -275,14 +276,13 @@ namespace GroupProjectApp
                     _ProgramRoomAvail.Add(freeRoom);
                 }
             }
-
             lbxPrograms.ItemsSource = _ProgramRoomAvail;
         }
 
         private void lbxPrograms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            GetWatchedRooms();
             FreeRoom selected = (FreeRoom)lbxPrograms.SelectedItem;
-
             foreach (var room in _lstWatchedRooms)
             {
                 if (room.Id == selected.Id)
@@ -295,9 +295,11 @@ namespace GroupProjectApp
 
         private void btnWatchPT_Click(object sender, RoutedEventArgs e)
         {
+            GetWatchedRooms();
             FreeRoom room = (FreeRoom)lbxPrograms.SelectedItem;
             var rawData = App.AddOrRemoveFromWatchList(room.Id);
             btnWatchPT.IsEnabled = false;
+            GetWatchedRooms();
         }
 
         #endregion
@@ -329,10 +331,10 @@ namespace GroupProjectApp
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
 
-        private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
-        {
-            App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
-        }
+        //private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
+        //{
+        //    App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
+        //}
 
         #endregion
 
@@ -341,9 +343,13 @@ namespace GroupProjectApp
             btnHome.IsEnabled = false;
             btnWatch.IsEnabled = false;
             btnSearch.IsEnabled = false;
-            btnDayAndBlock.IsEnabled = false;
             btnMyDetails.IsEnabled = false;
 
+        }
+
+        private void btnMyDetails_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(ClientDetails), null);
         }
     }
 }

@@ -47,49 +47,52 @@ namespace GroupProjectApp
         private void SetComboSelections()
         {
             // both trigger onclick event so validation done before sending data to api
-            cbxDayTimes.SelectedIndex = 0;
-            cbxWeekdays.SelectedIndex = 0;
+           // cbxDayTimes.SelectedIndex = 0;
+           // cbxWeekdays.SelectedIndex = 0;
         }
 
         #region Search by day and block methods (combobox selection change, listbox selection, watch roomtype button)
 
         private void cbxWeekdays_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FilterDayBockTimes();
+           // FilterDayBockTimes();
         }
 
         private void cbxDayTimes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FilterDayBockTimes();
+          //  FilterDayBockTimes();
         }
 
         private async void FilterDayBockTimes()
         {
             // avoid sending null values to api by checking both combobox selections are not null
-            if (cbxDayTimes.SelectedItem != null && cbxWeekdays.SelectedItem != null)
             {
                 List<FreeRoom> _dayAndBlockLst = new List<FreeRoom>();
                 WeekDay day = (WeekDay)cbxWeekdays.SelectedItem;
                 DayBlockTime dayBlock = (DayBlockTime)cbxDayTimes.SelectedItem;
 
-                var rawData = await App.LoadDataFromAPI(string.Format("https://signmeinwebapi.azurewebsites.net/api/FreeRooms?weekDayNumber=" + "{0}" + "&dayBlock=" + "{1}", day.DayNumber, dayBlock.BlockNum));
-
-                if (rawData != "AuthInvalid")
+                if (day.DayName != null && dayBlock.DayTime != null)
                 {
-                    var DataArray = JsonConvert.DeserializeObject<FreeRoom[]>(rawData);
+                    var rawData = await App.LoadDataFromAPI(string.Format("https://signmeinwebapi.azurewebsites.net/api/FreeRooms?weekDayNumber=" + "{0}" + "&dayBlock=" + "{1}", day.DayNumber, dayBlock.BlockNum));
 
-                    foreach (var item in DataArray)
+                    if (rawData != "AuthInvalid")
                     {
-                        _dayAndBlockLst.Add(item);
+                        var DataArray = JsonConvert.DeserializeObject<FreeRoom[]>(rawData);
+
+                        foreach (var item in DataArray)
+                        {
+                            _dayAndBlockLst.Add(item);
+                        }
+
+                        lbxDayTimes.ItemsSource = _dayAndBlockLst;
                     }
 
-                    lbxDayTimes.ItemsSource = _dayAndBlockLst;
+                    else if (rawData == "AuthInvalid")
+                    {
+                        DisableButtons();
+                    }
                 }
 
-                else if (rawData == "AuthInvalid")
-                {
-                    DisableButtons();
-                }
             }
         }
 
@@ -105,6 +108,7 @@ namespace GroupProjectApp
 
         private void lbxDayTimes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            GetWatchedRooms();
             FreeRoom selected = (FreeRoom)lbxDayTimes.SelectedItem;
 
             foreach (var room in _lstWatchedRooms)
@@ -199,5 +203,9 @@ namespace GroupProjectApp
 
         #endregion
 
+        private void btnMyDetails_Click(object sender, RoutedEventArgs e)
+        {
+            App.RootFrame.Navigate(typeof(ClientDetails), null);
+        }
     }
 }

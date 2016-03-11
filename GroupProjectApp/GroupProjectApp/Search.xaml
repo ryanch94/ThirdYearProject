@@ -27,14 +27,14 @@
                        Width="50" Height="50" Background="Transparent" Click="btnSearch_Click"/>
                     <TextBlock Text="Search free rooms" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <!--<StackPanel Orientation="Horizontal">
                     <Button x:Name="btnDayAndBlock" FontFamily="Segoe MDL2 Assets" Content="&#xE787;"
                        Width="50" Height="50" Background="Transparent" Click="btnDayAndBlock_Click"/>
                     <TextBlock Text="Search by day" FontSize="18" VerticalAlignment="Center" TextWrapping="WrapWholeWords"/>
-                </StackPanel>
+                </StackPanel>-->
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btnMyDetails" FontFamily="Segoe MDL2 Assets" Content="&#xE77B;"
-                       Width="50" Height="50" Background="Transparent"/>
+                       Width="50" Height="50" Background="Transparent" Click="btnMyDetails_Click"/>
                     <TextBlock Text="My details" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

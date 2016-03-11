@@ -32,6 +32,17 @@
         </ComboBoxItem>
     </DataTemplate>
 
+    <DataTemplate x:Key="ComboboxDay" >
+        <ComboBoxItem>
+            <TextBlock Text="{Binding DayName}" FontWeight="Bold"/>
+        </ComboBoxItem>
+    </DataTemplate>
+    <DataTemplate x:Key="ComboboxDayTime" >
+        <ComboBoxItem>
+            <TextBlock Text="{Binding DayTime}" FontWeight="Bold"/>
+        </ComboBoxItem>
+    </DataTemplate>
+
     <DataTemplate x:Key="FreeRoomslbxItem">
         <Grid HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
@@ -42,11 +53,14 @@
             <StackPanel Grid.Column="0">
                 <TextBlock Text="{Binding Code}" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontSize="20" Padding="10"/>
             </StackPanel>
-
             <StackPanel Grid.Column="1" Height="auto">
                 <TextBlock Text="{Binding Size}" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Type}" HorizontalAlignment="Right"/>
-                <TextBlock Text="{Binding Count}" HorizontalAlignment="Stretch"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Currently in room:</TextBlock>
+                    <TextBlock Text="{Binding Count}" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
             </StackPanel>
         </Grid>
 

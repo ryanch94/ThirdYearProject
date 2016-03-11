@@ -70,23 +70,6 @@ namespace GroupProjectApp
             return rawData;
         }
 
-        public static List<DailyClass> ConvertJsonToArray(string data, int dayNumber)
-        {
-            List<DailyClass> weekModules = new List<DailyClass>();
-
-            var weekTimetable = JsonConvert.DeserializeObject<DailyClass[]>(data);
-
-            // dayblock not curently being used
-            for (int i = 0; i <= 8; i++)
-            {
-                foreach (var item in weekTimetable)
-                {
-                    if (item.WeekDayNumber == dayNumber && item.DayBlock == i) { weekModules.Add(item); }
-                }
-            }
-            return weekModules;
-        }
-
         public async static Task<List<Room>> GetWatchedRoomsList()
         {
             List<Room> _watchedRoomsList = new List<Room>();
@@ -94,7 +77,6 @@ namespace GroupProjectApp
             var rawData = await LoadDataFromAPI("https://signmeinwebapi.azurewebsites.net/api/WatchRooms");
 
             var watchedRooms = JsonConvert.DeserializeObject<Room[]>(rawData);
-
 
             foreach (var item in watchedRooms)
             {

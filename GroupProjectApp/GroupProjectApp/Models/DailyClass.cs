@@ -19,8 +19,6 @@ namespace GroupProjectApp.Classes
         public int ClassLength { get; set; }
         public int WeekDayNumber { get; set; }
 
-
-
         public DailyClass(int id, string nme, string shortnme, string frstnme, string lstnme, int dyblck, string cd, int clssL, int dynmbr)
         {
             Id = id;
@@ -32,22 +30,12 @@ namespace GroupProjectApp.Classes
             Code = cd;
             ClassLength = clssL;
             WeekDayNumber = dynmbr;
-
-
         }
-
-
-        //public override string ToString()
-        //{
-        //    return  Name + "   " + "Room:" + Code;
-        //}
 
         public string Test
         {
             get { return Name + Code; }
         }
-
-      
     }
 
     public class ValidAuth

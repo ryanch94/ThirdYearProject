@@ -40,7 +40,7 @@ namespace GroupProjectApp
 
                 using (var client = new HttpClient())
                 {
-                    var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", "s00143284@mail.itsligo.ie" }, { "password", "chickensalad" } };
+                    var values = new Dictionary<string, string> { { "grant_type", "password" }, { "username", tbxEmail.Text }, { "password",tbxPassword.Password } };
                     var content = new FormUrlEncodedContent(values);
                     var rawAuthResponse = await client.PostAsync("https://signmeinwebapi.azurewebsites.net/authenticate", content);
                     var responseString = await rawAuthResponse.Content.ReadAsStringAsync();

@@ -44,7 +44,10 @@ namespace GroupProjectApp.Models
             {
                 roles += role + ", ";
             }
-            tbkRoles.Text = roles.Remove(roles.Length - 2);
+            if (roles != "-2")
+            {
+                tbkRoles.Text = roles.Remove(roles.Length - 2);
+            }
         }
 
         #region Sidebar navigation
@@ -74,10 +77,10 @@ namespace GroupProjectApp.Models
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
 
-        private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
-        {
-            App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
-        }
+        //private void btnDayAndBlock_Click(object sender, RoutedEventArgs e)
+        //{
+        //    App.RootFrame.Navigate(typeof(SearchByDayAndBlock), null);
+        //}
 
         #endregion
 
