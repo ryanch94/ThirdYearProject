@@ -171,8 +171,6 @@
                     function changePassword() {
 
                         // Ajax request to change password
-                        alert($('#pwdOld').val());
-                        alert($('#pwdNew').val());
                         $.ajax({
 
                             url: "https://signmeinwebapi.azurewebsites.net/api/ChangePassword",
@@ -185,7 +183,7 @@
                                 "newPassword": $('#pwdNew').val(),
                             },
                             success: function (data) {
-                                alert("passwordChanged");
+                                alert("Success! Password Changed!");
                             },
                             error: function (jqXHR) {
                                 alert('error');

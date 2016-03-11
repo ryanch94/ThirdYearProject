@@ -268,7 +268,7 @@
            
             var stri1 = "https://signmeinwebapi.azurewebsites.net/api/WatchRooms?roomid=";
             var add = stri1.concat(roomID);
-            alert(add);
+            //alert(add);
             $.ajax({
                 url: add,
                 type: "POST",
@@ -279,7 +279,7 @@
                     "RoomID": roomID,
                 },
                 success: function (data) {
-                   
+                   alert("Toggle Successful!")
                 },
                 error: function (jqXHR) {
                     alert("error setwatchroom");
@@ -362,6 +362,7 @@
                 }
             });
         }
+		
         function freeRoomInfo(room) {
             $.ajax({
                 url: "https://signmeinwebapi.azurewebsites.net/api/FreeRooms",
@@ -490,12 +491,12 @@
             for (i = 0; i < Timetable.length; i++) {
                 //get num of today and compare against weeks timetable
                 var day = new Date();
-                //var todayNum = (day.getDay()) + 1;
+                var todayNum = (day.getDay()) + 1;
                 ////if sat/sun day is monday
                 //if (todayNum == 7 || todayNum == 1) {
                 //    todayNum = 2;
                 //}
-                todayNum = 4;
+                //todayNum = 4;
                 //if class is on today
                 if (Timetable[i].WeekDayNumber == todayNum) {
                     var time = Timetable[i].DayBlock;
